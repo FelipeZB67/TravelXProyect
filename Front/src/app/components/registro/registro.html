@@ -1,0 +1,105 @@
+<div class="registro-container">
+
+  <div class="left-panel">
+    <div class="left-overlay"></div>
+    <div class="left-content animate__animated animate__fadeInLeft">
+      <div class="back-btn" (click)="irABienvenida()">
+        <i class="fas fa-arrow-left"></i> Volver
+      </div>
+      <div class="left-card">
+        <p class="left-eyebrow">
+          <i class="fas fa-paper-plane"></i> Únete a la aventura
+        </p>
+        <h2 class="left-title">Empieza tu <br> historia aquí</h2>
+        <p class="left-slogan">
+          Miles de destinos te esperan. Tu primera aventura está a un paso.
+        </p>
+        <div class="left-divider"></div>
+        <p class="left-tagline">
+          <i class="fas fa-globe-americas"></i> TravelX &mdash; El mundo es tuyo
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-panel animate__animated animate__fadeInRight">
+    <div class="form-wrapper">
+      <div class="form-header">
+        <h1 class="form-title">Crear cuenta</h1>
+        <p class="form-subtitle">Completa tus datos para comenzar</p>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <div class="input-wrapper">
+          <i class="fas fa-user"></i>
+          <input
+            type="text"
+            [(ngModel)]="nombre"
+            placeholder="Tu nombre completo"
+            class="form-input"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <div class="input-wrapper">
+          <i class="fas fa-envelope"></i>
+          <input
+            type="email"
+            [(ngModel)]="email"
+            placeholder="tucorreo@ejemplo.com"
+            class="form-input"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Contraseña</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock"></i>
+          <input
+            [type]="mostrarPassword ? 'text' : 'password'"
+            [(ngModel)]="password"
+            placeholder="Crea una contraseña"
+            class="form-input"
+          />
+          <i class="fas toggle-eye"
+             [class.fa-eye]="!mostrarPassword"
+             [class.fa-eye-slash]="mostrarPassword"
+             (click)="togglePassword()">
+          </i>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Confirmar contraseña</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock"></i>
+          <input
+            [type]="mostrarConfirmar ? 'text' : 'password'"
+            [(ngModel)]="confirmarPassword"
+            placeholder="Repite tu contraseña"
+            class="form-input"
+          />
+          <i class="fas toggle-eye"
+             [class.fa-eye]="!mostrarConfirmar"
+             [class.fa-eye-slash]="mostrarConfirmar"
+             (click)="toggleConfirmar()">
+          </i>
+        </div>
+      </div>
+
+      <button class="btn-submit" (click)="registrarse()">
+        <i class="fas fa-user-plus"></i> Crear mi cuenta
+      </button>
+
+      <p class="switch-text">
+        ¿Ya tienes una cuenta?
+        <span (click)="irALogin()">Inicia sesión aquí</span>
+      </p>
+    </div>
+  </div>
+
+</div>
