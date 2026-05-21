@@ -248,3 +248,29 @@
 .switch-text span:hover {
   text-decoration: underline;
 }
+
+.form-select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.alert-mensaje {
+  padding: .8rem 1rem;
+  border-radius: 10px;
+  font-size: .88rem;
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.alert-error {
+  background: #ffe8e8;
+  color: #ff4d4d;
+}
+
+.alert-success {
+  background: #e6f9f0;
+  color: #00b366;
+}

@@ -13,7 +13,6 @@ export class LocationService {
     return this.http.get<string[]>(`${this.base}/codigos`);
   }
 
-  // Corresponde a GET /api/locations/buscar?query=hotel&indicePais=0
   buscarPorIndice(query: string, indicePais: number, limit = 40): Observable<NominatimLocationModel[]> {
     const params = new HttpParams()
       .set('query', query)
@@ -22,7 +21,6 @@ export class LocationService {
     return this.http.get<NominatimLocationModel[]>(`${this.base}/buscar`, { params });
   }
 
-  // Corresponde a GET /api/locations/buscar/co?query=hotel
   buscarPorCodigo(codigo: string, query: string): Observable<NominatimLocationModel[]> {
     const params = new HttpParams().set('query', query);
     return this.http.get<NominatimLocationModel[]>(`${this.base}/buscar/${codigo}`, { params });

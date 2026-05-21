@@ -11,6 +11,7 @@ import { RegistroComponent } from './components/registro/registro';
 import { InicioComponent } from './components/inicio/inicio';
 import { AdminComponent } from './components/admin/admin';
 import { HttpClientModule } from '@angular/common/http';
+import { VerificarCorreoComponent } from './components/verificar-correo/verificar-correo';
 
 @NgModule({
   declarations: [
@@ -20,8 +21,16 @@ import { HttpClientModule } from '@angular/common/http';
     RegistroComponent,
     InicioComponent,
     AdminComponent,
+    VerificarCorreoComponent,
   ],
-  imports: [BrowserModule, CommonModule, RouterModule, FormsModule, AppRoutingModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    AppRoutingModule,
+    HttpClientModule,
+  ],
   bootstrap: [App],
 })
 export class AppModule {}

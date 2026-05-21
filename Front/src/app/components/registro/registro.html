@@ -29,16 +29,42 @@
         <p class="form-subtitle">Completa tus datos para comenzar</p>
       </div>
 
+      @if (mensaje) {
+        <div class="alert-mensaje" [class.alert-error]="tipoMensaje === 'error'"
+             [class.alert-success]="tipoMensaje === 'success'">
+          <i class="fas" [class.fa-exclamation-circle]="tipoMensaje === 'error'"
+             [class.fa-check-circle]="tipoMensaje === 'success'"></i>
+          {{ mensaje }}
+        </div>
+      }
+
+      <div class="form-group">
+        <label>Tipo de cuenta</label>
+        <div class="input-wrapper select-wrapper">
+          <i class="fas fa-user-tag"></i>
+          <select class="form-input form-select" [(ngModel)]="tipoUsuario">
+            <option value="USUARIO">Usuario</option>
+            <option value="ADMINISTRADOR">Administrador</option>
+          </select>
+        </div>
+      </div>
+
       <div class="form-group">
         <label>Nombre completo</label>
         <div class="input-wrapper">
           <i class="fas fa-user"></i>
-          <input
-            type="text"
-            [(ngModel)]="nombre"
-            placeholder="Tu nombre completo"
-            class="form-input"
-          />
+          <input type="text" [(ngModel)]="nombre"
+                 placeholder="Tu nombre completo" class="form-input"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Documento de identidad</label>
+        <div class="input-wrapper">
+          <i class="fas fa-id-card"></i>
+          <input type="text" [(ngModel)]="documento"
+                 placeholder="Tu número de documento" class="form-input"
+                 maxlength="12"/>
         </div>
       </div>
 
@@ -46,12 +72,8 @@
         <label>Correo electrónico</label>
         <div class="input-wrapper">
           <i class="fas fa-envelope"></i>
-          <input
-            type="email"
-            [(ngModel)]="email"
-            placeholder="tucorreo@ejemplo.com"
-            class="form-input"
-          />
+          <input type="email" [(ngModel)]="correo"
+                 placeholder="tucorreo@ejemplo.com" class="form-input"/>
         </div>
       </div>
 
@@ -59,17 +81,13 @@
         <label>Contraseña</label>
         <div class="input-wrapper">
           <i class="fas fa-lock"></i>
-          <input
-            [type]="mostrarPassword ? 'text' : 'password'"
-            [(ngModel)]="password"
-            placeholder="Crea una contraseña"
-            class="form-input"
-          />
+          <input [type]="mostrarPassword ? 'text' : 'password'"
+                 [(ngModel)]="contrasena"
+                 placeholder="Mínimo 8 caracteres" class="form-input"/>
           <i class="fas toggle-eye"
              [class.fa-eye]="!mostrarPassword"
              [class.fa-eye-slash]="mostrarPassword"
-             (click)="togglePassword()">
-          </i>
+             (click)="mostrarPassword = !mostrarPassword"></i>
         </div>
       </div>
 
@@ -77,22 +95,19 @@
         <label>Confirmar contraseña</label>
         <div class="input-wrapper">
           <i class="fas fa-lock"></i>
-          <input
-            [type]="mostrarConfirmar ? 'text' : 'password'"
-            [(ngModel)]="confirmarPassword"
-            placeholder="Repite tu contraseña"
-            class="form-input"
-          />
+          <input [type]="mostrarConfirmar ? 'text' : 'password'"
+                 [(ngModel)]="confirmarPassword"
+                 placeholder="Repite tu contraseña" class="form-input"/>
           <i class="fas toggle-eye"
              [class.fa-eye]="!mostrarConfirmar"
              [class.fa-eye-slash]="mostrarConfirmar"
-             (click)="toggleConfirmar()">
-          </i>
+             (click)="mostrarConfirmar = !mostrarConfirmar"></i>
         </div>
       </div>
 
-      <button class="btn-submit" (click)="registrarse()">
-        <i class="fas fa-user-plus"></i> Crear mi cuenta
+      <button class="btn-submit" (click)="registrarse()" [disabled]="cargando">
+        @if (cargando) { <i class="fas fa-spinner fa-spin"></i> Creando cuenta... }
+        @else { <i class="fas fa-user-plus"></i> Crear mi cuenta }
       </button>
 
       <p class="switch-text">
