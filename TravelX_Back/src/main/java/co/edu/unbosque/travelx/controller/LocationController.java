@@ -41,11 +41,10 @@ public class LocationController {
     @GetMapping("/buscar/{codigo}")
     public ResponseEntity<List<NominatimLocationDTO>> buscarPorCodigo(
             @PathVariable String codigo,
-            @RequestParam String query,
-            @RequestParam(defaultValue = "40") int limit) {
+            @RequestParam String query) {
 
         List<NominatimLocationDTO> resultados =
-            locationService.buscarPorCodigo(codigo, limit);
+            locationService.buscarPorCodigo(codigo);
         return ResponseEntity.ok(resultados);
     }
 }
