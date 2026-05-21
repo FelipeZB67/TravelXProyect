@@ -1,0 +1,119 @@
+<div class="admin-wrapper">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <i class="fas fa-globe-americas"></i>
+      <span>TravelX</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item" [class.active]="seccionActiva === 'usuarios'" (click)="seccionActiva = 'usuarios'">
+        <i class="fas fa-users"></i> Usuarios
+      </button>
+      <button class="nav-item" [class.active]="seccionActiva === 'administradores'" (click)="seccionActiva = 'administradores'">
+        <i class="fas fa-user-shield"></i> Administradores
+      </button>
+      <button class="nav-item" [class.active]="seccionActiva === 'reservas'" (click)="seccionActiva = 'reservas'">
+        <i class="fas fa-calendar-check"></i> Reservas
+      </button>
+    </nav>
+
+    <button class="sidebar-logout" (click)="cerrarSesion()">
+      <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+    </button>
+  </aside>
+
+  <main class="main-content">
+
+    <div class="content-header">
+      <div class="header-left">
+        <h1 class="content-title">
+          @if (seccionActiva === 'usuarios') { <i class="fas fa-users"></i> Usuarios }
+          @if (seccionActiva === 'administradores') { <i class="fas fa-user-shield"></i> Administradores }
+          @if (seccionActiva === 'reservas') { <i class="fas fa-calendar-check"></i> Reservas }
+        </h1>
+        <p class="content-subtitle">{{ datosActivos.length }} registros en total</p>
+      </div>
+      <button class="btn-agregar" (click)="abrirModalCrear()">
+        <i class="fas fa-plus"></i> Agregar
+      </button>
+    </div>
+
+    <div class="tabla-wrapper">
+      <table class="tabla">
+        <thead>
+        <tr>
+          @for (col of columnasActivas; track col) {
+            <th>{{ col | titlecase }}</th>
+          }
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (item of datosActivos; track item.id) {
+            <tr>
+              @for (col of columnasActivas; track col) {
+                <td>
+                  @if (col === 'estado') {
+                    <span class="badge" [class.badge-activo]="item[col] === 'Activo' || item[col] === 'Confirmada'"
+                          [class.badge-pendiente]="item[col] === 'Pendiente'"
+                          [class.badge-inactivo]="item[col] === 'Inactivo' || item[col] === 'Cancelada'">
+                      {{ item[col] }}
+                    </span>
+                  } @else if (col === 'precio') {
+                    ${{ item[col] }} USD
+                  } @else {
+                    {{ item[col] }}
+                  }
+                </td>
+              }
+              <td class="acciones">
+                <button class="btn-editar" (click)="abrirModalEditar(item)">
+                  <i class="fas fa-pen"></i>
+                </button>
+                <button class="btn-eliminar" (click)="eliminar(item)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+</div>
+
+@if (modalAbierto) {
+  <div class="modal-overlay" (click)="modalAbierto = false">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ modoEdicion ? 'Editar' : 'Agregar' }}
+          @if (seccionActiva === 'usuarios') { usuario }
+          @if (seccionActiva === 'administradores') { administrador }
+          @if (seccionActiva === 'reservas') { reserva }
+        </h2>
+        <button class="modal-close" (click)="modalAbierto = false"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div class="modal-body">
+        @for (col of columnasActivas; track col) {
+          @if (col !== 'id') {
+            <div class="form-group">
+              <label>{{ col | titlecase }}</label>
+              <input class="form-input" [(ngModel)]="formulario[col]" [placeholder]="col">
+            </div>
+          }
+        }
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancelar" (click)="modalAbierto = false">Cancelar</button>
+        <button class="btn-guardar" (click)="guardar()">
+          <i class="fas fa-save"></i> Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+}

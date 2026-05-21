@@ -8,10 +8,19 @@ import { App } from './app';
 import { BienvenidaComponent } from './components/bienvenida/bienvenida';
 import { LoginComponent } from './components/login/login';
 import { RegistroComponent } from './components/registro/registro';
+import { InicioComponent } from './components/inicio/inicio';
+import { AdminComponent } from './components/admin/admin';
 
 @NgModule({
-  declarations: [App, BienvenidaComponent, LoginComponent, RegistroComponent],
+  declarations: [
+    App,
+    BienvenidaComponent,
+    LoginComponent,
+    RegistroComponent,
+    InicioComponent,
+    AdminComponent,
+  ],
   imports: [BrowserModule, CommonModule, RouterModule, FormsModule, AppRoutingModule],
-  bootstrap: [App]
+  bootstrap: [App],
 })
 export class AppModule {}
