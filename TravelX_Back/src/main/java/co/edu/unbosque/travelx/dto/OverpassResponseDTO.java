@@ -6,7 +6,6 @@ public class OverpassResponseDTO {
 
     private Double version;
     private String generator;
-    private OverpassOsm3sDTO osm3s;
     private List<OverpassElementDTO> elements;
 
     public OverpassResponseDTO() {
@@ -26,14 +25,6 @@ public class OverpassResponseDTO {
 
     public void setGenerator(String generator) {
         this.generator = generator;
-    }
-
-    public OverpassOsm3sDTO getOsm3s() {
-        return osm3s;
-    }
-
-    public void setOsm3s(OverpassOsm3sDTO osm3s) {
-        this.osm3s = osm3s;
     }
 
     public List<OverpassElementDTO> getElements() {
