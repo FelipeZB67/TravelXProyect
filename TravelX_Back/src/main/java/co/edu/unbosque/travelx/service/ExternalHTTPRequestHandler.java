@@ -55,12 +55,11 @@ public class ExternalHTTPRequestHandler {
     }
 
     // Devuelve lista de ubicaciones desde Nominatim
-    public static List<NominatimLocationDTO> doGetLocations(int indiceLocation, int limit) {
+    public static List<NominatimLocationDTO> doGetLocations(int indiceLocation) {
         String countryCode = CODIGOS.get(indiceLocation);
 
         String url = "https://nominatim.openstreetmap.org/search?q=hotel&format=json"
-                + "&limit=" + limit
-                + "&countrycodes=" + countryCode;
+                + "&limit=30&countrycodes=" + countryCode;
 
         HttpRequest solicitud = HttpRequest.newBuilder()
                 .GET()

@@ -19,15 +19,15 @@ public class LocationService {
         if (indicePais < 0 || indicePais >= ExternalHTTPRequestHandler.CODIGOS.size()) {
             throw new IllegalArgumentException("Índice de país inválido: " + indicePais);
         }
-        return ExternalHTTPRequestHandler.doGetLocations(indicePais, limit);
+        return ExternalHTTPRequestHandler.doGetLocations(indicePais);
     }
 
     // Busca por código directo (ej: "co", "us")
-    public List<NominatimLocationDTO> buscarPorCodigo(String codigo, int limit) {
+    public List<NominatimLocationDTO> buscarPorCodigo(String codigo) {
         if (!ExternalHTTPRequestHandler.CODIGOS.contains(codigo)) {
             throw new IllegalArgumentException("Código de país no soportado: " + codigo);
         }
         int indice = ExternalHTTPRequestHandler.CODIGOS.indexOf(codigo);
-        return ExternalHTTPRequestHandler.doGetLocations(indice, limit);
+        return ExternalHTTPRequestHandler.doGetLocations(indice);
     }
 }
