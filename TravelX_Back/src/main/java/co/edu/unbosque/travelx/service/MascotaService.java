@@ -21,9 +21,6 @@ public class MascotaService implements CRUDOperation<MascotaDTO>{
 	@Autowired
 	private ModelMapper mapper;
 	
-	@Autowired 
-	PasswordEncoder passwordEncoder;
-	
 	public MascotaService() {
 		
 	}

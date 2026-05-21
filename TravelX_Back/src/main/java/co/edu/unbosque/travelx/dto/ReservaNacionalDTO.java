@@ -3,6 +3,8 @@ package co.edu.unbosque.travelx.dto;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import co.edu.unbosque.travelx.entity.Reserva.MetodoTransporte;
+
 public class ReservaNacionalDTO extends ReservaDTO{
 	
 	private String ciudadOrigen;
@@ -20,14 +22,14 @@ public class ReservaNacionalDTO extends ReservaDTO{
 
 	
 
-	public ReservaNacionalDTO(Long personaId, String metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
+	public ReservaNacionalDTO(Long personaId, MetodoTransporte metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
 			String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel, double precioHospedaje) {
 		super(personaId, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, precioTransporte, hotel,
 				precioHospedaje);
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReservaNacionalDTO(Long personaId, String metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
+	public ReservaNacionalDTO(Long personaId, MetodoTransporte  metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
 			String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel, double precioHospedaje,
 			String ciudadOrigen2, String ciudadDestino2) {
 		super(personaId, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, precioTransporte, hotel,

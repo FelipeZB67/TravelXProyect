@@ -6,6 +6,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import co.edu.unbosque.travelx.entity.Reserva.MetodoTransporte;
+
 /*@JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,7 +22,7 @@ public abstract class ReservaDTO {
     private Long id;
     private Long personaId;
     
-    private String metodoTransporte;
+    private MetodoTransporte metodoTransporte;
     
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
@@ -37,11 +39,11 @@ public abstract class ReservaDTO {
     }
 
 
-	public ReservaDTO(Long personaId, String metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
+	public ReservaDTO(Long personaId, MetodoTransporte metodoTransporte2, LocalDate fechaInicio, LocalDate fechaFin,
 			String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel, double precioHospedaje) {
 		super();
 		this.personaId = personaId;
-		this.metodoTransporte = metodoTransporte;
+		this.metodoTransporte = metodoTransporte2;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.ciudadOrigen = ciudadOrigen;
@@ -72,12 +74,12 @@ public abstract class ReservaDTO {
 	}
 
 
-	public String getMetodoTransporte() {
+	public MetodoTransporte getMetodoTransporte() {
 		return metodoTransporte;
 	}
 
 
-	public void setMetodoTransporte(String metodoTransporte) {
+	public void setMetodoTransporte(MetodoTransporte metodoTransporte) {
 		this.metodoTransporte = metodoTransporte;
 	}
 
