@@ -20,13 +20,14 @@ public class ReservaNacional extends Reserva {
 		super();
 	}
 
-	public ReservaNacional(Persona persona, String hotel, MetodoTransporte metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, List<Mascota> listaMascotas,
-			List<Viajero> listaViajeros) {
-		super(persona, hotel, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, listaMascotas,
-				listaViajeros);
+	public ReservaNacional(Persona persona, MetodoTransporte metodoTransporte, LocalDate fechaInicio,
+			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel,
+			double precioHospedaje, List<Mascota> listaMascotas, List<Viajero> listaViajeros) {
+		super(persona, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, precioTransporte, hotel,
+				precioHospedaje, listaMascotas, listaViajeros);
 	}
 
+	
 	public Long getId() {
 		return id;
 	}

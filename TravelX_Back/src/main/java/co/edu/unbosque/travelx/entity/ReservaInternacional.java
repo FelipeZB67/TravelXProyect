@@ -26,12 +26,18 @@ public class ReservaInternacional extends Reserva{
 		super();	
 	}
 
-	public ReservaInternacional(Persona persona, String hotel, MetodoTransporte metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, List<Mascota> listaMascotas,
-			List<Viajero> listaViajeros) {
-		super(persona, hotel, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, listaMascotas,
-				listaViajeros);
+	public ReservaInternacional(Persona persona, MetodoTransporte metodoTransporte, LocalDate fechaInicio,
+			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel,
+			double precioHospedaje, List<Mascota> listaMascotas, List<Viajero> listaViajeros, String paisOrigen,
+			String paisDestino, boolean requiereVisa) {
+		super(persona, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, precioTransporte, hotel,
+				precioHospedaje, listaMascotas, listaViajeros);
+		this.paisOrigen = paisOrigen;
+		this.paisDestino = paisDestino;
+		this.requiereVisa = requiereVisa;
 	}
+
+
 
 	public ReservaInternacional(String paisOrigen, String paisDestino, boolean requiereVisa) {
 		this.paisOrigen = paisOrigen;
@@ -39,14 +45,12 @@ public class ReservaInternacional extends Reserva{
 		this.requiereVisa = requiereVisa;
 	}
 
-	public ReservaInternacional(Persona persona, String hotel, MetodoTransporte metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, List<Mascota> listaMascotas,
-			List<Viajero> listaViajeros, String paisOrigen, String paisDestino, boolean requiereVisa) {
-		super(persona, hotel, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, listaMascotas,
-				listaViajeros);
-		this.paisOrigen = paisOrigen;
-		this.paisDestino = paisDestino;
-		this.requiereVisa = requiereVisa;
+	public ReservaInternacional(Persona persona, MetodoTransporte metodoTransporte, LocalDate fechaInicio,
+			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel,
+			double precioHospedaje, List<Mascota> listaMascotas, List<Viajero> listaViajeros) {
+		super(persona, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, precioTransporte, hotel,
+				precioHospedaje, listaMascotas, listaViajeros);
+		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {

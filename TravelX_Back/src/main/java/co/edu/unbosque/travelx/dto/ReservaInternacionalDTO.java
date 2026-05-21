@@ -16,6 +16,29 @@ public class ReservaInternacionalDTO extends ReservaDTO{
 	public ReservaInternacionalDTO() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public ReservaInternacionalDTO(Long personaId, String metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
+			String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel, double precioHospedaje) {
+		super(personaId, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, precioTransporte, hotel,
+				precioHospedaje);
+		// TODO Auto-generated constructor stub
+	}
+
+	public ReservaInternacionalDTO(Long personaId, String metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
+			String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel, double precioHospedaje,
+			String paisOrigen, String ciudadOrigen2, String paisDestino, String ciudadDestino2, boolean requiereVisa) {
+		super(personaId, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, precioTransporte, hotel,
+				precioHospedaje);
+		this.paisOrigen = paisOrigen;
+		ciudadOrigen = ciudadOrigen2;
+		this.paisDestino = paisDestino;
+		ciudadDestino = ciudadDestino2;
+		this.requiereVisa = requiereVisa;
+	}
+
+
+
+
 
 	public ReservaInternacionalDTO(String paisOrigen, String ciudadOrigen, String paisDestino, String ciudadDestino,
 			boolean requiereVisa) {
@@ -25,23 +48,6 @@ public class ReservaInternacionalDTO extends ReservaDTO{
 		this.paisDestino = paisDestino;
 		this.ciudadDestino = ciudadDestino;
 		this.requiereVisa = requiereVisa;
-	}
-
-	public ReservaInternacionalDTO(Long personaId, String hotel, String metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin, String paisOrigen, String ciudadOrigen, String paisDestino, String ciudadDestino,
-			boolean requiereVisa) {
-		super(personaId, hotel, metodoTransporte, fechaInicio, fechaFin);
-		this.paisOrigen = paisOrigen;
-		this.ciudadOrigen = ciudadOrigen;
-		this.paisDestino = paisDestino;
-		this.ciudadDestino = ciudadDestino;
-		this.requiereVisa = requiereVisa;
-	}
-
-	public ReservaInternacionalDTO(Long personaId, String hotel, String metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin) {
-		super(personaId, hotel, metodoTransporte, fechaInicio, fechaFin);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
