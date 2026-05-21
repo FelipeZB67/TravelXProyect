@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.travelx.dto.OverpassElementDTO;
@@ -18,12 +18,12 @@ public class OverpassController {
     private OverpassService overpassService;
 
     @GetMapping("/overpass/hoteles/{indicePais}")
-    public List<OverpassElementDTO> obtenerHotelesPorPais(@PathVariable int indicePais) {
+    public List<OverpassElementDTO> obtenerHotelesPorPais(@RequestParam int indicePais) {
         return overpassService.obtenerHotelesPorPais(indicePais);
     }
 
     @GetMapping("/overpass/hoteles/respuesta-completa/{indicePais}")
-    public OverpassResponseDTO obtenerRespuestaCompletaHotelesPorPais(@PathVariable int indicePais) {
+    public OverpassResponseDTO obtenerRespuestaCompletaHotelesPorPais(@RequestParam int indicePais) {
         return overpassService.obtenerRespuestaCompletaHotelesPorPais(indicePais);
     }
 

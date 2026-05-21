@@ -1,0 +1,54 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+
+  private baseUrl = 'http://localhost:8081/auth';
+
+  constructor(private http: HttpClient) {}
+
+  login(correo: string, contrasena: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/login`, { correo, contrasena });
+  }
+
+  register(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, data, { responseType: 'text' });
+  }
+
+  verifyEmail(correo: string, codigo: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/verify`, { correo, codigo }, { responseType: 'text' });
+  }
+
+  guardarSesion(data: any) {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('tipoUsuario', data.tipoUsuario);
+    localStorage.setItem('nombre', data.nombre);
+    localStorage.setItem('correo', data.correo);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  getTipoUsuario(): string | null {
+    return localStorage.getItem('tipoUsuario');
+  }
+
+  getNombre(): string | null {
+    return localStorage.getItem('nombre');
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+
+  isAdmin(): boolean {
+    return this.getTipoUsuario() === 'ADMINISTRADOR';
+  }
+
+  logout() {
+    localStorage.clear();
+  }
+}
