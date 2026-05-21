@@ -1,0 +1,229 @@
+.welcome-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(160deg, #f0f9ff 0%, #e1f4ff 60%, #cce8ff 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-container::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(58,160,230,0.1) 0%, transparent 70%);
+  top: -100px;
+  right: -100px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.welcome-container::after {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(58,160,230,0.07) 0%, transparent 70%);
+  bottom: -60px;
+  left: -60px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 3rem;
+  position: relative;
+  z-index: 10;
+}
+
+.brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 4px;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: .8rem;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+  border-radius: 10px;
+  padding: 8px 22px;
+  font-size: .9rem;
+  font-weight: 500;
+  transition: all .25s ease;
+}
+
+.btn-outline:hover {
+  background: var(--primary-light);
+}
+
+.btn-solid {
+  background: var(--primary);
+  border: none;
+  color: white;
+  border-radius: 10px;
+  padding: 8px 22px;
+  font-size: .9rem;
+  font-weight: 600;
+  transition: all .25s ease;
+  box-shadow: 0 4px 16px rgba(58,160,230,0.3);
+}
+
+.btn-solid:hover {
+  background: #2a8fd4;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(58,160,230,0.4);
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  line-height: 1.1;
+  margin-bottom: 1.2rem;
+  letter-spacing: -2px;
+}
+
+.highlight {
+  background: linear-gradient(135deg, #3aa0e6 0%, #0055bb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-slogan {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  font-weight: 300;
+  margin-bottom: 3.5rem;
+  letter-spacing: .5px;
+}
+
+.action-cards {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.action-card {
+  background: white;
+  border: 1px solid rgba(58,160,230,0.15);
+  border-radius: 18px;
+  padding: 1.4rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  cursor: pointer;
+  transition: all .3s ease;
+  min-width: 280px;
+  box-shadow: var(--shadow-soft);
+}
+
+.action-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(58,160,230,0.35);
+}
+
+.action-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #e1f4ff, #cce8ff);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.action-icon.icon-2 {
+  background: linear-gradient(135deg, #e6fff5, #ccffe8);
+  color: var(--accent-green);
+}
+
+.action-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  flex: 1;
+}
+
+.action-text strong {
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.action-text span {
+  font-size: .82rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.action-arrow {
+  color: rgba(58,160,230,0.4);
+  font-size: .9rem;
+  transition: transform .25s ease, color .25s ease;
+}
+
+.action-card:hover .action-arrow {
+  transform: translateX(4px);
+  color: var(--primary);
+}
+
+.bottom-footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: #aac4d8;
+  font-size: .8rem;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .top-nav { padding: 1.2rem 1.5rem; }
+  .brand { font-size: 1.3rem; letter-spacing: 3px; }
+  .hero-title { font-size: 3rem; letter-spacing: -1px; }
+  .hero-slogan { font-size: 1rem; }
+  .action-cards { flex-direction: column; align-items: center; }
+  .action-card { width: 100%; max-width: 340px; }
+}
