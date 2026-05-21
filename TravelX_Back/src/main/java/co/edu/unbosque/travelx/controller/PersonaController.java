@@ -32,11 +32,9 @@ public class PersonaController {
 	}
 
 	@Operation(summary = "Crear persona (JSON)", description = "Crea una nueva persona enviando los datos en formato JSON.")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "201", description = "Persona creada exitosamente"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Persona creada exitosamente"),
 			@ApiResponse(responseCode = "409", description = "Datos duplicados"),
-			@ApiResponse(responseCode = "400", description = "Error al crear persona")
-	})
+			@ApiResponse(responseCode = "400", description = "Error al crear persona") })
 	@PostMapping(path = "/createjson", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> crearPersonaJSON(@RequestBody PersonaDTO nueva) {
 		int status = personaService.create(nueva);
@@ -60,12 +58,8 @@ public class PersonaController {
 
 	@Operation(summary = "Crear persona (parámetros)", description = "Crea una nueva persona usando parámetros.")
 	@PostMapping("/create")
-	public ResponseEntity<String> crearPersona(
-			@RequestParam String nombre,
-			@RequestParam String documento,
-			@RequestParam String correo,
-			@RequestParam String contrasena,
-			@RequestParam TipoUsuario tipoUsuario) {
+	public ResponseEntity<String> crearPersona(@RequestParam String nombre, @RequestParam String documento,
+			@RequestParam String correo, @RequestParam String contrasena, @RequestParam TipoUsuario tipoUsuario) {
 
 		PersonaDTO nueva = new PersonaDTO(nombre, documento, correo, contrasena, tipoUsuario);
 		int status = personaService.create(nueva);
@@ -82,7 +76,7 @@ public class PersonaController {
 		case 5:
 			return new ResponseEntity<>("Los administradores deben usar un correo @unbosque.edu.co",
 					HttpStatus.BAD_REQUEST);
-			
+
 		default:
 			return new ResponseEntity<>("Error al crear persona", HttpStatus.BAD_REQUEST);
 		}
@@ -174,12 +168,8 @@ public class PersonaController {
 
 	@Operation(summary = "Actualizar persona (parámetros)", description = "Actualiza una persona usando parámetros.")
 	@PutMapping("/update")
-	public ResponseEntity<String> actualizarPersona(
-			@RequestParam Long id,
-			@RequestParam String nombre,
-			@RequestParam String documento,
-			@RequestParam String correo,
-			@RequestParam String contrasena,
+	public ResponseEntity<String> actualizarPersona(@RequestParam Long id, @RequestParam String nombre,
+			@RequestParam String documento, @RequestParam String correo, @RequestParam String contrasena,
 			@RequestParam TipoUsuario tipoUsuario) {
 
 		PersonaDTO nueva = new PersonaDTO(nombre, documento, correo, contrasena, tipoUsuario);
@@ -239,6 +229,7 @@ public class PersonaController {
 
 		return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
 	}
+
 	@GetMapping("/getbycorreo")
 	public ResponseEntity<?> obtenerPorCorreo(@RequestParam String correo) {
 		PersonaDTO found = personaService.getByCorreo(correo);
@@ -249,5 +240,5 @@ public class PersonaController {
 
 		return new ResponseEntity<>(found, HttpStatus.ACCEPTED);
 	}
-	
+
 }
