@@ -1,0 +1,140 @@
+<div class="inicio-wrapper" (click)="mostrarDropdownOrigen = false; mostrarDropdownDestino = false">
+
+  <nav class="navbar">
+    <div class="navbar-left">
+      <i class="fas fa-globe-americas nav-logo-icon"></i>
+      <span class="nav-logo-text">TravelX</span>
+    </div>
+
+    <div class="navbar-tabs">
+      <button class="tab-btn" [class.active]="tabActivo === 'aereo'" (click)="tabActivo = 'aereo'">
+        <i class="fas fa-plane"></i> Aéreos
+      </button>
+      <button class="tab-btn" [class.active]="tabActivo === 'terrestre'" (click)="tabActivo = 'terrestre'">
+        <i class="fas fa-bus"></i> Terrestres
+      </button>
+      <button class="tab-btn" [class.active]="tabActivo === 'hotel'" (click)="tabActivo = 'hotel'">
+        <i class="fas fa-hotel"></i> Hoteles
+      </button>
+    </div>
+
+    <div class="navbar-right">
+      <div class="user-avatar"><i class="fas fa-user"></i></div>
+      <button class="btn-logout" (click)="cerrarSesion()">
+        <i class="fas fa-sign-out-alt"></i> Salir
+      </button>
+    </div>
+  </nav>
+
+  <div class="hero-bar" [style.backgroundImage]="heroBackground">
+    <div class="hero-overlay"></div>
+    <div class="hero-bar-content">
+      <h1 class="hero-title animate__animated animate__fadeInDown">
+        @if (tabActivo === 'aereo') { <i class="fas fa-plane-departure"></i> Viajes Aéreos }
+        @if (tabActivo === 'terrestre') { <i class="fas fa-route"></i> Viajes Terrestres }
+        @if (tabActivo === 'hotel') { <i class="fas fa-concierge-bell"></i> Hoteles }
+      </h1>
+      <p class="hero-subtitle animate__animated animate__fadeInUp">
+        @if (tabActivo === 'aereo') { Explora destinos alrededor del mundo }
+        @if (tabActivo === 'terrestre') { Descubre rutas increíbles por tierra }
+        @if (tabActivo === 'hotel') { Encuentra el alojamiento perfecto }
+      </p>
+
+      <div class="filtros-bar" (click)="$event.stopPropagation()">
+        @if (tabActivo !== 'hotel') {
+          <div class="autocomplete-wrapper">
+            <i class="fas fa-map-marker-alt input-icon"></i>
+            <input class="filtro-input" type="text" placeholder="Origen"
+                   [(ngModel)]="origenInput"
+                   (focus)="mostrarDropdownOrigen = true"
+                   (input)="mostrarDropdownOrigen = true">
+            @if (mostrarDropdownOrigen && origenesFiltrados.length > 0) {
+              <div class="dropdown-list">
+                @for (ciudad of origenesFiltrados; track ciudad) {
+                  <div class="dropdown-item" (click)="seleccionarOrigen(ciudad)">
+                    <i class="fas fa-map-marker-alt"></i> {{ ciudad }}
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <div class="autocomplete-wrapper">
+          <i class="fas fa-location-arrow input-icon"></i>
+          <input class="filtro-input" type="text"
+                 [placeholder]="tabActivo === 'hotel' ? 'Ciudad' : 'Destino'"
+                 [(ngModel)]="destinoInput"
+                 (focus)="mostrarDropdownDestino = true"
+                 (input)="mostrarDropdownDestino = true">
+          @if (mostrarDropdownDestino && destinosFiltrados.length > 0) {
+            <div class="dropdown-list">
+              @for (ciudad of destinosFiltrados; track ciudad) {
+                <div class="dropdown-item" (click)="seleccionarDestino(ciudad)">
+                  <i class="fas fa-map-marker-alt"></i> {{ ciudad }}
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <button class="btn-buscar">
+          <i class="fas fa-search"></i> Buscar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="cards-grid">
+      @for (item of itemsActivos; track item) {
+        <div class="viaje-card animate__animated animate__fadeInUp">
+          <div class="card-image">
+            <img [src]="item.imagen" [alt]="item.nombre">
+            <div class="card-badge">
+              @if (tabActivo === 'aereo') { <i class="fas fa-plane"></i> }
+              @if (tabActivo === 'terrestre') { <i class="fas fa-bus"></i> }
+              @if (tabActivo === 'hotel') { <i class="fas fa-hotel"></i> }
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">{{ item.nombre }}</h3>
+
+            @if (tabActivo !== 'hotel') {
+              <div class="card-route">
+                <span><i class="fas fa-map-marker-alt"></i> {{ item.origen }}</span>
+                <i class="fas fa-arrow-right route-arrow"></i>
+                <span><i class="fas fa-map-marker-alt destino-icon"></i> {{ item.destino }}</span>
+              </div>
+            }
+            @if (tabActivo === 'hotel') {
+              <div class="card-route">
+                <span><i class="fas fa-map-marker-alt"></i> {{ item.ciudad }}</span>
+                <div class="estrellas">
+                  @for (s of [].constructor(item.estrellas); track s) {
+                    <i class="fas fa-star"></i>
+                  }
+                </div>
+              </div>
+            }
+
+            <div class="card-footer">
+              @if (tabActivo !== 'hotel') {
+                <div class="card-duration">
+                  <i class="fas fa-clock"></i> {{ item.duracion }}
+                </div>
+              }
+              <div class="card-price">
+                ${{ item.precio }} USD
+                @if (tabActivo === 'hotel') { <span class="por-noche">/noche</span> }
+              </div>
+            </div>
+
+            <button class="btn-ver">Ver detalles <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>
