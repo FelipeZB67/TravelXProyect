@@ -40,8 +40,9 @@ public class Reserva {
 	
 	private String ciudadOrigen;
 	private String ciudadDestino;
+	private double precioTransporte;
 	private String hotel;
-	
+	private double precioHospedaje;
 	@JsonIgnore
 	@OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
 	private List<Mascota> listaMascotas;
@@ -58,19 +59,26 @@ public class Reserva {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Reserva(Persona persona, String hotel, MetodoTransporte metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, List<Mascota> listaMascotas,
-			List<Viajero> listaViajeros) {
+	
+
+	public Reserva(Persona persona, MetodoTransporte metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
+			String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel, double precioHospedaje,
+			List<Mascota> listaMascotas, List<Viajero> listaViajeros) {
+		super();
 		this.persona = persona;
-		this.hotel = hotel;
 		this.metodoTransporte = metodoTransporte;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.ciudadOrigen = ciudadOrigen;
 		this.ciudadDestino = ciudadDestino;
+		this.precioTransporte = precioTransporte;
+		this.hotel = hotel;
+		this.precioHospedaje = precioHospedaje;
 		this.listaMascotas = listaMascotas;
 		this.listaViajeros = listaViajeros;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -181,5 +189,21 @@ public class Reserva {
 				+ metodoTransporte + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", ciudadOrigen="
 				+ ciudadOrigen + ", ciudadDestino=" + ciudadDestino + ", listaMascotas=" + listaMascotas
 				+ ", listaViajeros=" + listaViajeros + "]";
+	}
+
+	public double getPrecioTransporte() {
+		return precioTransporte;
+	}
+
+	public void setPrecioTransporte(double precioTransporte) {
+		this.precioTransporte = precioTransporte;
+	}
+
+	public double getPrecioHospedaje() {
+		return precioHospedaje;
+	}
+
+	public void setPrecioHospedaje(double precioHospedaje) {
+		this.precioHospedaje = precioHospedaje;
 	}
 }

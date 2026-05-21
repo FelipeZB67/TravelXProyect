@@ -19,75 +19,145 @@ public abstract class ReservaDTO {
     
     private Long id;
     private Long personaId;
-    private String hotel;
+    
     private String metodoTransporte;
+    
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    
+    private String ciudadOrigen;
+	private String ciudadDestino;
+	
+	private double precioTransporte;
+    private String hotel;
+    private double precioHospedaje;
+    
 
     public ReservaDTO() {
     }
 
-    public ReservaDTO(Long personaId, String hotel, String metodoTransporte, 
-                     LocalDate fechaInicio, LocalDate fechaFin) {
-        this.personaId = personaId;
-        this.hotel = hotel;
-        this.metodoTransporte = metodoTransporte;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-    }
 
-    public Long getId() {
-        return id;
-    }
+	public ReservaDTO(Long personaId, String metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
+			String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel, double precioHospedaje) {
+		super();
+		this.personaId = personaId;
+		this.metodoTransporte = metodoTransporte;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.ciudadOrigen = ciudadOrigen;
+		this.ciudadDestino = ciudadDestino;
+		this.precioTransporte = precioTransporte;
+		this.hotel = hotel;
+		this.precioHospedaje = precioHospedaje;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getPersonaId() {
-        return personaId;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setPersonaId(Long personaId) {
-        this.personaId = personaId;
-    }
 
-    public String getHotel() {
-        return hotel;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setHotel(String hotel) {
-        this.hotel = hotel;
-    }
 
-    public String getMetodoTransporte() {
-        return metodoTransporte;
-    }
+	public Long getPersonaId() {
+		return personaId;
+	}
 
-    public void setMetodoTransporte(String metodoTransporte) {
-        this.metodoTransporte = metodoTransporte;
-    }
 
-    public LocalDate getFechaInicio() {
-        return fechaInicio;
-    }
+	public void setPersonaId(Long personaId) {
+		this.personaId = personaId;
+	}
 
-    public void setFechaInicio(LocalDate fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
 
-    public LocalDate getFechaFin() {
-        return fechaFin;
-    }
+	public String getMetodoTransporte() {
+		return metodoTransporte;
+	}
 
-    public void setFechaFin(LocalDate fechaFin) {
-        this.fechaFin = fechaFin;
-    }
+
+	public void setMetodoTransporte(String metodoTransporte) {
+		this.metodoTransporte = metodoTransporte;
+	}
+
+
+	public LocalDate getFechaInicio() {
+		return fechaInicio;
+	}
+
+
+	public void setFechaInicio(LocalDate fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+
+	public LocalDate getFechaFin() {
+		return fechaFin;
+	}
+
+
+	public void setFechaFin(LocalDate fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
+
+	public String getCiudadOrigen() {
+		return ciudadOrigen;
+	}
+
+
+	public void setCiudadOrigen(String ciudadOrigen) {
+		this.ciudadOrigen = ciudadOrigen;
+	}
+
+
+	public String getCiudadDestino() {
+		return ciudadDestino;
+	}
+
+
+	public void setCiudadDestino(String ciudadDestino) {
+		this.ciudadDestino = ciudadDestino;
+	}
+
+
+	public double getPrecioTransporte() {
+		return precioTransporte;
+	}
+
+
+	public void setPrecioTransporte(double precioTransporte) {
+		this.precioTransporte = precioTransporte;
+	}
+
+
+	public String getHotel() {
+		return hotel;
+	}
+
+
+	public void setHotel(String hotel) {
+		this.hotel = hotel;
+	}
+
+
+	public double getPrecioHospedaje() {
+		return precioHospedaje;
+	}
+
+
+	public void setPrecioHospedaje(double precioHospedaje) {
+		this.precioHospedaje = precioHospedaje;
+	}
+
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(fechaFin, fechaInicio, hotel, id, metodoTransporte, personaId);
+		return Objects.hash(ciudadDestino, ciudadOrigen, fechaFin, fechaInicio, hotel, id, metodoTransporte, personaId,
+				precioHospedaje, precioTransporte);
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -98,17 +168,22 @@ public abstract class ReservaDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		ReservaDTO other = (ReservaDTO) obj;
-		return Objects.equals(fechaFin, other.fechaFin) && Objects.equals(fechaInicio, other.fechaInicio)
+		return Objects.equals(ciudadDestino, other.ciudadDestino) && Objects.equals(ciudadOrigen, other.ciudadOrigen)
+				&& Objects.equals(fechaFin, other.fechaFin) && Objects.equals(fechaInicio, other.fechaInicio)
 				&& Objects.equals(hotel, other.hotel) && Objects.equals(id, other.id)
 				&& Objects.equals(metodoTransporte, other.metodoTransporte)
-				&& Objects.equals(personaId, other.personaId);
+				&& Objects.equals(personaId, other.personaId)
+				&& Double.doubleToLongBits(precioHospedaje) == Double.doubleToLongBits(other.precioHospedaje)
+				&& Double.doubleToLongBits(precioTransporte) == Double.doubleToLongBits(other.precioTransporte);
 	}
+
 
 	@Override
 	public String toString() {
-		return "ReservaDTO [id=" + id + ", personaId=" + personaId + ", hotel=" + hotel + ", metodoTransporte="
-				+ metodoTransporte + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]";
-	}
-    
+		return "ReservaDTO [id=" + id + ", personaId=" + personaId + ", metodoTransporte=" + metodoTransporte
+				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", ciudadOrigen=" + ciudadOrigen
+				+ ", ciudadDestino=" + ciudadDestino + ", precioTransporte=" + precioTransporte + ", hotel=" + hotel
+				+ ", precioHospedaje=" + precioHospedaje + "]";
+	}    
     
 }

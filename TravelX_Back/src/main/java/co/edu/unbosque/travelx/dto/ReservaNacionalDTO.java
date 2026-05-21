@@ -18,17 +18,22 @@ public class ReservaNacionalDTO extends ReservaDTO{
 		this.ciudadDestino = ciudadDestino;
 	}
 
-	public ReservaNacionalDTO(Long personaId, String hotel, String metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino) {
-		super(personaId, hotel, metodoTransporte, fechaInicio, fechaFin);
-		this.ciudadOrigen = ciudadOrigen;
-		this.ciudadDestino = ciudadDestino;
+	
+
+	public ReservaNacionalDTO(Long personaId, String metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
+			String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel, double precioHospedaje) {
+		super(personaId, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, precioTransporte, hotel,
+				precioHospedaje);
+		// TODO Auto-generated constructor stub
 	}
 
-	public ReservaNacionalDTO(Long personaId, String hotel, String metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin) {
-		super(personaId, hotel, metodoTransporte, fechaInicio, fechaFin);
-		// TODO Auto-generated constructor stub
+	public ReservaNacionalDTO(Long personaId, String metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
+			String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel, double precioHospedaje,
+			String ciudadOrigen2, String ciudadDestino2) {
+		super(personaId, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, precioTransporte, hotel,
+				precioHospedaje);
+		ciudadOrigen = ciudadOrigen2;
+		ciudadDestino = ciudadDestino2;
 	}
 
 	@Override
