@@ -12,6 +12,7 @@ import { InicioComponent } from './components/inicio/inicio';
 import { AdminComponent } from './components/admin/admin';
 import { HttpClientModule } from '@angular/common/http';
 import { VerificarCorreoComponent } from './components/verificar-correo/verificar-correo';
+import { Cotizacion } from './components/cotizacion/cotizacion';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { VerificarCorreoComponent } from './components/verificar-correo/verifica
     InicioComponent,
     AdminComponent,
     VerificarCorreoComponent,
+    Cotizacion,
   ],
   imports: [
     BrowserModule,

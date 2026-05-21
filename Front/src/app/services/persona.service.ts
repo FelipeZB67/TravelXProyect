@@ -2,12 +2,13 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PersonaModel } from '../models/persona.model';
+import {environment} from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PersonaService {
 
   private http = inject(HttpClient);
-  private UrlBase = `http://localhost:8080/api/personas`;
+  private UrlBase = `${environment.apiUrl}/api/personas`;
 
   getAll(): Observable<PersonaModel[]> {
     return this.http.get<PersonaModel[]>(this.UrlBase);

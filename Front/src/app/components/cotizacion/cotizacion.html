@@ -1,0 +1,231 @@
+<div class="cot-wrapper">
+
+  <nav class="navbar">
+    <div class="navbar-left">
+      <i class="fas fa-globe-americas nav-logo-icon"></i>
+      <span class="nav-logo-text">TravelX</span>
+    </div>
+
+    <div class="navbar-tabs">
+      <button class="tab-btn" [class.active]="tabActivo === 'internacional'" (click)="tabActivo = 'internacional'">
+        <i class="fas fa-plane"></i> Internacionales
+      </button>
+      <button class="tab-btn" [class.active]="tabActivo === 'nacional'" (click)="tabActivo = 'nacional'">
+        <i class="fas fa-road"></i> Nacionales
+      </button>
+    </div>
+
+    <div class="navbar-right">
+      <button class="btn-back" (click)="volver()">
+        <i class="fas fa-arrow-left"></i> Volver
+      </button>
+    </div>
+  </nav>
+
+  <div class="cot-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title animate__animated animate__fadeInDown">
+        <i class="fas fa-file-invoice-dollar"></i> Mis Cotizaciones
+      </h1>
+      <p class="hero-subtitle animate__animated animate__fadeInUp">
+        Revisa y descarga tus cotizaciones de viaje en PDF
+      </p>
+    </div>
+  </div>
+
+  <div class="cot-content">
+
+    @if (cargando) {
+      <div class="estado-msg">
+        <i class="fas fa-spinner fa-spin"></i> Cargando reservas...
+      </div>
+    }
+
+    @if (error) {
+      <div class="estado-msg error">
+        <i class="fas fa-exclamation-circle"></i> {{ error }}
+      </div>
+    }
+
+    @if (!cargando && tabActivo === 'internacional') {
+      @if (reservasInternacionales.length === 0) {
+        <div class="estado-msg">
+          <i class="fas fa-inbox"></i> No hay reservas internacionales registradas.
+        </div>
+      } @else {
+        <div class="resumen-bar">
+          <span><i class="fas fa-list"></i> {{ reservasInternacionales.length }} reserva(s)</span>
+          <span class="resumen-total"><i class="fas fa-dollar-sign"></i> Total: ${{ totalPrecioInternacional.toLocaleString('es-CO') }} USD</span>
+        </div>
+        <div class="cards-grid">
+          @for (reserva of reservasInternacionales; track reserva.id) {
+            <div class="cot-card animate__animated animate__fadeInUp">
+
+              <div class="card-header-band internacional">
+                <i class="fas fa-plane"></i>
+                <span>Internacional</span>
+                @if (reserva.requiereVisa) {
+                  <span class="visa-badge visa-req"><i class="fas fa-passport"></i> Visa requerida</span>
+                } @else {
+                  <span class="visa-badge visa-ok"><i class="fas fa-check-circle"></i> Sin visa</span>
+                }
+              </div>
+
+              <div class="card-body">
+                <div class="ruta">
+                  <div class="ruta-ciudad">
+                    <span class="ruta-label">Origen</span>
+                    <span class="ruta-valor">{{ reserva.ciudadOrigen }}</span>
+                    <span class="ruta-pais">{{ reserva.paisOrigen }}</span>
+                  </div>
+                  <div class="ruta-arrow"><i class="fas fa-arrow-right"></i></div>
+                  <div class="ruta-ciudad text-right">
+                    <span class="ruta-label">Destino</span>
+                    <span class="ruta-valor">{{ reserva.ciudadDestino }}</span>
+                    <span class="ruta-pais">{{ reserva.paisDestino }}</span>
+                  </div>
+                </div>
+
+                <div class="info-grid">
+                  <div class="info-item">
+                    <i class="fas fa-calendar"></i>
+                    <div>
+                      <span class="info-label">Fechas</span>
+                      <span class="info-valor">{{ reserva.fechaInicio }} → {{ reserva.fechaFin }}</span>
+                    </div>
+                  </div>
+                  <div class="info-item">
+                    <i class="fas fa-bus"></i>
+                    <div>
+                      <span class="info-label">Transporte</span>
+                      <span class="info-valor">{{ reserva.metodoTransporte }}</span>
+                    </div>
+                  </div>
+                  <div class="info-item">
+                    <i class="fas fa-hotel"></i>
+                    <div>
+                      <span class="info-label">Hotel</span>
+                      <span class="info-valor">{{ reserva.hotel }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="precio-row">
+                  <div class="precio-item">
+                    <span class="precio-label">Transporte</span>
+                    <span class="precio-val">${{ reserva.precioTransporte.toLocaleString('es-CO') }}</span>
+                  </div>
+                  <div class="precio-sep">+</div>
+                  <div class="precio-item">
+                    <span class="precio-label">Hospedaje</span>
+                    <span class="precio-val">${{ reserva.precioHospedaje.toLocaleString('es-CO') }}</span>
+                  </div>
+                  <div class="precio-sep">=</div>
+                  <div class="precio-item total">
+                    <span class="precio-label">Total</span>
+                    <span class="precio-val">${{ (reserva.precioTransporte + reserva.precioHospedaje).toLocaleString('es-CO') }} USD</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-footer">
+                <button class="btn-pdf" (click)="descargarPdfInternacional(reserva)">
+                  <i class="fas fa-file-pdf"></i> Descargar PDF
+                </button>
+              </div>
+
+            </div>
+          }
+        </div>
+      }
+    }
+
+    @if (!cargando && tabActivo === 'nacional') {
+      @if (reservasNacionales.length === 0) {
+        <div class="estado-msg">
+          <i class="fas fa-inbox"></i> No hay reservas nacionales registradas.
+        </div>
+      } @else {
+        <div class="resumen-bar">
+          <span><i class="fas fa-list"></i> {{ reservasNacionales.length }} reserva(s)</span>
+          <span class="resumen-total"><i class="fas fa-dollar-sign"></i> Total: ${{ totalPrecioNacional.toLocaleString('es-CO') }} USD</span>
+        </div>
+        <div class="cards-grid">
+          @for (reserva of reservasNacionales; track reserva.id) {
+            <div class="cot-card animate__animated animate__fadeInUp">
+
+              <div class="card-header-band nacional">
+                <i class="fas fa-road"></i>
+                <span>Nacional</span>
+              </div>
+
+              <div class="card-body">
+                <div class="ruta">
+                  <div class="ruta-ciudad">
+                    <span class="ruta-label">Origen</span>
+                    <span class="ruta-valor">{{ reserva.ciudadOrigen }}</span>
+                  </div>
+                  <div class="ruta-arrow"><i class="fas fa-arrow-right"></i></div>
+                  <div class="ruta-ciudad text-right">
+                    <span class="ruta-label">Destino</span>
+                    <span class="ruta-valor">{{ reserva.ciudadDestino }}</span>
+                  </div>
+                </div>
+
+                <div class="info-grid">
+                  <div class="info-item">
+                    <i class="fas fa-calendar"></i>
+                    <div>
+                      <span class="info-label">Fechas</span>
+                      <span class="info-valor">{{ reserva.fechaInicio }} → {{ reserva.fechaFin }}</span>
+                    </div>
+                  </div>
+                  <div class="info-item">
+                    <i class="fas fa-bus"></i>
+                    <div>
+                      <span class="info-label">Transporte</span>
+                      <span class="info-valor">{{ reserva.metodoTransporte }}</span>
+                    </div>
+                  </div>
+                  <div class="info-item">
+                    <i class="fas fa-hotel"></i>
+                    <div>
+                      <span class="info-label">Hotel</span>
+                      <span class="info-valor">{{ reserva.hotel }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="precio-row">
+                  <div class="precio-item">
+                    <span class="precio-label">Transporte</span>
+                    <span class="precio-val">${{ reserva.precioTransporte.toLocaleString('es-CO') }}</span>
+                  </div>
+                  <div class="precio-sep">+</div>
+                  <div class="precio-item">
+                    <span class="precio-label">Hospedaje</span>
+                    <span class="precio-val">${{ reserva.precioHospedaje.toLocaleString('es-CO') }}</span>
+                  </div>
+                  <div class="precio-sep">=</div>
+                  <div class="precio-item total">
+                    <span class="precio-label">Total</span>
+                    <span class="precio-val">${{ (reserva.precioTransporte + reserva.precioHospedaje).toLocaleString('es-CO')  }} USD</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-footer">
+                <button class="btn-pdf" (click)="descargarPdfNacional(reserva)">
+                  <i class="fas fa-file-pdf"></i> Descargar PDF
+                </button>
+              </div>
+
+            </div>
+          }
+        </div>
+      }
+    }
+
+  </div>
+</div>
