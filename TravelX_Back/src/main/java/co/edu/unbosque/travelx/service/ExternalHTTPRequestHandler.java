@@ -3,15 +3,19 @@ package co.edu.unbosque.travelx.service;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import co.edu.unbosque.travelx.dto.AirLabsRouteDTO;
+import co.edu.unbosque.travelx.dto.AirLabsRoutesResponseDTO;
 import co.edu.unbosque.travelx.dto.NominatimLocationDTO;
 import co.edu.unbosque.travelx.dto.OverpassElementDTO;
 import co.edu.unbosque.travelx.dto.OverpassResponseDTO;
@@ -23,6 +27,18 @@ public class ExternalHTTPRequestHandler {
             "pa", "es", "us", "fr", "it", "de", "jp", "cn", "in", "au"
     );
 
+    public static final String AIRLABS_API_KEY = "b969c135-3c53-4afa-8fdf-41a07dd5dc23";
+
+    public static final List<String> CODIGOS_IATA = List.of(
+            "BOG", "MDE", "CLO", "CTG", "BAQ", "SMR", "PEI", "BGA", "ADZ",
+            "MIA", "JFK", "LAX", "ORD", "ATL", "DFW", "IAH", "SFO", "BOS",
+            "MEX", "CUN", "GDL",
+            "MAD", "BCN", "CDG", "ORY", "LHR", "FCO", "BER", "AMS",
+            "EZE", "SCL", "LIM", "UIO", "GYE", "CCS", "PTY", "SJO", "MVD",
+            "ASU", "VVI", "GRU", "GIG",
+            "NRT", "PEK", "PVG", "DEL", "SYD"
+    );
+    
     private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
             .connectTimeout(Duration.ofSeconds(10))
@@ -135,5 +151,62 @@ public class ExternalHTTPRequestHandler {
         }
 
         return response.getElements();
+    }
+    
+ // Devuelve respuesta completa desde AirLabs Routes
+ // Devuelve respuesta completa desde AirLabs Routes
+    public static AirLabsRoutesResponseDTO doGetAirLabsRoutes(int indiceOrigen, int indiceDestino, int limit) {
+        if (limit <= 0) {
+            limit = 20;
+        }
+
+        String depIata = CODIGOS_IATA.get(indiceOrigen);
+        String arrIata = CODIGOS_IATA.get(indiceDestino);
+
+        String url = "https://airlabs.co/api/v9/routes"
+                + "?api_key=" + AIRLABS_API_KEY
+                + "&dep_iata=" + depIata
+                + "&arr_iata=" + arrIata
+                + "&limit=" + limit;
+
+        HttpRequest solicitud = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(url))
+                .setHeader("User-Agent", "MiAppSpring/1.0 (correo@ejemplo.com)")
+                .build();
+
+        HttpResponse<String> respuesta = null;
+
+        try {
+            respuesta = HTTP_CLIENT.send(solicitud, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+
+        if (respuesta == null) {
+            return null;
+        }
+
+        Gson gson = new Gson();
+        return gson.fromJson(respuesta.body(), AirLabsRoutesResponseDTO.class);
+    }
+
+ // Devuelve solo la lista de rutas/vuelos desde AirLabs
+    public static List<AirLabsRouteDTO> doGetAirLabsRouteElements(int indiceOrigen, int indiceDestino, int limit) {
+        AirLabsRoutesResponseDTO response = doGetAirLabsRoutes(indiceOrigen, indiceDestino, limit);
+
+        if (response == null || response.getResponse() == null) {
+            return List.of();
+        }
+
+        return response.getResponse();
+    }
+    
+    public static int doGetAirLabsRoutesCount(int indiceOrigen, int indiceDestino) {
+        List<AirLabsRouteDTO> rutas = doGetAirLabsRouteElements(indiceOrigen, indiceDestino, 50);
+        return rutas.size();
     }
 }
