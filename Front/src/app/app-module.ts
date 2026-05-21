@@ -10,6 +10,7 @@ import { LoginComponent } from './components/login/login';
 import { RegistroComponent } from './components/registro/registro';
 import { InicioComponent } from './components/inicio/inicio';
 import { AdminComponent } from './components/admin/admin';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { AdminComponent } from './components/admin/admin';
     InicioComponent,
     AdminComponent,
   ],
-  imports: [BrowserModule, CommonModule, RouterModule, FormsModule, AppRoutingModule],
+  imports: [BrowserModule, CommonModule, RouterModule, FormsModule, AppRoutingModule, HttpClientModule],
   bootstrap: [App],
 })
 export class AppModule {}
