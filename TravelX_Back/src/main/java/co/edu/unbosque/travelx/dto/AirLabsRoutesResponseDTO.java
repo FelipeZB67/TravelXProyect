@@ -8,7 +8,6 @@ public class AirLabsRoutesResponseDTO {
     private Map<String, Object> request;
     private List<AirLabsRouteDTO> response;
     private String terms;
-    private AirLabsErrorDTO error;
 
     public AirLabsRoutesResponseDTO() {
     }
@@ -35,13 +34,5 @@ public class AirLabsRoutesResponseDTO {
 
     public void setTerms(String terms) {
         this.terms = terms;
-    }
-
-    public AirLabsErrorDTO getError() {
-        return error;
-    }
-
-    public void setError(AirLabsErrorDTO error) {
-        this.error = error;
     }
 }
