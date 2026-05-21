@@ -1,0 +1,51 @@
+<div class="welcome-container">
+
+  <nav class="top-nav">
+    <div class="brand">TRAVELX</div>
+    <div class="nav-buttons">
+      <button class="btn-outline" (click)="irALogin()">Iniciar sesión</button>
+      <button class="btn-solid" (click)="irARegistro()">Registrarse</button>
+    </div>
+  </nav>
+
+  <main class="hero animate__animated animate__fadeIn">
+    <p class="eyebrow animate__animated animate__fadeInDown">
+      <i class="fas fa-plane-departure"></i> Explora sin límites
+    </p>
+    <h1 class="hero-title animate__animated animate__fadeInUp">
+      Bienvenido a <span class="highlight">TravelX</span>
+    </h1>
+    <p class="hero-slogan animate__animated animate__fadeInUp" style="animation-delay:.15s">
+      El mundo es tuyo. Nosotros te llevamos hasta él.
+    </p>
+
+    <div class="action-cards animate__animated animate__fadeInUp" style="animation-delay:.3s">
+      <div class="action-card" (click)="irALogin()">
+        <div class="action-icon">
+          <i class="fas fa-sign-in-alt"></i>
+        </div>
+        <div class="action-text">
+          <strong>¿Ya tienes una cuenta?</strong>
+          <span>Inicia sesión aquí</span>
+        </div>
+        <i class="fas fa-arrow-right action-arrow"></i>
+      </div>
+
+      <div class="action-card" (click)="irARegistro()">
+        <div class="action-icon icon-2">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <div class="action-text">
+          <strong>¿Eres nuevo por aquí?</strong>
+          <span>Crea una cuenta</span>
+        </div>
+        <i class="fas fa-arrow-right action-arrow"></i>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bottom-footer">
+    <small>&copy; 2024 TravelX &mdash; Tus sueños viajeros, nuestras herramientas</small>
+  </footer>
+
+</div>
