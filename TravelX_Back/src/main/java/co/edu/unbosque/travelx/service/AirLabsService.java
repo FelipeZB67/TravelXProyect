@@ -15,12 +15,16 @@ public class AirLabsService {
         }
 
         List<AirLabsRouteDTO> rutasDirectas = ExternalHTTPRequestHandler
-                .doGetAirLabsRouteElements(indiceOrigen, indiceDestino, 20);
+                .doGetAirLabsRouteElements(indiceOrigen, indiceDestino);
 
         if (rutasDirectas == null || rutasDirectas.isEmpty()) {
             return 1;
         }
 
         return 0;
+    }
+    
+    public List<String> obtenerCodigosIata() {
+        return ExternalHTTPRequestHandler.CODIGOS_IATA;
     }
 }

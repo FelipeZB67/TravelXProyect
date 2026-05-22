@@ -135,16 +135,12 @@ public class ExternalHTTPRequestHandler {
 	}
 
 	// Devuelve respuesta completa desde AirLabs Routes
-	public static AirLabsRoutesResponseDTO doGetAirLabsRoutes(int indiceOrigen, int indiceDestino, int limit) {
-		if (limit <= 0) {
-			limit = 20;
-		}
-
+	public static AirLabsRoutesResponseDTO doGetAirLabsRoutes(int indiceOrigen, int indiceDestino) {
 		String depIata = CODIGOS_IATA.get(indiceOrigen);
 		String arrIata = CODIGOS_IATA.get(indiceDestino);
 
 		String url = "https://airlabs.co/api/v9/routes" + "?api_key=" + AIRLABS_API_KEY + "&dep_iata=" + depIata
-				+ "&arr_iata=" + arrIata + "&limit=" + limit;
+				+ "&arr_iata=" + arrIata;
 
 		HttpRequest solicitud = HttpRequest.newBuilder().GET().uri(URI.create(url))
 				.setHeader("User-Agent", "MiAppSpring/1.0 (correo@ejemplo.com)").build();
@@ -169,8 +165,8 @@ public class ExternalHTTPRequestHandler {
 	}
 
 	// Devuelve solo la lista de rutas/vuelos desde AirLabs
-	public static List<AirLabsRouteDTO> doGetAirLabsRouteElements(int indiceOrigen, int indiceDestino, int limit) {
-		AirLabsRoutesResponseDTO response = doGetAirLabsRoutes(indiceOrigen, indiceDestino, limit);
+	public static List<AirLabsRouteDTO> doGetAirLabsRouteElements(int indiceOrigen, int indiceDestino) {
+		AirLabsRoutesResponseDTO response = doGetAirLabsRoutes(indiceOrigen, indiceDestino);
 
 		if (response == null || response.getResponse() == null) {
 			return List.of();
@@ -180,7 +176,7 @@ public class ExternalHTTPRequestHandler {
 	}
 
 	public static int doGetAirLabsRoutesCount(int indiceOrigen, int indiceDestino) {
-		List<AirLabsRouteDTO> rutas = doGetAirLabsRouteElements(indiceOrigen, indiceDestino, 50);
+		List<AirLabsRouteDTO> rutas = doGetAirLabsRouteElements(indiceOrigen, indiceDestino);
 		return rutas.size();
 	}
 

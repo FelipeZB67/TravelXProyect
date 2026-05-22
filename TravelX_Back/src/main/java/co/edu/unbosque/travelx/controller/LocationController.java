@@ -32,7 +32,7 @@ public class LocationController {
             @RequestParam(defaultValue = "40") int limit) {
 
         List<NominatimLocationDTO> resultados =
-            locationService.buscarPorPais(indicePais, limit);
+            locationService.buscarPorPais(indicePais);
         return ResponseEntity.ok(resultados);
     }
 

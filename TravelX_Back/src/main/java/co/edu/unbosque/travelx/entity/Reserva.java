@@ -33,7 +33,7 @@ public class Reserva {
 	
 	
 	@Enumerated(EnumType.STRING)
-	private MetodoTransporte metodoTransporte;
+	private List<MetodoTransporte> metodoTransporte;
 	
 	private LocalDate fechaInicio;
 	private LocalDate fechaFin;
@@ -58,16 +58,17 @@ public class Reserva {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Reserva(Persona persona, String hotel, MetodoTransporte metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, List<Mascota> listaMascotas,
+	public Reserva(Persona persona, List<MetodoTransporte> metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
+			String ciudadOrigen, String ciudadDestino, String hotel, List<Mascota> listaMascotas,
 			List<Viajero> listaViajeros) {
+		super();
 		this.persona = persona;
-		this.hotel = hotel;
 		this.metodoTransporte = metodoTransporte;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.ciudadOrigen = ciudadOrigen;
 		this.ciudadDestino = ciudadDestino;
+		this.hotel = hotel;
 		this.listaMascotas = listaMascotas;
 		this.listaViajeros = listaViajeros;
 	}
@@ -88,19 +89,11 @@ public class Reserva {
 		this.persona = persona;
 	}
 
-	public String getHotel() {
-		return hotel;
-	}
-
-	public void setHotel(String hotel) {
-		this.hotel = hotel;
-	}
-
-	public MetodoTransporte getMetodoTransporte() {
+	public List<MetodoTransporte> getMetodoTransporte() {
 		return metodoTransporte;
 	}
 
-	public void setMetodoTransporte(MetodoTransporte metodoTransporte) {
+	public void setMetodoTransporte(List<MetodoTransporte> metodoTransporte) {
 		this.metodoTransporte = metodoTransporte;
 	}
 
@@ -134,6 +127,14 @@ public class Reserva {
 
 	public void setCiudadDestino(String ciudadDestino) {
 		this.ciudadDestino = ciudadDestino;
+	}
+
+	public String getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(String hotel) {
+		this.hotel = hotel;
 	}
 
 	public List<Mascota> getListaMascotas() {
@@ -171,15 +172,15 @@ public class Reserva {
 				&& Objects.equals(fechaFin, other.fechaFin) && Objects.equals(fechaInicio, other.fechaInicio)
 				&& Objects.equals(hotel, other.hotel) && Objects.equals(id, other.id)
 				&& Objects.equals(listaMascotas, other.listaMascotas)
-				&& Objects.equals(listaViajeros, other.listaViajeros) && metodoTransporte == other.metodoTransporte
-				&& Objects.equals(persona, other.persona);
+				&& Objects.equals(listaViajeros, other.listaViajeros)
+				&& Objects.equals(metodoTransporte, other.metodoTransporte) && Objects.equals(persona, other.persona);
 	}
 
 	@Override
 	public String toString() {
-		return "Reserva [id=" + id + ", persona=" + persona + ", hotel=" + hotel + ", metodoTransporte="
-				+ metodoTransporte + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", ciudadOrigen="
-				+ ciudadOrigen + ", ciudadDestino=" + ciudadDestino + ", listaMascotas=" + listaMascotas
+		return "Reserva [id=" + id + ", persona=" + persona + ", metodoTransporte=" + metodoTransporte
+				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", ciudadOrigen=" + ciudadOrigen
+				+ ", ciudadDestino=" + ciudadDestino + ", hotel=" + hotel + ", listaMascotas=" + listaMascotas
 				+ ", listaViajeros=" + listaViajeros + "]";
 	}
 }

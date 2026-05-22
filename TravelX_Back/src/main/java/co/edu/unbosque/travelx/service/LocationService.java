@@ -14,7 +14,7 @@ public class LocationService {
     }
 
     // Busca por índice del país
-    public List<NominatimLocationDTO> buscarPorPais(int indicePais, int limit) {
+    public List<NominatimLocationDTO> buscarPorPais(int indicePais) {
         // Valida que el índice esté dentro del rango
         if (indicePais < 0 || indicePais >= ExternalHTTPRequestHandler.CODIGOS.size()) {
             throw new IllegalArgumentException("Índice de país inválido: " + indicePais);

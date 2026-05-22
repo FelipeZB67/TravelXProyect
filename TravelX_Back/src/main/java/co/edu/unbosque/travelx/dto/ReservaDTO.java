@@ -1,92 +1,130 @@
 package co.edu.unbosque.travelx.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import co.edu.unbosque.travelx.entity.Reserva.MetodoTransporte;
 
-/*@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "tipo"
-)
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = ReservaNacionalDTO.class, name = "NACIONAL"),
-    @JsonSubTypes.Type(value = ReservaInternacionalDTO.class, name = "INTERNACIONAL")
-})*/
 public abstract class ReservaDTO {
     
     private Long id;
     private Long personaId;
-    private String hotel;
-    private String metodoTransporte;
-    private LocalDate fechaInicio;
-    private LocalDate fechaFin;
+    
+private List<MetodoTransporte> metodoTransporte;
+	
+	private LocalDate fechaInicio;
+	private LocalDate fechaFin;
+	
+	private String ciudadOrigen;
+	private String ciudadDestino;
+	private String hotel;
+	private List<MascotaDTO> listaMascotas;
+	private List<ViajeroDTO> listaViajeros;
+	
+	public ReservaDTO() {
+		
+	}
+	
+	public ReservaDTO(Long personaId, List<MetodoTransporte> metodoTransporte, LocalDate fechaInicio,
+			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, String hotel, List<MascotaDTO> listaMascotas,
+			List<ViajeroDTO> listaViajeros) {
+		super();
+		this.personaId = personaId;
+		this.metodoTransporte = metodoTransporte;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.ciudadOrigen = ciudadOrigen;
+		this.ciudadDestino = ciudadDestino;
+		this.hotel = hotel;
+		this.listaMascotas = listaMascotas;
+		this.listaViajeros = listaViajeros;
+	}
 
-    public ReservaDTO() {
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public ReservaDTO(Long personaId, String hotel, String metodoTransporte, 
-                     LocalDate fechaInicio, LocalDate fechaFin) {
-        this.personaId = personaId;
-        this.hotel = hotel;
-        this.metodoTransporte = metodoTransporte;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getPersonaId() {
+		return personaId;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setPersonaId(Long personaId) {
+		this.personaId = personaId;
+	}
 
-    public Long getPersonaId() {
-        return personaId;
-    }
+	public List<MetodoTransporte> getMetodoTransporte() {
+		return metodoTransporte;
+	}
 
-    public void setPersonaId(Long personaId) {
-        this.personaId = personaId;
-    }
+	public void setMetodoTransporte(List<MetodoTransporte> metodoTransporte) {
+		this.metodoTransporte = metodoTransporte;
+	}
 
-    public String getHotel() {
-        return hotel;
-    }
+	public LocalDate getFechaInicio() {
+		return fechaInicio;
+	}
 
-    public void setHotel(String hotel) {
-        this.hotel = hotel;
-    }
+	public void setFechaInicio(LocalDate fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
 
-    public String getMetodoTransporte() {
-        return metodoTransporte;
-    }
+	public LocalDate getFechaFin() {
+		return fechaFin;
+	}
 
-    public void setMetodoTransporte(String metodoTransporte) {
-        this.metodoTransporte = metodoTransporte;
-    }
+	public void setFechaFin(LocalDate fechaFin) {
+		this.fechaFin = fechaFin;
+	}
 
-    public LocalDate getFechaInicio() {
-        return fechaInicio;
-    }
+	public String getCiudadOrigen() {
+		return ciudadOrigen;
+	}
 
-    public void setFechaInicio(LocalDate fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
+	public void setCiudadOrigen(String ciudadOrigen) {
+		this.ciudadOrigen = ciudadOrigen;
+	}
 
-    public LocalDate getFechaFin() {
-        return fechaFin;
-    }
+	public String getCiudadDestino() {
+		return ciudadDestino;
+	}
 
-    public void setFechaFin(LocalDate fechaFin) {
-        this.fechaFin = fechaFin;
-    }
+	public void setCiudadDestino(String ciudadDestino) {
+		this.ciudadDestino = ciudadDestino;
+	}
+
+	public String getHotel() {
+		return hotel;
+	}
+
+	public void setHotel(String hotel) {
+		this.hotel = hotel;
+	}
+
+	public List<MascotaDTO> getListaMascotas() {
+		return listaMascotas;
+	}
+
+	public void setListaMascotas(List<MascotaDTO> listaMascotas) {
+		this.listaMascotas = listaMascotas;
+	}
+
+	public List<ViajeroDTO> getListaViajeros() {
+		return listaViajeros;
+	}
+
+	public void setListaViajeros(List<ViajeroDTO> listaViajeros) {
+		this.listaViajeros = listaViajeros;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(fechaFin, fechaInicio, hotel, id, metodoTransporte, personaId);
+		return Objects.hash(ciudadDestino, ciudadOrigen, fechaFin, fechaInicio, hotel, id, listaMascotas, listaViajeros,
+				metodoTransporte, personaId);
 	}
 
 	@Override
@@ -98,17 +136,20 @@ public abstract class ReservaDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		ReservaDTO other = (ReservaDTO) obj;
-		return Objects.equals(fechaFin, other.fechaFin) && Objects.equals(fechaInicio, other.fechaInicio)
+		return Objects.equals(ciudadDestino, other.ciudadDestino) && Objects.equals(ciudadOrigen, other.ciudadOrigen)
+				&& Objects.equals(fechaFin, other.fechaFin) && Objects.equals(fechaInicio, other.fechaInicio)
 				&& Objects.equals(hotel, other.hotel) && Objects.equals(id, other.id)
+				&& Objects.equals(listaMascotas, other.listaMascotas)
+				&& Objects.equals(listaViajeros, other.listaViajeros)
 				&& Objects.equals(metodoTransporte, other.metodoTransporte)
 				&& Objects.equals(personaId, other.personaId);
 	}
 
 	@Override
 	public String toString() {
-		return "ReservaDTO [id=" + id + ", personaId=" + personaId + ", hotel=" + hotel + ", metodoTransporte="
-				+ metodoTransporte + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]";
+		return "ReservaDTO [id=" + id + ", personaId=" + personaId + ", metodoTransporte=" + metodoTransporte
+				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", ciudadOrigen=" + ciudadOrigen
+				+ ", ciudadDestino=" + ciudadDestino + ", hotel=" + hotel + ", listaMascotas=" + listaMascotas
+				+ ", listaViajeros=" + listaViajeros + "]";
 	}
-    
-    
 }

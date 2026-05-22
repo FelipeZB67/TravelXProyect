@@ -26,24 +26,25 @@ public class ReservaInternacional extends Reserva{
 		super();	
 	}
 
-	public ReservaInternacional(Persona persona, String hotel, MetodoTransporte metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, List<Mascota> listaMascotas,
-			List<Viajero> listaViajeros) {
-		super(persona, hotel, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, listaMascotas,
+	public ReservaInternacional(Persona persona, List<MetodoTransporte> metodoTransporte, LocalDate fechaInicio,
+			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, String hotel, List<Mascota> listaMascotas,
+			List<Viajero> listaViajeros, String paisOrigen, String paisDestino, boolean requiereVisa) {
+		super(persona, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, hotel, listaMascotas,
 				listaViajeros);
-	}
-
-	public ReservaInternacional(String paisOrigen, String paisDestino, boolean requiereVisa) {
 		this.paisOrigen = paisOrigen;
 		this.paisDestino = paisDestino;
 		this.requiereVisa = requiereVisa;
 	}
 
-	public ReservaInternacional(Persona persona, String hotel, MetodoTransporte metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, List<Mascota> listaMascotas,
-			List<Viajero> listaViajeros, String paisOrigen, String paisDestino, boolean requiereVisa) {
-		super(persona, hotel, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, listaMascotas,
+	public ReservaInternacional(Persona persona, List<MetodoTransporte> metodoTransporte, LocalDate fechaInicio,
+			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, String hotel, List<Mascota> listaMascotas,
+			List<Viajero> listaViajeros) {
+		super(persona, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, hotel, listaMascotas,
 				listaViajeros);
+	}
+	
+	public ReservaInternacional(String paisOrigen, String paisDestino, boolean requiereVisa) {
+		super();
 		this.paisOrigen = paisOrigen;
 		this.paisDestino = paisDestino;
 		this.requiereVisa = requiereVisa;
