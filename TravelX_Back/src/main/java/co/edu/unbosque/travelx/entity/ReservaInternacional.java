@@ -26,35 +26,28 @@ public class ReservaInternacional extends Reserva{
 		super();	
 	}
 
-
-	public ReservaInternacional(Persona persona, MetodoTransporte metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel,
-			double precioHospedaje, List<Mascota> listaMascotas, List<Viajero> listaViajeros, String paisOrigen,
-			String paisDestino, boolean requiereVisa) {
-		super(persona, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, precioTransporte, hotel,
-				precioHospedaje, listaMascotas, listaViajeros);
+	public ReservaInternacional(Persona persona, List<MetodoTransporte> metodoTransporte, LocalDate fechaInicio,
+			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, String hotel, List<Mascota> listaMascotas,
+			List<Viajero> listaViajeros, String paisOrigen, String paisDestino, boolean requiereVisa) {
+		super(persona, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, hotel, listaMascotas,
+				listaViajeros);
 		this.paisOrigen = paisOrigen;
 		this.paisDestino = paisDestino;
 		this.requiereVisa = requiereVisa;
 	}
 
-
-
+	public ReservaInternacional(Persona persona, List<MetodoTransporte> metodoTransporte, LocalDate fechaInicio,
+			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, String hotel, List<Mascota> listaMascotas,
+			List<Viajero> listaViajeros) {
+		super(persona, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, hotel, listaMascotas,
+				listaViajeros);
+	}
+	
 	public ReservaInternacional(String paisOrigen, String paisDestino, boolean requiereVisa) {
-
+		super();
 		this.paisOrigen = paisOrigen;
 		this.paisDestino = paisDestino;
 		this.requiereVisa = requiereVisa;
-	}
-
-
-	public ReservaInternacional(Persona persona, MetodoTransporte metodoTransporte, LocalDate fechaInicio,
-			LocalDate fechaFin, String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel,
-			double precioHospedaje, List<Mascota> listaMascotas, List<Viajero> listaViajeros) {
-		super(persona, metodoTransporte, fechaInicio, fechaFin, ciudadOrigen, ciudadDestino, precioTransporte, hotel,
-				precioHospedaje, listaMascotas, listaViajeros);
-		// TODO Auto-generated constructor stub
-
 	}
 
 	public Long getId() {

@@ -8,101 +8,149 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import co.edu.unbosque.travelx.dto.MascotaDTO;
 import co.edu.unbosque.travelx.dto.ReservaInternacionalDTO;
+import co.edu.unbosque.travelx.dto.ViajeroDTO;
+import co.edu.unbosque.travelx.entity.Mascota;
+import co.edu.unbosque.travelx.entity.Reserva;
 import co.edu.unbosque.travelx.entity.ReservaInternacional;
+import co.edu.unbosque.travelx.entity.Viajero;
+import co.edu.unbosque.travelx.repository.PersonaRepository;
 import co.edu.unbosque.travelx.repository.ReservaInternacionalRepository;
 
 @Service
-public class ReservaInternacionalService implements CRUDOperation<ReservaInternacionalDTO> {
+public class ReservaInternacionalService implements CRUDOperation<ReservaInternacionalDTO>{
 
 	@Autowired
-	private ReservaInternacionalRepository reservaInternacionalRepository;
-
+	private ReservaInternacionalRepository resInterRepo;
+	
+	@Autowired
+	private PersonaRepository userRepo;
+	
 	@Autowired
 	private ModelMapper mapper;
-
-	public ReservaInternacionalService() {
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public int create(ReservaInternacionalDTO data) {
-		try {
-			ReservaInternacional entity = mapper.map(data, ReservaInternacional.class);
-			reservaInternacionalRepository.save(entity);
-			return 0;
-		} catch (Exception e) {
-			return 1;
-		}
+		ReservaInternacional entity = mapper.map(data, ReservaInternacional.class);
+		resInterRepo.save(entity);
+		return 0;
 	}
 
 	@Override
 	public int updateById(Long id, ReservaInternacionalDTO data) {
+		Optional<ReservaInternacional> find = resInterRepo.findById(id);
 
-		try {
-			Optional<ReservaInternacional> found = reservaInternacionalRepository.findById(id);
-			if (found.isPresent()) {
-				ReservaInternacional temp = found.get();
+		if (find.isPresent()) {
+			ReservaInternacional temp = find.get();
 
-				temp.setCiudadDestino(data.getCiudadDestino());
-				temp.setCiudadOrigen(data.getCiudadOrigen());
-				temp.setFechaFin(data.getFechaFin());
-				temp.setFechaInicio(data.getFechaInicio());
-				temp.setHotel(data.getHotel());
-				temp.setPrecioHospedaje(data.getPrecioHospedaje());
-				temp.setPrecioTransporte(data.getPrecioTransporte());
+			if (data.getMetodoTransporte() != null)
 				temp.setMetodoTransporte(data.getMetodoTransporte());
-
-				temp.setPaisDestino(data.getPaisDestino());
-				temp.setPaisOrigen(data.getPaisOrigen());
-				temp.setRequiereVisa(data.isRequiereVisa());
-				reservaInternacionalRepository.save(temp);
-				return 0;
-			}
-			return 1;
-		} catch (Exception e) {
-			return 2;
+			
+			temp.setFechaInicio(data.getFechaInicio());
+			temp.setFechaFin(data.getFechaFin());
+			temp.setCiudadOrigen(data.getCiudadOrigen());
+			temp.setCiudadDestino(data.getCiudadDestino());
+			temp.setHotel(data.getHotel());
+			temp.setPaisOrigen(data.getPaisOrigen());
+			temp.setPaisDestino(data.getPaisDestino());
+			
+			resInterRepo.save(temp);
+			return 0;
 		}
-
+		return 1;
 	}
 
 	@Override
 	public int deleteById(Long id) {
-
-		Optional<ReservaInternacional> found = reservaInternacionalRepository.findById(id);
-		if (found.isPresent()) {
-			reservaInternacionalRepository.delete(found.get());
+		Optional<ReservaInternacional> find = resInterRepo.findById(id);
+		
+		if(find.isPresent()) {
+			resInterRepo.deleteById(id);
 			return 0;
-		} else {
-			return 1;
 		}
-
+		return 1;
+	}
 
 	@Override
 	public List<ReservaInternacionalDTO> getAll() {
-
-		List<ReservaInternacional> entityList = (List<ReservaInternacional>) reservaInternacionalRepository.findAll();
+		List<ReservaInternacional> entityList = (List<ReservaInternacional>)resInterRepo.findAll();
 		List<ReservaInternacionalDTO> dtoList = new ArrayList<>();
+		
 		entityList.forEach((entity) -> {
-			ReservaInternacionalDTO dto = mapper.map(entity, ReservaInternacionalDTO.class);
-
+			ReservaInternacionalDTO dto = mapper.map(dtoList, ReservaInternacionalDTO.class);
+			
+			List<Mascota> entityList2 = entity.getListaMascotas();
+			List<MascotaDTO> dtoList2 = new ArrayList<>();
+			
+			entityList2.forEach((mascota) -> {
+				MascotaDTO dto2 = mapper.map(mascota, MascotaDTO.class);
+				dtoList2.add(dto2);
+			});
+			
+			dto.setListaMascotas(dtoList2);
+			
+			List<Viajero> entityList3 = entity.getListaViajeros();
+			List<ViajeroDTO> dtoList3 = new ArrayList<>();
+			
+			entityList3.forEach((viajero) ->{
+				ViajeroDTO dto3 = mapper.map(viajero, ViajeroDTO.class);
+				dtoList3.add(dto3);
+			});
+			
+			dto.setListaViajeros(dtoList3);
+			
 			dtoList.add(dto);
 		});
 		return dtoList;
 	}
 
-
+	public List<ReservaInternacionalDTO> getListaReservasInternacionalesIdCliente(Long idCliente){
+		List<Reserva> reservas = userRepo.findById(idCliente).get().getListaReservas();
+		List<ReservaInternacional> entityList = new ArrayList<>();
+		
+		reservas.forEach((reserva)->{
+			if(reserva instanceof ReservaInternacional) {
+				entityList.add((ReservaInternacional)reserva);
+			}
+		});
+		
+		List<ReservaInternacionalDTO> dtoList = new ArrayList<>();
+		
+		entityList.forEach((entity) -> {
+			ReservaInternacionalDTO dto = mapper.map(entity, ReservaInternacionalDTO.class);
+			
+			List<Mascota> entityList2 = entity.getListaMascotas();
+			List<MascotaDTO> dtoList2 = new ArrayList<>();
+			
+			entityList2.forEach((mascota) -> {
+				MascotaDTO dto2 = mapper.map(mascota, MascotaDTO.class);
+				dtoList2.add(dto2);
+			});
+			
+			dto.setListaMascotas(dtoList2);
+			
+			List<Viajero> entityList3 = entity.getListaViajeros();
+			List<ViajeroDTO> dtoList3 = new ArrayList<>();
+			
+			entityList3.forEach((viajero) ->{
+				ViajeroDTO dto3 = mapper.map(viajero, ViajeroDTO.class);
+				dtoList3.add(dto3);
+			});
+			
+			dto.setListaViajeros(dtoList3);
+			
+			dtoList.add(dto);
+		});
+		return dtoList;
+	}
+	
 	@Override
 	public boolean exist(Long id) {
-		return reservaInternacionalRepository.existsById(id);
-
+		return resInterRepo.existsById(id);
 	}
 
 	@Override
 	public long count() {
-
-		return reservaInternacionalRepository.count();
+		return resInterRepo.count();
 	}
-
 }
