@@ -8,10 +8,29 @@ import { App } from './app';
 import { BienvenidaComponent } from './components/bienvenida/bienvenida';
 import { LoginComponent } from './components/login/login';
 import { RegistroComponent } from './components/registro/registro';
+import { InicioComponent } from './components/inicio/inicio';
+import { AdminComponent } from './components/admin/admin';
+import { HttpClientModule } from '@angular/common/http';
+import { VerificarCorreoComponent } from './components/verificar-correo/verificar-correo';
 
 @NgModule({
-  declarations: [App, BienvenidaComponent, LoginComponent, RegistroComponent],
-  imports: [BrowserModule, CommonModule, RouterModule, FormsModule, AppRoutingModule],
-  bootstrap: [App]
+  declarations: [
+    App,
+    BienvenidaComponent,
+    LoginComponent,
+    RegistroComponent,
+    InicioComponent,
+    AdminComponent,
+    VerificarCorreoComponent,
+  ],
+  imports: [
+    BrowserModule,
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    AppRoutingModule,
+    HttpClientModule,
+  ],
+  bootstrap: [App],
 })
 export class AppModule {}

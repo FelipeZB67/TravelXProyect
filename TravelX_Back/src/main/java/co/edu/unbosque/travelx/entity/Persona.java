@@ -43,6 +43,10 @@ public class Persona implements UserDetails {
 	@Enumerated(EnumType.STRING)
 	private TipoUsuario tipoUsuario;
 	
+	private String codigoVerificacion;
+
+	private boolean correoVerificado;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "persona", cascade = CascadeType.ALL)
 	private List<Reserva> listaReservas;
@@ -56,8 +60,9 @@ public class Persona implements UserDetails {
 		this.accountNonExpired = true;
 		this.accountNonLocked = true;
 		this.credentialsNonExpired = true;
-		this.enabled = true;
-		this.tipoUsuario = TipoUsuario.USUARIO;
+		this.enabled = false;
+		this.correoVerificado = false;
+		this.tipoUsuario = TipoUsuario.NINGUNO;
 	}
 
 	public Persona(String nombre, String documento, String correo, String contrasena, List<Reserva> listaReservas) {
@@ -96,7 +101,7 @@ public class Persona implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return nombre;
+		return correo;
 	}
 
 	@Override
@@ -214,4 +219,19 @@ public class Persona implements UserDetails {
 		this.enabled = enabled;
 	}
 	
+	public String getCodigoVerificacion() {
+		return codigoVerificacion;
+	}
+
+	public void setCodigoVerificacion(String codigoVerificacion) {
+		this.codigoVerificacion = codigoVerificacion;
+	}
+
+	public boolean isCorreoVerificado() {
+		return correoVerificado;
+	}
+
+	public void setCorreoVerificado(boolean correoVerificado) {
+		this.correoVerificado = correoVerificado;
+	}
 }
