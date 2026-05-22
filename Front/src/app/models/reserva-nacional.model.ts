@@ -1,4 +1,5 @@
-export interface ReservaNacionalModel {
-  // ciudadOrigen y ciudadDestino ya vienen del padre
-  // el back los repite en el hijo, los heredamos igual
+import { Reserva } from './reserva.model';
+
+export interface ReservaNacionalModel extends Reserva {
+  //no necesita campos extra, hereda todo de Reserva
 }
