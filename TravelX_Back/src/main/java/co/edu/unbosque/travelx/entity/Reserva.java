@@ -11,7 +11,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "reserva")
+@Table(name = "reservatravelx")
 public class Reserva {
 
 	private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;

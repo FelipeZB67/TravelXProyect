@@ -55,6 +55,80 @@ public class ReservaService {
 		return reservaRepository.findByUsernameOrderByFechaCreacionDesc(username);
 	}
 
+	public List<Reserva> todasReservas() {
+		return reservaRepository.findAllByOrderByFechaCreacionDesc();
+	}
+	
+	public Reserva crearReservaAdmin(Reserva reserva) {
+		prepararReservaAdmin(reserva);
+		return reservaRepository.save(reserva);
+	}
+
+	public Reserva actualizarReservaAdmin(Long id, Reserva datos) {
+		Reserva reserva = reservaRepository.findById(id).orElseThrow();
+
+		reserva.setUsername(datos.getUsername());
+		reserva.setProvider(datos.getProvider());
+		reserva.setType(datos.getType());
+		reserva.setTitle(datos.getTitle());
+		reserva.setDescription(datos.getDescription());
+		reserva.setOriginCity(datos.getOriginCity());
+		reserva.setOriginCountry(datos.getOriginCountry());
+		reserva.setDestinationCity(datos.getDestinationCity());
+		reserva.setDestinationCountry(datos.getDestinationCountry());
+		reserva.setDepartureDate(datos.getDepartureDate());
+		reserva.setReturnDate(datos.getReturnDate());
+		reserva.setCurrency(datos.getCurrency());
+		reserva.setPrice(datos.getPrice());
+		reserva.setPriceText(datos.getPriceText());
+		reserva.setAdults(datos.getAdults());
+		reserva.setChildren(datos.getChildren());
+		reserva.setPets(datos.getPets());
+		reserva.setTravelClass(datos.getTravelClass());
+		reserva.setHasPool(datos.getHasPool());
+		reserva.setHasJacuzzi(datos.getHasJacuzzi());
+		reserva.setPetFriendly(datos.getPetFriendly());
+		reserva.setAvailable(datos.getAvailable());
+		reserva.setBookingUrl(datos.getBookingUrl());
+		reserva.setProviderStatusCode(datos.getProviderStatusCode());
+		reserva.setProviderSuccess(datos.getProviderSuccess());
+		reserva.setProviderMessage(datos.getProviderMessage());
+		reserva.setProviderResponse(datos.getProviderResponse());
+
+		prepararReservaAdmin(reserva);
+		return reservaRepository.save(reserva);
+	}
+
+	public void eliminarReservaAdmin(Long id) {
+		reservaRepository.deleteById(id);
+	}
+
+	private void prepararReservaAdmin(Reserva reserva) {
+		if (reserva.getProvider() == null || reserva.getProvider().isBlank()) {
+			reserva.setProvider("TRAVELX_ADMIN");
+		}
+
+		if (reserva.getCurrency() == null || reserva.getCurrency().isBlank()) {
+			reserva.setCurrency("USD");
+		}
+
+		if (reserva.getAvailable() == null) {
+			reserva.setAvailable(true);
+		}
+
+		if (reserva.getProviderSuccess() == null) {
+			reserva.setProviderSuccess(true);
+		}
+
+		if (reserva.getProviderStatusCode() == null) {
+			reserva.setProviderStatusCode(200);
+		}
+
+		if ((reserva.getPriceText() == null || reserva.getPriceText().isBlank()) && reserva.getPrice() != null) {
+			reserva.setPriceText(reserva.getPrice() + " " + reserva.getCurrency());
+		}
+	}
+
 	public Reserva buscarPropia(Long id, String username) {
 		Reserva reserva = reservaRepository.findById(id).orElseThrow();
 

@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
 import java.time.Duration;
 
 import org.springframework.stereotype.Service;
@@ -33,10 +34,13 @@ public class NominatimService {
 		dto.setQuery(query);
 
 		String url = BASE_URL
-				+ "?q=" + encode(query)
+				+ "?city=" + encode(city)
+				+ "&country=" + encode(country)
 				+ "&format=json"
-				+ "&limit=1"
-				+ "&addressdetails=1";
+				+ "&limit=10"
+				+ "&addressdetails=1"
+				+ "&featureType=city"
+				+ "&layer=address";
 
 		HttpRequest request = HttpRequest.newBuilder()
 				.GET()
@@ -59,23 +63,39 @@ public class NominatimService {
 
 			if (array.isEmpty()) {
 				dto.setFound(false);
-				dto.setDisplayName("No se encontro ubicacion.");
+				dto.setDisplayName("No se encontro una ciudad con ese nombre en " + country + ".");
 				return dto;
 			}
 
-			JsonObject first = array.get(0).getAsJsonObject();
+			NominatimResolvedLocationDTO related = null;
 
-			dto.setFound(true);
-			dto.setDisplayName(readString(first, "display_name"));
-			dto.setLatitude(readString(first, "lat"));
-			dto.setLongitude(readString(first, "lon"));
+			for (int i = 0; i < array.size(); i++) {
+				JsonObject current = array.get(i).getAsJsonObject();
 
-			if (first.has("address") && first.get("address").isJsonObject()) {
-				JsonObject address = first.getAsJsonObject("address");
-				dto.setCountry(readString(address, "country"));
-				dto.setCountryCode(readString(address, "country_code"));
+				if (!isCityLikeResult(current)) {
+					continue;
+				}
+
+				NominatimResolvedLocationDTO candidate = buildDtoFromResult(current, query);
+
+				if (related == null) {
+					related = candidate;
+				}
+
+				if (countryMatches(candidate.getCountry(), country) && cityMatches(current, city)) {
+					candidate.setFound(true);
+					return candidate;
+				}
 			}
 
+			if (related != null) {
+				related.setFound(false);
+				related.setDisplayName("No se encontro una ciudad exacta llamada " + city + " en " + country + ".");
+				return related;
+			}
+
+			dto.setFound(false);
+			dto.setDisplayName("No se encontro una ciudad valida con ese nombre en " + country + ".");
 			return dto;
 
 		} catch (IOException e) {
@@ -92,6 +112,92 @@ public class NominatimService {
 			dto.setDisplayName("Error al interpretar respuesta: " + e.getMessage());
 			return dto;
 		}
+	}
+
+	private boolean isCityLikeResult(JsonObject result) {
+		String resultClass = readString(result, "class");
+		String resultType = readString(result, "type");
+		String addresstype = readString(result, "addresstype");
+
+		if ("place".equalsIgnoreCase(resultClass)) {
+			return "city".equalsIgnoreCase(resultType)
+					|| "town".equalsIgnoreCase(resultType)
+					|| "village".equalsIgnoreCase(resultType)
+					|| "hamlet".equalsIgnoreCase(resultType)
+					|| "municipality".equalsIgnoreCase(resultType);
+		}
+
+		if ("boundary".equalsIgnoreCase(resultClass)) {
+			return "administrative".equalsIgnoreCase(resultType)
+					&& ("city".equalsIgnoreCase(addresstype)
+					|| "town".equalsIgnoreCase(addresstype)
+					|| "village".equalsIgnoreCase(addresstype)
+					|| "municipality".equalsIgnoreCase(addresstype));
+		}
+
+		return false;
+	}
+
+	private boolean cityMatches(JsonObject result, String requestedCity) {
+		if (result.has("address") && result.get("address").isJsonObject()) {
+			JsonObject address = result.getAsJsonObject("address");
+
+			if (matchesAnyAddressField(address, requestedCity)) {
+				return true;
+			}
+		}
+
+		String displayName = readString(result, "display_name");
+		if (displayName != null && displayName.contains(",")) {
+			String firstPart = displayName.split(",")[0];
+			return normalize(firstPart).equals(normalize(requestedCity));
+		}
+
+		return false;
+	}
+
+	private boolean matchesAnyAddressField(JsonObject address, String requestedCity) {
+		String[] fields = { "city", "town", "village", "municipality", "hamlet" };
+
+		for (String field : fields) {
+			String value = readString(address, field);
+			if (normalize(value).equals(normalize(requestedCity))) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private NominatimResolvedLocationDTO buildDtoFromResult(JsonObject result, String query) {
+		NominatimResolvedLocationDTO dto = new NominatimResolvedLocationDTO();
+		dto.setQuery(query);
+		dto.setDisplayName(readString(result, "display_name"));
+		dto.setLatitude(readString(result, "lat"));
+		dto.setLongitude(readString(result, "lon"));
+		dto.setFound(false);
+
+		if (result.has("address") && result.get("address").isJsonObject()) {
+			JsonObject address = result.getAsJsonObject("address");
+			dto.setCountry(readString(address, "country"));
+			dto.setCountryCode(readString(address, "country_code"));
+		}
+
+		return dto;
+	}
+
+	private boolean countryMatches(String foundCountry, String requestedCountry) {
+		return normalize(foundCountry).equals(normalize(requestedCountry));
+	}
+
+	private String normalize(String value) {
+		if (value == null) {
+			return "";
+		}
+
+		String normalized = Normalizer.normalize(value, Normalizer.Form.NFD);
+		normalized = normalized.replaceAll("\\p{M}", "");
+		return normalized.trim().toLowerCase();
 	}
 
 	private String readString(JsonObject object, String fieldName) {
