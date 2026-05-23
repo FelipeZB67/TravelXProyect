@@ -1,0 +1,31 @@
+export interface TravelOptionModel {
+  id?: number;
+  username?: string;
+  provider?: string;
+  type?: string;
+  title?: string;
+  description?: string;
+  originCity?: string;
+  originCountry?: string;
+  destinationCity?: string;
+  destinationCountry?: string;
+  departureDate?: string;
+  returnDate?: string;
+  currency?: string;
+  price?: number;
+  priceText?: string;
+  adults?: number;
+  children?: number;
+  pets?: number;
+  travelClass?: string;
+  hasPool?: boolean;
+  hasJacuzzi?: boolean;
+  petFriendly?: boolean;
+  available?: boolean;
+  bookingUrl?: string;
+  providerStatusCode?: number;
+  providerSuccess?: boolean;
+  providerMessage?: string;
+  providerResponse?: string;
+  fechaCreacion?: string;
+}

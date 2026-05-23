@@ -7,4 +7,5 @@ import co.edu.unbosque.travelx.entity.Reserva;
 public interface ReservaRepository extends CrudRepository<Reserva, Long> {
 
 	List<Reserva> findByUsernameOrderByFechaCreacionDesc(String username);
+	List<Reserva> findAllByOrderByFechaCreacionDesc();
 }

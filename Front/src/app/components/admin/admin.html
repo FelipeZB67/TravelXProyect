@@ -34,43 +34,54 @@
         </h1>
         <p class="content-subtitle">{{ datosActivos.length }} registros en total</p>
       </div>
+
       <button class="btn-agregar" (click)="abrirModalCrear()">
         <i class="fas fa-plus"></i> Agregar
       </button>
     </div>
+
+    @if (error) {
+      <div class="estado-msg error">
+        <i class="fas fa-exclamation-circle"></i> {{ error }}
+      </div>
+    }
 
     <div class="tabla-wrapper">
       <table class="tabla">
         <thead>
         <tr>
           @for (col of columnasActivas; track col) {
-            <th>{{ col | titlecase }}</th>
+            <th>{{ nombreColumna(col) }}</th>
           }
           <th>Acciones</th>
         </tr>
         </thead>
+
         <tbody>
           @for (item of datosActivos; track item.id) {
             <tr>
               @for (col of columnasActivas; track col) {
                 <td>
                   @if (col === 'estado') {
-                    <span class="badge" [class.badge-activo]="item[col] === 'Activo' || item[col] === 'Confirmada'"
+                    <span class="badge"
+                          [class.badge-activo]="item[col] === 'Activo' || item[col] === 'Confirmada' || item[col] === 'Disponible'"
                           [class.badge-pendiente]="item[col] === 'Pendiente'"
-                          [class.badge-inactivo]="item[col] === 'Inactivo' || item[col] === 'Cancelada'">
+                          [class.badge-inactivo]="item[col] === 'Inactivo' || item[col] === 'Cancelada' || item[col] === 'No disponible'">
                       {{ item[col] }}
                     </span>
-                  } @else if (col === 'precio') {
-                    ${{ item[col] }} USD
+                  } @else if (col === 'total') {
+                    ${{ item[col].toLocaleString('es-CO') }} USD
                   } @else {
                     {{ item[col] }}
                   }
                 </td>
               }
+
               <td class="acciones">
                 <button class="btn-editar" (click)="abrirModalEditar(item)">
                   <i class="fas fa-pen"></i>
                 </button>
+
                 <button class="btn-eliminar" (click)="eliminar(item)">
                   <i class="fas fa-trash"></i>
                 </button>
@@ -87,22 +98,171 @@
 
 @if (modalAbierto) {
   <div class="modal-overlay" (click)="modalAbierto = false">
-    <div class="modal" (click)="$event.stopPropagation()">
+    <div class="admin-modal" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h2>{{ modoEdicion ? 'Editar' : 'Agregar' }}
+        <h2>
+          {{ modoEdicion ? 'Editar' : 'Agregar' }}
           @if (seccionActiva === 'usuarios') { usuario }
           @if (seccionActiva === 'administradores') { administrador }
           @if (seccionActiva === 'reservas') { reserva }
         </h2>
-        <button class="modal-close" (click)="modalAbierto = false"><i class="fas fa-times"></i></button>
+
+        <button class="modal-close" (click)="modalAbierto = false">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
 
       <div class="modal-body">
-        @for (col of columnasActivas; track col) {
-          @if (col !== 'id') {
+        @if (seccionActiva === 'reservas') {
+          <div class="form-grid">
             <div class="form-group">
-              <label>{{ col | titlecase }}</label>
-              <input class="form-input" [(ngModel)]="formulario[col]" [placeholder]="col">
+              <label>Usuario</label>
+              <input class="form-input" [(ngModel)]="formulario.username" placeholder="correo@travelx.com">
+            </div>
+
+            <div class="form-group">
+              <label>Proveedor</label>
+              <input class="form-input" [(ngModel)]="formulario.provider" placeholder="TRAVELX_ADMIN">
+            </div>
+
+            <div class="form-group">
+              <label>Tipo</label>
+              <select class="form-input" [(ngModel)]="formulario.type">
+                <option value="FLIGHT">Vuelo</option>
+                <option value="BUS">Terrestre</option>
+                <option value="HOTEL">Hotel</option>
+                <option value="AIRBNB">Airbnb</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Clase</label>
+              <select class="form-input" [(ngModel)]="formulario.travelClass">
+                <option value="ECONOMY">Economy</option>
+                <option value="BUSINESS">Business</option>
+                <option value="FIRST">First</option>
+              </select>
+            </div>
+
+            <div class="form-group full-field">
+              <label>Título</label>
+              <input class="form-input" [(ngModel)]="formulario.title" placeholder="Reserva creada por administrador">
+            </div>
+
+            <div class="form-group">
+              <label>Ciudad origen</label>
+              <input class="form-input" [(ngModel)]="formulario.originCity" placeholder="Bogotá">
+            </div>
+
+            <div class="form-group">
+              <label>País origen</label>
+              <input class="form-input" [(ngModel)]="formulario.originCountry" placeholder="Colombia">
+            </div>
+
+            <div class="form-group">
+              <label>Ciudad destino</label>
+              <input class="form-input" [(ngModel)]="formulario.destinationCity" placeholder="Madrid">
+            </div>
+
+            <div class="form-group">
+              <label>País destino</label>
+              <input class="form-input" [(ngModel)]="formulario.destinationCountry" placeholder="España">
+            </div>
+
+            <div class="form-group">
+              <label>Fecha ida</label>
+              <input class="form-input" type="date" [(ngModel)]="formulario.departureDate">
+            </div>
+
+            <div class="form-group">
+              <label>Fecha regreso</label>
+              <input class="form-input" type="date" [(ngModel)]="formulario.returnDate">
+            </div>
+
+            <div class="form-group">
+              <label>Adultos</label>
+              <input class="form-input" type="number" min="1" [(ngModel)]="formulario.adults">
+            </div>
+
+            <div class="form-group">
+              <label>Niños</label>
+              <input class="form-input" type="number" min="0" [(ngModel)]="formulario.children">
+            </div>
+
+            <div class="form-group">
+              <label>Mascotas</label>
+              <input class="form-input" type="number" min="0" [(ngModel)]="formulario.pets">
+            </div>
+
+            <div class="form-group">
+              <label>Moneda</label>
+              <input class="form-input" [(ngModel)]="formulario.currency" placeholder="USD">
+            </div>
+
+            <div class="form-group">
+              <label>Precio</label>
+              <input class="form-input" type="number" min="0" [(ngModel)]="formulario.price">
+            </div>
+
+            <div class="form-group">
+              <label>Estado</label>
+              <select class="form-input" [(ngModel)]="formulario.available">
+                <option [ngValue]="true">Disponible</option>
+                <option [ngValue]="false">No disponible</option>
+              </select>
+            </div>
+
+            @if (formulario.type === 'HOTEL' || formulario.type === 'AIRBNB') {
+              <div class="form-group">
+                <label>Piscina</label>
+                <select class="form-input" [(ngModel)]="formulario.hasPool">
+                  <option [ngValue]="true">Sí</option>
+                  <option [ngValue]="false">No</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Jacuzzi</label>
+                <select class="form-input" [(ngModel)]="formulario.hasJacuzzi">
+                  <option [ngValue]="true">Sí</option>
+                  <option [ngValue]="false">No</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Pet friendly</label>
+                <select class="form-input" [(ngModel)]="formulario.petFriendly">
+                  <option [ngValue]="true">Sí</option>
+                  <option [ngValue]="false">No</option>
+                </select>
+              </div>
+            }
+
+            <div class="form-group full-field">
+              <label>Descripción</label>
+              <textarea class="form-input form-textarea" [(ngModel)]="formulario.description" placeholder="Detalle de la reserva"></textarea>
+            </div>
+          </div>
+        } @else {
+          <div class="form-group">
+            <label>Nombre</label>
+            <input class="form-input" [(ngModel)]="formulario.nombre" placeholder="Nombre">
+          </div>
+
+          <div class="form-group">
+            <label>Correo</label>
+            <input class="form-input" [(ngModel)]="formulario.email" placeholder="Correo">
+          </div>
+
+          <div class="form-group">
+            <label>Documento</label>
+            <input class="form-input" [(ngModel)]="formulario.documento" placeholder="Documento">
+          </div>
+
+          @if (!modoEdicion) {
+            <div class="form-group">
+              <label>Contraseña</label>
+              <input class="form-input" type="password" [(ngModel)]="formulario.contrasena" placeholder="Contraseña">
             </div>
           }
         }
@@ -112,6 +272,48 @@
         <button class="btn-cancelar" (click)="modalAbierto = false">Cancelar</button>
         <button class="btn-guardar" (click)="guardar()">
           <i class="fas fa-save"></i> Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (modalEliminarAbierto) {
+  <div class="modal-overlay" (click)="cancelarEliminar()">
+    <div class="delete-modal" (click)="$event.stopPropagation()">
+      <div class="delete-icon">
+        <i class="fas fa-trash"></i>
+      </div>
+
+      <h2>
+        @if (seccionActiva === 'reservas') { Eliminar reserva }
+        @else { Eliminar usuario }
+      </h2>
+
+      <p>
+        ¿Seguro que deseas eliminar
+        @if (seccionActiva === 'reservas') {
+          la reserva <strong>{{ itemEliminando?.id }}</strong>?
+        } @else {
+          a <strong>{{ itemEliminando?.nombre }}</strong>?
+        }
+      </p>
+
+      <span class="delete-warning">
+        Esta acción no se puede deshacer.
+      </span>
+
+      <div class="delete-actions">
+        <button class="btn-delete-cancel" (click)="cancelarEliminar()" [disabled]="eliminando">
+          Cancelar
+        </button>
+
+        <button class="btn-delete-confirm" (click)="confirmarEliminar()" [disabled]="eliminando">
+          @if (eliminando) {
+            <i class="fas fa-spinner fa-spin"></i> Eliminando
+          } @else {
+            <i class="fas fa-trash"></i> Eliminar
+          }
         </button>
       </div>
     </div>
