@@ -1,19 +1,20 @@
 .verify-wrapper {
   min-height: 100vh;
-  width: 100vw;
+  min-width: 1180px;
   background: linear-gradient(135deg, #3aa0e6 0%, #0055bb 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 3rem;
 }
 
 .verify-card {
-  background: white;
-  border-radius: 24px;
-  padding: 3rem;
   width: 100%;
   max-width: 460px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   text-align: center;
 }
 
@@ -49,14 +50,15 @@
 }
 
 .alert {
-  padding: .8rem 1rem;
+  padding: .85rem 1rem;
   border-radius: 10px;
   font-size: .88rem;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 1.2rem;
   display: flex;
   align-items: center;
   gap: .5rem;
+  text-align: left;
 }
 
 .alert-error {
@@ -66,7 +68,7 @@
 
 .alert-exito {
   background: #e6f9f0;
-  color: #00b366;
+  color: #00a862;
 }
 
 .form-group {
@@ -77,17 +79,17 @@
 .form-group label {
   display: block;
   font-size: .85rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-dark);
   margin-bottom: .5rem;
 }
 
 .form-input {
   width: 100%;
-  padding: .9rem 1rem;
+  min-height: 50px;
+  padding: 0 1rem;
   border: 1.5px solid var(--border);
   border-radius: 12px;
-  font-family: 'Poppins', sans-serif;
   font-size: 1.1rem;
   text-align: center;
   letter-spacing: 4px;
@@ -99,32 +101,31 @@
 
 .form-input:focus {
   border-color: var(--primary);
-  background: white;
-  box-shadow: 0 0 0 4px rgba(58,160,230,0.1);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(58, 160, 230, 0.1);
 }
 
 .btn-verificar {
   width: 100%;
-  padding: .95rem;
+  min-height: 48px;
   background: linear-gradient(135deg, #3aa0e6 0%, #0055bb 100%);
-  color: white;
+  color: #ffffff;
   border: none;
   border-radius: 12px;
-  font-family: 'Poppins', sans-serif;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: .5rem;
   margin-bottom: 1.2rem;
-  box-shadow: 0 6px 20px rgba(58,160,230,0.35);
+  box-shadow: 0 6px 20px rgba(58, 160, 230, 0.35);
   transition: all .3s ease;
 }
 
 .btn-verificar:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(58,160,230,0.45);
+  box-shadow: 0 10px 28px rgba(58, 160, 230, 0.45);
 }
 
 .btn-verificar:disabled {
@@ -134,7 +135,6 @@
 .back-link {
   font-size: .85rem;
   color: var(--text-muted);
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;

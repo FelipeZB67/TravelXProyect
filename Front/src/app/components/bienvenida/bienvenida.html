@@ -1,7 +1,11 @@
 <div class="welcome-container">
 
   <nav class="top-nav">
-    <div class="brand">TRAVELX</div>
+    <div class="brand">
+      <i class="fas fa-globe-americas"></i>
+      <span>TravelX</span>
+    </div>
+
     <div class="nav-buttons">
       <button class="btn-outline" (click)="irALogin()">Iniciar sesión</button>
       <button class="btn-solid" (click)="irARegistro()">Registrarse</button>
@@ -9,43 +13,102 @@
   </nav>
 
   <main class="hero animate__animated animate__fadeIn">
-    <p class="eyebrow animate__animated animate__fadeInDown">
-      <i class="fas fa-plane-departure"></i> Explora sin límites
-    </p>
-    <h1 class="hero-title animate__animated animate__fadeInUp">
-      Bienvenido a <span class="highlight">TravelX</span>
-    </h1>
-    <p class="hero-slogan animate__animated animate__fadeInUp" style="animation-delay:.15s">
-      El mundo es tuyo. Nosotros te llevamos hasta él.
-    </p>
+    <div class="hero-content">
+      <p class="eyebrow animate__animated animate__fadeInDown">
+        <i class="fas fa-plane-departure"></i> Explora sin límites
+      </p>
 
-    <div class="action-cards animate__animated animate__fadeInUp" style="animation-delay:.3s">
-      <div class="action-card" (click)="irALogin()">
-        <div class="action-icon">
-          <i class="fas fa-sign-in-alt"></i>
-        </div>
-        <div class="action-text">
-          <strong>¿Ya tienes una cuenta?</strong>
-          <span>Inicia sesión aquí</span>
-        </div>
-        <i class="fas fa-arrow-right action-arrow"></i>
-      </div>
+      <h1 class="hero-title animate__animated animate__fadeInUp">
+        TravelX
+      </h1>
 
-      <div class="action-card" (click)="irARegistro()">
-        <div class="action-icon icon-2">
-          <i class="fas fa-user-plus"></i>
-        </div>
-        <div class="action-text">
-          <strong>¿Eres nuevo por aquí?</strong>
-          <span>Crea una cuenta</span>
-        </div>
-        <i class="fas fa-arrow-right action-arrow"></i>
+      <p class="hero-slogan animate__animated animate__fadeInUp">
+        Planea vuelos, hospedajes, rutas y cotizaciones desde una sola experiencia.
+      </p>
+
+      <div class="action-cards animate__animated animate__fadeInUp">
+        <button class="action-card" (click)="irALogin()">
+          <span class="action-icon">
+            <i class="fas fa-sign-in-alt"></i>
+          </span>
+
+          <span class="action-text">
+            <strong>¿Ya tienes una cuenta?</strong>
+            <small>Inicia sesión aquí</small>
+          </span>
+
+          <i class="fas fa-arrow-right action-arrow"></i>
+        </button>
+
+        <button class="action-card" (click)="irARegistro()">
+          <span class="action-icon icon-2">
+            <i class="fas fa-user-plus"></i>
+          </span>
+
+          <span class="action-text">
+            <strong>¿Eres nuevo por aquí?</strong>
+            <small>Crea una cuenta</small>
+          </span>
+
+          <i class="fas fa-arrow-right action-arrow"></i>
+        </button>
       </div>
     </div>
+
+    <section class="provider-strip">
+      <div class="provider-label">
+        <i class="fas fa-link"></i>
+        APIs integradas
+      </div>
+
+      <div class="provider-marquee">
+        <div class="provider-track">
+          <span>Google Flights</span>
+          <span>Nominatim</span>
+          <span>RapidAPI</span>
+          <span>Hotels API</span>
+          <span>Airbnb API</span>
+          <span>Terrestrial Transport</span>
+          <span>Visa Requirements</span>
+          <span>TravelX Reservas</span>
+
+          <span>Google Flights</span>
+          <span>Nominatim</span>
+          <span>RapidAPI</span>
+          <span>Hotels API</span>
+          <span>Airbnb API</span>
+          <span>Terrestrial Transport</span>
+          <span>Visa Requirements</span>
+          <span>TravelX Reservas</span>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <footer class="bottom-footer">
-    <small>&copy; 2024 TravelX &mdash; Tus sueños viajeros, nuestras herramientas</small>
-  </footer>
+  <section class="feature-band">
+    <div class="feature-item">
+      <i class="fas fa-plane"></i>
+      <div>
+        <strong>Vuelos</strong>
+        <span>Búsquedas conectadas con proveedores externos.</span>
+      </div>
+    </div>
+
+    <div class="feature-item">
+      <i class="fas fa-hotel"></i>
+      <div>
+        <strong>Hospedajes</strong>
+        <span>Opciones pensadas para organizar el viaje completo.</span>
+      </div>
+    </div>
+
+    <div class="feature-item">
+      <i class="fas fa-file-invoice-dollar"></i>
+      <div>
+        <strong>Cotizaciones</strong>
+        <span>Reservas guardadas con comprobante descargable.</span>
+      </div>
+    </div>
+  </section>
 
 </div>

@@ -39,9 +39,6 @@ public class PersonaService implements CRUDOperation<PersonaDTO> {
 		try {
 			Persona entity = mapper.map(data, Persona.class);
 
-			if (findUsernameAlreadyTaken(data.getNombre())) {
-				return 1;
-			}
 			if (findCorreoAlreadyTaken(data.getCorreo())) {
 				return 2;
 			}
@@ -82,13 +79,9 @@ public class PersonaService implements CRUDOperation<PersonaDTO> {
 
 			Persona temp = found.get();
 
-			Optional<Persona> foundNombre = personaRepository.findByNombre(data.getNombre());
 			Optional<Persona> foundCorreo = personaRepository.findByCorreo(data.getCorreo());
 			Optional<Persona> foundDocumento = personaRepository.findByDocumento(data.getDocumento());
 
-			if (foundNombre.isPresent() && !foundNombre.get().getId().equals(id)) {
-				return 1;
-			}
 			if (foundCorreo.isPresent() && !foundCorreo.get().getId().equals(id)) {
 				return 2;
 			}
@@ -104,7 +97,9 @@ public class PersonaService implements CRUDOperation<PersonaDTO> {
 			temp.setDocumento(data.getDocumento());
 			temp.setCorreo(data.getCorreo());
 
-			if (data.getContrasena() != null && !data.getContrasena().isBlank()) {
+			if (data.getContrasena() != null
+					&& !data.getContrasena().isBlank()
+					&& !data.getContrasena().equals("NO_CAMBIAR_PASSWORD")) {
 				temp.setContrasena(passwordEncoder.encode(data.getContrasena()));
 			}
 

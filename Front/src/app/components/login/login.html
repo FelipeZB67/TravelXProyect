@@ -6,17 +6,22 @@
       <div class="back-btn" (click)="irABienvenida()">
         <i class="fas fa-arrow-left"></i> Volver
       </div>
+
       <div class="left-card">
         <p class="left-eyebrow">
           <i class="fas fa-sun"></i> Bienvenido de nuevo
         </p>
+
         <h2 class="left-title">Nos alegra <br> tenerte aquí</h2>
+
         <p class="left-slogan">
           Cada viaje comienza con un paso. El tuyo empieza aquí.
         </p>
+
         <div class="left-divider"></div>
+
         <p class="left-tagline">
-          <i class="fas fa-globe-americas"></i> TravelX &mdash; El mundo es tuyo
+          <i class="fas fa-globe-americas"></i> TravelX — El mundo es tuyo
         </p>
       </div>
     </div>
@@ -29,6 +34,13 @@
         <p class="form-subtitle">Ingresa tus datos para continuar</p>
       </div>
 
+      @if (error) {
+        <div class="alert-mensaje alert-error">
+          <i class="fas fa-exclamation-circle"></i>
+          {{ error }}
+        </div>
+      }
+
       <div class="form-group">
         <label>Correo electrónico</label>
         <div class="input-wrapper">
@@ -38,6 +50,7 @@
             [(ngModel)]="correo"
             placeholder="tucorreo@ejemplo.com"
             class="form-input"
+            [disabled]="cargando"
           />
         </div>
       </div>
@@ -51,18 +64,26 @@
             [(ngModel)]="contrasena"
             placeholder="Tu contraseña"
             class="form-input"
+            [disabled]="cargando"
           />
-          <i class="fas toggle-eye"
-             [class.fa-eye]="!mostrarPassword"
-             [class.fa-eye-slash]="mostrarPassword"
-             (click)="togglePassword()">
+
+          <i
+            class="fas toggle-eye"
+            [class.fa-eye]="!mostrarPassword"
+            [class.fa-eye-slash]="mostrarPassword"
+            (click)="togglePassword()">
           </i>
         </div>
+
         <span class="forgot-link">¿Olvidaste tu contraseña?</span>
       </div>
 
-      <button class="btn-submit" (click)="iniciarSesion()">
-        <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+      <button class="btn-submit" (click)="iniciarSesion()" [disabled]="cargando">
+        @if (cargando) {
+          <i class="fas fa-spinner fa-spin"></i> Iniciando sesión
+        } @else {
+          <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+        }
       </button>
 
       <p class="switch-text">

@@ -7,13 +7,15 @@
     </div>
 
     <nav class="sidebar-nav">
-      <button class="nav-item" [class.active]="seccionActiva === 'usuarios'" (click)="seccionActiva = 'usuarios'">
+      <button class="nav-item" [class.active]="seccionActiva === 'usuarios'" (click)="cambiarSeccion('usuarios')">
         <i class="fas fa-users"></i> Usuarios
       </button>
-      <button class="nav-item" [class.active]="seccionActiva === 'administradores'" (click)="seccionActiva = 'administradores'">
+
+      <button class="nav-item" [class.active]="seccionActiva === 'administradores'" (click)="cambiarSeccion('administradores')">
         <i class="fas fa-user-shield"></i> Administradores
       </button>
-      <button class="nav-item" [class.active]="seccionActiva === 'reservas'" (click)="seccionActiva = 'reservas'">
+
+      <button class="nav-item" [class.active]="seccionActiva === 'reservas'" (click)="cambiarSeccion('reservas')">
         <i class="fas fa-calendar-check"></i> Reservas
       </button>
     </nav>
@@ -28,10 +30,19 @@
     <div class="content-header">
       <div class="header-left">
         <h1 class="content-title">
-          @if (seccionActiva === 'usuarios') { <i class="fas fa-users"></i> Usuarios }
-          @if (seccionActiva === 'administradores') { <i class="fas fa-user-shield"></i> Administradores }
-          @if (seccionActiva === 'reservas') { <i class="fas fa-calendar-check"></i> Reservas }
+          @if (seccionActiva === 'usuarios') {
+            <i class="fas fa-users"></i> Usuarios
+          }
+
+          @if (seccionActiva === 'administradores') {
+            <i class="fas fa-user-shield"></i> Administradores
+          }
+
+          @if (seccionActiva === 'reservas') {
+            <i class="fas fa-calendar-check"></i> Reservas
+          }
         </h1>
+
         <p class="content-subtitle">{{ datosActivos.length }} registros en total</p>
       </div>
 
@@ -53,6 +64,7 @@
           @for (col of columnasActivas; track col) {
             <th>{{ nombreColumna(col) }}</th>
           }
+
           <th>Acciones</th>
         </tr>
         </thead>
@@ -64,7 +76,7 @@
                 <td>
                   @if (col === 'estado') {
                     <span class="badge"
-                          [class.badge-activo]="item[col] === 'Activo' || item[col] === 'Confirmada' || item[col] === 'Disponible'"
+                          [class.badge-activo]="item[col] === 'Activo' || item[col] === 'Confirmada' || item[col] === 'Disponible' || item[col] === 'Guardada'"
                           [class.badge-pendiente]="item[col] === 'Pendiente'"
                           [class.badge-inactivo]="item[col] === 'Inactivo' || item[col] === 'Cancelada' || item[col] === 'No disponible'">
                       {{ item[col] }}
@@ -102,9 +114,18 @@
       <div class="modal-header">
         <h2>
           {{ modoEdicion ? 'Editar' : 'Agregar' }}
-          @if (seccionActiva === 'usuarios') { usuario }
-          @if (seccionActiva === 'administradores') { administrador }
-          @if (seccionActiva === 'reservas') { reserva }
+
+          @if (seccionActiva === 'usuarios') {
+            usuario
+          }
+
+          @if (seccionActiva === 'administradores') {
+            administrador
+          }
+
+          @if (seccionActiva === 'reservas') {
+            reserva
+          }
         </h2>
 
         <button class="modal-close" (click)="modalAbierto = false">
@@ -113,6 +134,12 @@
       </div>
 
       <div class="modal-body">
+        @if (errorModal) {
+          <div class="estado-msg error">
+            <i class="fas fa-exclamation-circle"></i> {{ errorModal }}
+          </div>
+        }
+
         @if (seccionActiva === 'reservas') {
           <div class="form-grid">
             <div class="form-group">
@@ -269,9 +296,16 @@
       </div>
 
       <div class="modal-footer">
-        <button class="btn-cancelar" (click)="modalAbierto = false">Cancelar</button>
-        <button class="btn-guardar" (click)="guardar()">
-          <i class="fas fa-save"></i> Guardar
+        <button class="btn-cancelar" (click)="modalAbierto = false" [disabled]="guardando">
+          Cancelar
+        </button>
+
+        <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">
+          @if (guardando) {
+            <i class="fas fa-spinner fa-spin"></i> Guardando
+          } @else {
+            <i class="fas fa-save"></i> Guardar
+          }
         </button>
       </div>
     </div>
@@ -286,9 +320,18 @@
       </div>
 
       <h2>
-        @if (seccionActiva === 'reservas') { Eliminar reserva }
-        @else { Eliminar usuario }
+        @if (seccionActiva === 'reservas') {
+          Eliminar reserva
+        } @else {
+          Eliminar usuario
+        }
       </h2>
+
+      @if (errorModal) {
+        <div class="estado-msg error">
+          <i class="fas fa-exclamation-circle"></i> {{ errorModal }}
+        </div>
+      }
 
       <p>
         ¿Seguro que deseas eliminar

@@ -10,9 +10,11 @@
       <button class="tab-btn" [class.active]="tabActivo === 'aereo'" (click)="cambiarTab('aereo')">
         <i class="fas fa-plane"></i> Aéreos
       </button>
+
       <button class="tab-btn" [class.active]="tabActivo === 'terrestre'" (click)="cambiarTab('terrestre')">
         <i class="fas fa-bus"></i> Terrestres
       </button>
+
       <button class="tab-btn" [class.active]="tabActivo === 'hotel'" (click)="cambiarTab('hotel')">
         <i class="fas fa-hotel"></i> Hoteles
       </button>
@@ -22,6 +24,11 @@
       <button class="btn-logout" (click)="irACotizacion()">
         <i class="fas fa-file-invoice-dollar"></i> Cotizaciones
       </button>
+
+      <button class="btn-logout" (click)="abrirCuenta()">
+        <i class="fas fa-user-circle"></i> Cuenta
+      </button>
+
       <button class="btn-logout" (click)="cerrarSesion()">
         <i class="fas fa-sign-out-alt"></i> Salir
       </button>
@@ -33,15 +40,31 @@
 
     <div class="hero-bar-content">
       <h1 class="hero-title animate__animated animate__fadeInDown">
-        @if (tabActivo === 'aereo') { <i class="fas fa-plane-departure"></i> Viajes Aéreos }
-        @if (tabActivo === 'terrestre') { <i class="fas fa-route"></i> Viajes Terrestres }
-        @if (tabActivo === 'hotel') { <i class="fas fa-concierge-bell"></i> Hoteles }
+        @if (tabActivo === 'aereo') {
+          <i class="fas fa-plane-departure"></i> Viajes Aéreos
+        }
+
+        @if (tabActivo === 'terrestre') {
+          <i class="fas fa-route"></i> Viajes Terrestres
+        }
+
+        @if (tabActivo === 'hotel') {
+          <i class="fas fa-concierge-bell"></i> Hoteles
+        }
       </h1>
 
       <p class="hero-subtitle animate__animated animate__fadeInUp">
-        @if (tabActivo === 'aereo') { Explora destinos alrededor del mundo }
-        @if (tabActivo === 'terrestre') { Descubre rutas disponibles por tierra }
-        @if (tabActivo === 'hotel') { Encuentra hospedajes para tu destino }
+        @if (tabActivo === 'aereo') {
+          Explora destinos alrededor del mundo
+        }
+
+        @if (tabActivo === 'terrestre') {
+          Descubre rutas disponibles por tierra
+        }
+
+        @if (tabActivo === 'hotel') {
+          Encuentra hospedajes para tu destino
+        }
       </p>
 
       <div class="filtros-card">
@@ -150,10 +173,12 @@
               <input type="checkbox" [(ngModel)]="piscinaInput">
               Piscina
             </label>
+
             <label>
               <input type="checkbox" [(ngModel)]="jacuzziInput">
               Jacuzzi
             </label>
+
             <label>
               <input type="checkbox" [(ngModel)]="petFriendlyInput">
               Pet friendly
@@ -188,10 +213,19 @@
         <div class="viaje-card animate__animated animate__fadeInUp" [class.card-disabled]="!item.available">
           <div class="card-image">
             <img [src]="imagenItem(item)" [alt]="item.title || 'Opción TravelX'">
+
             <div class="card-badge">
-              @if (item.type === 'FLIGHT') { <i class="fas fa-plane"></i> }
-              @if (item.type === 'BUS') { <i class="fas fa-bus"></i> }
-              @if (item.type === 'AIRBNB' || item.type === 'HOTEL') { <i class="fas fa-hotel"></i> }
+              @if (item.type === 'FLIGHT') {
+                <i class="fas fa-plane"></i>
+              }
+
+              @if (item.type === 'BUS') {
+                <i class="fas fa-bus"></i>
+              }
+
+              @if (item.type === 'AIRBNB' || item.type === 'HOTEL') {
+                <i class="fas fa-hotel"></i>
+              }
             </div>
           </div>
 
@@ -201,16 +235,17 @@
             <div class="card-route route-detailed">
               @if (item.type !== 'AIRBNB' && item.type !== 'HOTEL') {
                 <span>
-              <i class="fas fa-map-marker-alt"></i>
+                  <i class="fas fa-map-marker-alt"></i>
                   {{ item.originCity }}, {{ item.originCountry }}
-            </span>
+                </span>
+
                 <i class="fas fa-arrow-right route-arrow"></i>
               }
 
               <span>
-            <i class="fas fa-map-marker-alt destino-icon"></i>
+                <i class="fas fa-map-marker-alt destino-icon"></i>
                 {{ item.destinationCity }}, {{ item.destinationCountry }}
-          </span>
+              </span>
             </div>
 
             <p class="card-description">{{ descripcionItem(item) }}</p>
@@ -219,6 +254,7 @@
               <div class="card-duration">
                 <i class="fas fa-calendar"></i> {{ item.departureDate }} - {{ item.returnDate }}
               </div>
+
               <div class="card-price">
                 {{ precioItem(item) }}
               </div>
@@ -238,3 +274,119 @@
   </div>
 
 </div>
+
+@if (modalCuentaAbierto) {
+  <div class="cuenta-overlay" (click)="cerrarCuenta()">
+    <div class="cuenta-modal" (click)="$event.stopPropagation()">
+      <div class="cuenta-header">
+        <div>
+          <h2><i class="fas fa-user-circle"></i> Mi cuenta</h2>
+          <p>Consulta y actualiza tus datos personales</p>
+        </div>
+
+        <button class="cuenta-close" (click)="cerrarCuenta()" [disabled]="guardandoCuenta || eliminandoCuenta">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="cuenta-body">
+        @if (cargandoCuenta) {
+          <div class="cuenta-message">
+            <i class="fas fa-spinner fa-spin"></i> Cargando datos de la cuenta...
+          </div>
+        } @else {
+          @if (errorCuenta) {
+            <div class="cuenta-alert cuenta-error">
+              <i class="fas fa-exclamation-circle"></i> {{ errorCuenta }}
+            </div>
+          }
+
+          @if (mensajeCuenta) {
+            <div class="cuenta-alert cuenta-success">
+              <i class="fas fa-check-circle"></i> {{ mensajeCuenta }}
+            </div>
+          }
+
+          <div class="cuenta-grid">
+            <div class="cuenta-field">
+              <label>Nombre</label>
+              <div class="cuenta-input-shell">
+                <i class="fas fa-user"></i>
+                <input class="cuenta-input" [(ngModel)]="cuentaFormulario.nombre" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="cuenta-field">
+              <label>Correo</label>
+              <div class="cuenta-input-shell readonly">
+                <i class="fas fa-lock"></i>
+                <input class="cuenta-input" [(ngModel)]="cuentaFormulario.correo" disabled>
+              </div>
+            </div>
+
+            <div class="cuenta-field">
+              <label>Documento</label>
+              <div class="cuenta-input-shell">
+                <i class="fas fa-id-card"></i>
+                <input class="cuenta-input" [(ngModel)]="cuentaFormulario.documento" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="cuenta-field">
+              <label>Nueva contraseña</label>
+              <div class="cuenta-input-shell">
+                <i class="fas fa-lock"></i>
+                <input class="cuenta-input" type="password" [(ngModel)]="cuentaFormulario.contrasena" placeholder="Opcional">
+              </div>
+            </div>
+          </div>
+
+          @if (modalEliminarCuentaAbierto) {
+            <div class="cuenta-delete-box">
+              <div>
+                <strong>¿Eliminar tu cuenta?</strong>
+                <span>Esta acción no se puede deshacer.</span>
+              </div>
+
+              <div class="cuenta-delete-actions">
+                <button class="btn-cuenta-cancel" (click)="cancelarEliminarCuenta()" [disabled]="eliminandoCuenta">
+                  Cancelar
+                </button>
+
+                <button class="btn-cuenta-danger" (click)="confirmarEliminarCuenta()" [disabled]="eliminandoCuenta">
+                  @if (eliminandoCuenta) {
+                    <i class="fas fa-spinner fa-spin"></i> Eliminando
+                  } @else {
+                    <i class="fas fa-trash"></i> Confirmar
+                  }
+                </button>
+              </div>
+            </div>
+          }
+        }
+      </div>
+
+      @if (!cargandoCuenta) {
+        <div class="cuenta-footer">
+          <button class="btn-cuenta-danger-soft" (click)="abrirEliminarCuenta()" [disabled]="guardandoCuenta || eliminandoCuenta">
+            <i class="fas fa-trash"></i> Eliminar cuenta
+          </button>
+
+          <div class="cuenta-footer-actions">
+            <button class="btn-cuenta-cancel" (click)="cerrarCuenta()" [disabled]="guardandoCuenta || eliminandoCuenta">
+              Cerrar
+            </button>
+
+            <button class="btn-cuenta-save" (click)="guardarCuenta()" [disabled]="guardandoCuenta || eliminandoCuenta">
+              @if (guardandoCuenta) {
+                <i class="fas fa-spinner fa-spin"></i> Guardando
+              } @else {
+                <i class="fas fa-save"></i> Guardar cambios
+              }
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}
