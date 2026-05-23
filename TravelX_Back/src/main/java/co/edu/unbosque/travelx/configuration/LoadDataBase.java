@@ -27,7 +27,7 @@ public class LoadDataBase {
 				Log.info("El admin ya existe, omitiendo creación...");
 			} else {
 				personaRepo.save(new Persona("admini", "0000000001", "admin@unbosque.edu.co", encoder.encode("1234567890"),
-						Persona.TipoUsuario.ADMINISTRADOR, null));
+						Persona.TipoUsuario.ADMINISTRADOR));
 
 				Log.info("Precargado admin con éxito");
 			}
@@ -38,7 +38,7 @@ public class LoadDataBase {
 				Log.info("El usuario normal ya existe, omitiendo creación...");
 			} else {
 				personaRepo.save(new Persona("user", "1000000002", "user@travelx.com", encoder.encode("1234567890"),
-						Persona.TipoUsuario.USUARIO, null));
+						Persona.TipoUsuario.USUARIO));
 
 				Log.info("Precargado usuario normal con éxito");
 			}
@@ -49,7 +49,7 @@ public class LoadDataBase {
 				Log.info("El usuario sin rol ya existe, omitiendo creación...");
 			} else {
 				personaRepo.save(new Persona("ninguno", "1000000003", "ninguno@travelx.com",
-						encoder.encode("1234567890"), Persona.TipoUsuario.NINGUNO, null));
+						encoder.encode("1234567890"), Persona.TipoUsuario.NINGUNO));
 
 				Log.info("Precargado usuario sin rol con éxito");
 			}
