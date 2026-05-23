@@ -41,6 +41,19 @@ public class SecurityConfig {
 						.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 						.requestMatchers("/persona/create", "/persona/createjson").permitAll()
 						.requestMatchers("/persona/getall", "/persona/getbycorreo", "/persona/deletebyid/**").permitAll()
+
+						// TEMPORAL: endpoints publicos para probar APIs externas
+						.requestMatchers("/visa/**").permitAll()
+						.requestMatchers("/hotel/**").permitAll()
+						.requestMatchers("/airbnb/**").permitAll()
+						.requestMatchers("/google-flights/**").permitAll()
+						.requestMatchers("/kiwi/**").permitAll()
+						.requestMatchers("/terrestrial/**").permitAll()
+						.requestMatchers("/travel-search/**").permitAll()
+						.requestMatchers("/nominatim/**").permitAll()
+						.requestMatchers("/reservas/**").permitAll()
+						.requestMatchers("/google-flights-airport", "/google-flights-airport/**").permitAll()
+						
 						.requestMatchers("/persona/**").hasRole("ADMINISTRADOR")
 						.anyRequest().authenticated())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

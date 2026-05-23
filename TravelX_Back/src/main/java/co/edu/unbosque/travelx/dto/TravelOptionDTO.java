@@ -1,78 +1,45 @@
-package co.edu.unbosque.travelx.entity;
+package co.edu.unbosque.travelx.dto;
 
-import java.time.LocalDateTime;
+public class TravelOptionDTO {
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
+	private String provider; 
+	private String type; 
 
-@Entity
-@Table(name = "reserva")
-public class Reserva {
-
-	private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
-
-	private String username;
-
-	private String provider;
-	private String type;
 	private String title;
-
-	@Column(length = 1000)
 	private String description;
 
 	private String originCity;
 	private String originCountry;
 	private String destinationCity;
 	private String destinationCountry;
+
 	private String departureDate;
 	private String returnDate;
+
 	private String currency;
 	private Double price;
 	private String priceText;
+
 	private Integer adults;
 	private Integer children;
 	private Integer pets;
+
 	private String travelClass;
+
 	private Boolean hasPool;
 	private Boolean hasJacuzzi;
 	private Boolean petFriendly;
+
 	private Boolean available;
 	private String bookingUrl;
+
 	private Integer providerStatusCode;
 	private Boolean providerSuccess;
-
-	@Column(length = 1000)
 	private String providerMessage;
 
-	@Lob
-	@Column(columnDefinition = "LONGTEXT")
 	private String providerResponse;
 
-	private LocalDateTime fechaCreacion;
-
-	public Reserva() {
-		this.fechaCreacion = LocalDateTime.now();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
+	public TravelOptionDTO() {
 	}
 
 	public String getProvider() {
@@ -283,12 +250,5 @@ public class Reserva {
 		this.providerResponse = providerResponse;
 	}
 
-	public LocalDateTime getFechaCreacion() {
-		return fechaCreacion;
-	}
-
-	public void setFechaCreacion(LocalDateTime fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
-	}
 	
 }

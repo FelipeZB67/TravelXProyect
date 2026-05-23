@@ -26,9 +26,9 @@ import jakarta.persistence.Table;
 public class Persona implements UserDetails {
 
 	private static final long serialVersionUID = 57710312743121686L;
-	
+
 	private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
-	
+
 	@Column(unique = true)
 	private String nombre;
 
@@ -42,14 +42,10 @@ public class Persona implements UserDetails {
 
 	@Enumerated(EnumType.STRING)
 	private TipoUsuario tipoUsuario;
-	
+
 	private String codigoVerificacion;
 
 	private boolean correoVerificado;
-	
-	@JsonIgnore
-	@OneToMany(mappedBy = "persona", cascade = CascadeType.ALL)
-	private List<Reserva> listaReservas;
 
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
@@ -65,24 +61,22 @@ public class Persona implements UserDetails {
 		this.tipoUsuario = TipoUsuario.NINGUNO;
 	}
 
-	public Persona(String nombre, String documento, String correo, String contrasena, List<Reserva> listaReservas) {
+	public Persona(String nombre, String documento, String correo, String contrasena) {
 		super();
 		this.nombre = nombre;
 		this.documento = documento;
 		this.correo = correo;
 		this.contrasena = contrasena;
-		this.listaReservas = listaReservas;
+
 	}
 
-	public Persona(String nombre, String documento, String correo, String contrasena, TipoUsuario tipoUsuario,
-			List<Reserva> listaReservas) {
+	public Persona(String nombre, String documento, String correo, String contrasena, TipoUsuario tipoUsuario) {
 		super();
 		this.nombre = nombre;
 		this.documento = documento;
 		this.correo = correo;
 		this.contrasena = contrasena;
 		this.tipoUsuario = tipoUsuario;
-		this.listaReservas = listaReservas;
 	}
 
 	public enum TipoUsuario {
@@ -107,13 +101,12 @@ public class Persona implements UserDetails {
 	@Override
 	public String toString() {
 		return "Persona [id=" + id + ", nombre=" + nombre + ", documento=" + documento + ", correo=" + correo
-				+ ", contrasena=" + contrasena + ", tipoUsuario=" + tipoUsuario + ", listaReservas=" + listaReservas
-				+ "]";
+				+ ", contrasena=" + contrasena + ", tipoUsuario=" + tipoUsuario + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(contrasena, correo, documento, id, listaReservas, nombre, tipoUsuario);
+		return Objects.hash(contrasena, correo, documento, id, nombre, tipoUsuario);
 	}
 
 	@Override
@@ -127,8 +120,7 @@ public class Persona implements UserDetails {
 		Persona other = (Persona) obj;
 		return Objects.equals(contrasena, other.contrasena) && Objects.equals(correo, other.correo)
 				&& Objects.equals(documento, other.documento) && Objects.equals(id, other.id)
-				&& Objects.equals(listaReservas, other.listaReservas) && Objects.equals(nombre, other.nombre)
-				&& tipoUsuario == other.tipoUsuario;
+				&& Objects.equals(nombre, other.nombre) && tipoUsuario == other.tipoUsuario;
 	}
 
 	public Long getId() {
@@ -179,14 +171,6 @@ public class Persona implements UserDetails {
 		this.tipoUsuario = tipoUsuario;
 	}
 
-	public List<Reserva> getListaReservas() {
-		return listaReservas;
-	}
-
-	public void setListaReservas(List<Reserva> listaReservas) {
-		this.listaReservas = listaReservas;
-	}
-
 	public boolean isAccountNonExpired() {
 		return accountNonExpired;
 	}
@@ -218,7 +202,7 @@ public class Persona implements UserDetails {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
+
 	public String getCodigoVerificacion() {
 		return codigoVerificacion;
 	}
