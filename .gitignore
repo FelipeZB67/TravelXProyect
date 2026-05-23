@@ -48,3 +48,17 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 /Front/.angular
+
+# Eclipse / Spring Tool Suite workspace files
+.metadata/
+.project
+.classpath
+.settings/
+
+# Maven / Java build output
+target/
+
+# IDE caches
+.factorypath
+.springBeans
+.sts4-cache/
