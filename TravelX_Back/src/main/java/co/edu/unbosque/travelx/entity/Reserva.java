@@ -1,84 +1,63 @@
 package co.edu.unbosque.travelx.entity;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "reserva")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Reserva {
-	
+
 	private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
-	
-	@ManyToOne
-	@JoinColumn(name = "persona_id", nullable = false)
-	private Persona persona;
-	
-	
-	@Enumerated(EnumType.STRING)
-	private MetodoTransporte metodoTransporte;
-	
-	private LocalDate fechaInicio;
-	private LocalDate fechaFin;
-	
-	private String ciudadOrigen;
-	private String ciudadDestino;
-	private double precioTransporte;
-	private String hotel;
-	private double precioHospedaje;
-	@JsonIgnore
-	@OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
-	private List<Mascota> listaMascotas;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
-	private List<Viajero> listaViajeros;
-	
-	public enum MetodoTransporte {
-		TERRESTRE, NAVAL, AEREO
-	}
-	
+	private String username;
+
+	private String provider;
+	private String type;
+	private String title;
+
+	@Column(length = 1000)
+	private String description;
+
+	private String originCity;
+	private String originCountry;
+	private String destinationCity;
+	private String destinationCountry;
+	private String departureDate;
+	private String returnDate;
+	private String currency;
+	private Double price;
+	private String priceText;
+	private Integer adults;
+	private Integer children;
+	private Integer pets;
+	private String travelClass;
+	private Boolean hasPool;
+	private Boolean hasJacuzzi;
+	private Boolean petFriendly;
+	private Boolean available;
+	private String bookingUrl;
+	private Integer providerStatusCode;
+	private Boolean providerSuccess;
+
+	@Column(length = 1000)
+	private String providerMessage;
+
+	@Lob
+	@Column(columnDefinition = "LONGTEXT")
+	private String providerResponse;
+
+	private LocalDateTime fechaCreacion;
+
 	public Reserva() {
-		// TODO Auto-generated constructor stub
+		this.fechaCreacion = LocalDateTime.now();
 	}
-
-	
-
-	public Reserva(Persona persona, MetodoTransporte metodoTransporte, LocalDate fechaInicio, LocalDate fechaFin,
-			String ciudadOrigen, String ciudadDestino, double precioTransporte, String hotel, double precioHospedaje,
-			List<Mascota> listaMascotas, List<Viajero> listaViajeros) {
-		super();
-		this.persona = persona;
-		this.metodoTransporte = metodoTransporte;
-		this.fechaInicio = fechaInicio;
-		this.fechaFin = fechaFin;
-		this.ciudadOrigen = ciudadOrigen;
-		this.ciudadDestino = ciudadDestino;
-		this.precioTransporte = precioTransporte;
-		this.hotel = hotel;
-		this.precioHospedaje = precioHospedaje;
-		this.listaMascotas = listaMascotas;
-		this.listaViajeros = listaViajeros;
-	}
-
-
 
 	public Long getId() {
 		return id;
@@ -88,122 +67,228 @@ public class Reserva {
 		this.id = id;
 	}
 
-	public Persona getPersona() {
-		return persona;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setPersona(Persona persona) {
-		this.persona = persona;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getHotel() {
-		return hotel;
+	public String getProvider() {
+		return provider;
 	}
 
-	public void setHotel(String hotel) {
-		this.hotel = hotel;
+	public void setProvider(String provider) {
+		this.provider = provider;
 	}
 
-	public MetodoTransporte getMetodoTransporte() {
-		return metodoTransporte;
+	public String getType() {
+		return type;
 	}
 
-	public void setMetodoTransporte(MetodoTransporte metodoTransporte) {
-		this.metodoTransporte = metodoTransporte;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public LocalDate getFechaInicio() {
-		return fechaInicio;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setFechaInicio(LocalDate fechaInicio) {
-		this.fechaInicio = fechaInicio;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public LocalDate getFechaFin() {
-		return fechaFin;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setFechaFin(LocalDate fechaFin) {
-		this.fechaFin = fechaFin;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public String getCiudadOrigen() {
-		return ciudadOrigen;
+	public String getOriginCity() {
+		return originCity;
 	}
 
-	public void setCiudadOrigen(String ciudadOrigen) {
-		this.ciudadOrigen = ciudadOrigen;
+	public void setOriginCity(String originCity) {
+		this.originCity = originCity;
 	}
 
-	public String getCiudadDestino() {
-		return ciudadDestino;
+	public String getOriginCountry() {
+		return originCountry;
 	}
 
-	public void setCiudadDestino(String ciudadDestino) {
-		this.ciudadDestino = ciudadDestino;
+	public void setOriginCountry(String originCountry) {
+		this.originCountry = originCountry;
 	}
 
-	public List<Mascota> getListaMascotas() {
-		return listaMascotas;
+	public String getDestinationCity() {
+		return destinationCity;
 	}
 
-	public void setListaMascotas(List<Mascota> listaMascotas) {
-		this.listaMascotas = listaMascotas;
+	public void setDestinationCity(String destinationCity) {
+		this.destinationCity = destinationCity;
 	}
 
-	public List<Viajero> getListaViajeros() {
-		return listaViajeros;
+	public String getDestinationCountry() {
+		return destinationCountry;
 	}
 
-	public void setListaViajeros(List<Viajero> listaViajeros) {
-		this.listaViajeros = listaViajeros;
+	public void setDestinationCountry(String destinationCountry) {
+		this.destinationCountry = destinationCountry;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(ciudadDestino, ciudadOrigen, fechaFin, fechaInicio, hotel, id, listaMascotas, listaViajeros,
-				metodoTransporte, persona);
+	public String getDepartureDate() {
+		return departureDate;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Reserva other = (Reserva) obj;
-		return Objects.equals(ciudadDestino, other.ciudadDestino) && Objects.equals(ciudadOrigen, other.ciudadOrigen)
-				&& Objects.equals(fechaFin, other.fechaFin) && Objects.equals(fechaInicio, other.fechaInicio)
-				&& Objects.equals(hotel, other.hotel) && Objects.equals(id, other.id)
-				&& Objects.equals(listaMascotas, other.listaMascotas)
-				&& Objects.equals(listaViajeros, other.listaViajeros) && metodoTransporte == other.metodoTransporte
-				&& Objects.equals(persona, other.persona);
+	public void setDepartureDate(String departureDate) {
+		this.departureDate = departureDate;
 	}
 
-	@Override
-	public String toString() {
-		return "Reserva [id=" + id + ", persona=" + persona + ", hotel=" + hotel + ", metodoTransporte="
-				+ metodoTransporte + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", ciudadOrigen="
-				+ ciudadOrigen + ", ciudadDestino=" + ciudadDestino + ", listaMascotas=" + listaMascotas
-				+ ", listaViajeros=" + listaViajeros + "]";
+	public String getReturnDate() {
+		return returnDate;
 	}
 
-	public double getPrecioTransporte() {
-		return precioTransporte;
+	public void setReturnDate(String returnDate) {
+		this.returnDate = returnDate;
 	}
 
-	public void setPrecioTransporte(double precioTransporte) {
-		this.precioTransporte = precioTransporte;
+	public String getCurrency() {
+		return currency;
 	}
 
-	public double getPrecioHospedaje() {
-		return precioHospedaje;
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 
-	public void setPrecioHospedaje(double precioHospedaje) {
-		this.precioHospedaje = precioHospedaje;
+	public Double getPrice() {
+		return price;
 	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public String getPriceText() {
+		return priceText;
+	}
+
+	public void setPriceText(String priceText) {
+		this.priceText = priceText;
+	}
+
+	public Integer getAdults() {
+		return adults;
+	}
+
+	public void setAdults(Integer adults) {
+		this.adults = adults;
+	}
+
+	public Integer getChildren() {
+		return children;
+	}
+
+	public void setChildren(Integer children) {
+		this.children = children;
+	}
+
+	public Integer getPets() {
+		return pets;
+	}
+
+	public void setPets(Integer pets) {
+		this.pets = pets;
+	}
+
+	public String getTravelClass() {
+		return travelClass;
+	}
+
+	public void setTravelClass(String travelClass) {
+		this.travelClass = travelClass;
+	}
+
+	public Boolean getHasPool() {
+		return hasPool;
+	}
+
+	public void setHasPool(Boolean hasPool) {
+		this.hasPool = hasPool;
+	}
+
+	public Boolean getHasJacuzzi() {
+		return hasJacuzzi;
+	}
+
+	public void setHasJacuzzi(Boolean hasJacuzzi) {
+		this.hasJacuzzi = hasJacuzzi;
+	}
+
+	public Boolean getPetFriendly() {
+		return petFriendly;
+	}
+
+	public void setPetFriendly(Boolean petFriendly) {
+		this.petFriendly = petFriendly;
+	}
+
+	public Boolean getAvailable() {
+		return available;
+	}
+
+	public void setAvailable(Boolean available) {
+		this.available = available;
+	}
+
+	public String getBookingUrl() {
+		return bookingUrl;
+	}
+
+	public void setBookingUrl(String bookingUrl) {
+		this.bookingUrl = bookingUrl;
+	}
+
+	public Integer getProviderStatusCode() {
+		return providerStatusCode;
+	}
+
+	public void setProviderStatusCode(Integer providerStatusCode) {
+		this.providerStatusCode = providerStatusCode;
+	}
+
+	public Boolean getProviderSuccess() {
+		return providerSuccess;
+	}
+
+	public void setProviderSuccess(Boolean providerSuccess) {
+		this.providerSuccess = providerSuccess;
+	}
+
+	public String getProviderMessage() {
+		return providerMessage;
+	}
+
+	public void setProviderMessage(String providerMessage) {
+		this.providerMessage = providerMessage;
+	}
+
+	public String getProviderResponse() {
+		return providerResponse;
+	}
+
+	public void setProviderResponse(String providerResponse) {
+		this.providerResponse = providerResponse;
+	}
+
+	public LocalDateTime getFechaCreacion() {
+		return fechaCreacion;
+	}
+
+	public void setFechaCreacion(LocalDateTime fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+	
 }

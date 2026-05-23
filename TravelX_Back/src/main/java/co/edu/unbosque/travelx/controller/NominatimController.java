@@ -1,35 +1,37 @@
 package co.edu.unbosque.travelx.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import co.edu.unbosque.travelx.dto.NominatimLocationDTO;
+import co.edu.unbosque.travelx.dto.NominatimResolvedLocationDTO;
 import co.edu.unbosque.travelx.service.NominatimService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
+@RequestMapping("/nominatim")
+@CrossOrigin(origins = { "http://localhost:8081", "*" })
+@Tag(name = "Nominatim", description = "Endpoints para resolver ciudades usando OpenStreetMap")
 public class NominatimController {
 
-    @Autowired
-    private NominatimService nominatimService;
+	@Autowired
+	private NominatimService nominatimService;
 
-    @GetMapping("/nominatim/hoteles/{indicePais}")
-    public List<NominatimLocationDTO> obtenerHotelesPorPais(@RequestParam int indicePais) {
-        return nominatimService.obtenerHotelesPorPais(indicePais);
-    }
+	@Operation(summary = "Buscar ciudad", description = "Resuelve ciudad y pais a latitud, longitud y datos normalizados.")
+	@GetMapping("/search")
+	public ResponseEntity<NominatimResolvedLocationDTO> search(
+			@RequestParam String city,
+			@RequestParam String country) {
 
-    @GetMapping("/nominatim/hoteles/{indicePais}/{limite}")
-    public List<NominatimLocationDTO> obtenerHotelesPorPaisConLimite(
-            @RequestParam int indicePais) {
+		NominatimResolvedLocationDTO response = nominatimService.searchCity(city, country);
 
-        return nominatimService.obtenerHotelesPorPais(indicePais);
-    }
+		if (Boolean.FALSE.equals(response.getFound())) {
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		}
 
-    @GetMapping("/nominatim/codigos-paises")
-    public List<String> obtenerCodigosPaises() {
-        return nominatimService.obtenerCodigosPaises();
-    }
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+	}
 }

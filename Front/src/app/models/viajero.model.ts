@@ -2,6 +2,6 @@ export interface ViajeroModel {
   id?:              number;
   nombre:           string;
   pasaporte:        string;
-  fechaNacimiento:  string;   // LocalDate → string 'YYYY-MM-DD'
+  fechaNacimiento:  string;
   esMayor:          boolean;
 }

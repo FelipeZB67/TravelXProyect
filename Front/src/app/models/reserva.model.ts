@@ -2,7 +2,7 @@ export interface Reserva {
   id?:               number;
   personaId:         number;
   metodoTransporte:  MetodoTransporte;
-  fechaInicio:       string;   // LocalDate → string 'YYYY-MM-DD'
+  fechaInicio:       string;
   fechaFin:          string;
   ciudadOrigen:      string;
   ciudadDestino:     string;
