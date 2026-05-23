@@ -7,10 +7,11 @@
     </div>
 
     <div class="navbar-tabs">
-      <button class="tab-btn" [class.active]="tabActivo === 'transporte'" (click)="tabActivo = 'transporte'">
+      <button class="tab-btn" [class.active]="tabActivo === 'transporte'" (click)="cambiarTab('transporte')">
         <i class="fas fa-plane"></i> Transporte
       </button>
-      <button class="tab-btn" [class.active]="tabActivo === 'hospedaje'" (click)="tabActivo = 'hospedaje'">
+
+      <button class="tab-btn" [class.active]="tabActivo === 'hospedaje'" (click)="cambiarTab('hospedaje')">
         <i class="fas fa-hotel"></i> Hospedaje
       </button>
     </div>
@@ -24,10 +25,12 @@
 
   <div class="cot-hero">
     <div class="hero-overlay"></div>
+
     <div class="hero-content">
       <h1 class="hero-title animate__animated animate__fadeInDown">
         <i class="fas fa-file-invoice-dollar"></i> Mis Cotizaciones
       </h1>
+
       <p class="hero-subtitle animate__animated animate__fadeInUp">
         Revisa tus reservas guardadas y genera el comprobante imprimible
       </p>
@@ -55,8 +58,13 @@
         </div>
       } @else {
         <div class="resumen-bar">
-          <span><i class="fas fa-list"></i> {{ reservasActivas.length }} cotización(es)</span>
-          <span class="resumen-total"><i class="fas fa-dollar-sign"></i> Total: ${{ totalActivo.toLocaleString('es-CO') }} USD</span>
+          <span>
+            <i class="fas fa-list"></i> {{ reservasActivas.length }} cotización(es)
+          </span>
+
+          <span class="resumen-total">
+            <i class="fas fa-dollar-sign"></i> Total: ${{ totalActivo.toLocaleString('es-CO') }} USD
+          </span>
         </div>
 
         <div class="cards-grid">
@@ -67,10 +75,14 @@
                 <i [class]="iconoReserva(reserva)"></i>
                 <span>{{ tipoReserva(reserva) }}</span>
 
-                @if (reserva.available) {
-                  <span class="visa-badge visa-ok"><i class="fas fa-check-circle"></i> Disponible</span>
+                @if (reserva.available === false) {
+                  <span class="visa-badge visa-req">
+                    <i class="fas fa-exclamation-circle"></i> No disponible
+                  </span>
                 } @else {
-                  <span class="visa-badge visa-req"><i class="fas fa-exclamation-circle"></i> No disponible</span>
+                  <span class="visa-badge visa-ok">
+                    <i class="fas fa-check-circle"></i> Disponible
+                  </span>
                 }
               </div>
 
@@ -79,41 +91,51 @@
                   @if (reserva.type !== 'AIRBNB' && reserva.type !== 'HOTEL') {
                     <div class="ruta-ciudad">
                       <span class="ruta-label">Origen</span>
-                      <span class="ruta-valor">{{ reserva.originCity }}</span>
-                      <span class="ruta-pais">{{ reserva.originCountry }}</span>
+                      <span class="ruta-valor">{{ reserva.originCity || 'No disponible' }}</span>
+                      <span class="ruta-pais">{{ reserva.originCountry || 'No disponible' }}</span>
                     </div>
-                    <div class="ruta-arrow"><i class="fas fa-arrow-right"></i></div>
+
+                    <div class="ruta-arrow">
+                      <i class="fas fa-arrow-right"></i>
+                    </div>
                   }
 
                   <div class="ruta-ciudad text-right">
                     <span class="ruta-label">Destino</span>
-                    <span class="ruta-valor">{{ reserva.destinationCity }}</span>
-                    <span class="ruta-pais">{{ reserva.destinationCountry }}</span>
+                    <span class="ruta-valor">{{ reserva.destinationCity || 'No disponible' }}</span>
+                    <span class="ruta-pais">{{ reserva.destinationCountry || 'No disponible' }}</span>
                   </div>
                 </div>
 
                 <div class="info-grid">
                   <div class="info-item">
                     <i class="fas fa-calendar"></i>
+
                     <div>
                       <span class="info-label">Fechas</span>
-                      <span class="info-valor">{{ reserva.departureDate }} → {{ reserva.returnDate }}</span>
+                      <span class="info-valor">
+                        {{ reserva.departureDate || 'No disponible' }} → {{ reserva.returnDate || 'No disponible' }}
+                      </span>
                     </div>
                   </div>
 
                   <div class="info-item">
                     <i class="fas fa-building"></i>
+
                     <div>
                       <span class="info-label">Proveedor</span>
-                      <span class="info-valor">{{ reserva.provider }}</span>
+                      <span class="info-valor">{{ reserva.provider || 'No disponible' }}</span>
                     </div>
                   </div>
 
                   <div class="info-item">
                     <i class="fas fa-circle-info"></i>
+
                     <div>
                       <span class="info-label">Detalle</span>
-                      <span class="info-valor">{{ reserva.description || reserva.providerMessage || reserva.title }}</span>
+                      <span class="info-valor">
+                        {{ reserva.description || reserva.providerMessage || reserva.title || 'Sin detalle disponible' }}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -127,8 +149,12 @@
               </div>
 
               <div class="card-footer">
-                <button class="btn-pdf" (click)="imprimir(reserva)">
-                  <i class="fas fa-print"></i> Imprimir comprobante
+                <button class="btn-pdf" (click)="imprimir(reserva)" [disabled]="esDescargaActiva(reserva)">
+                  @if (esDescargaActiva(reserva)) {
+                    <i class="fas fa-spinner fa-spin"></i> Generando
+                  } @else {
+                    <i class="fas fa-print"></i> Imprimir comprobante
+                  }
                 </button>
               </div>
 
