@@ -9,18 +9,17 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./registro.css']
 })
 export class RegistroComponent {
-
-  nombre: string = '';
-  documento: string = '';
-  correo: string = '';
-  contrasena: string = '';
-  confirmarPassword: string = '';
-  tipoUsuario: string = 'USUARIO';
-  mostrarPassword: boolean = false;
-  mostrarConfirmar: boolean = false;
-  cargando: boolean = false;
-  mensaje: string = '';
-  tipoMensaje: string = '';
+  nombre = '';
+  documento = '';
+  correo = '';
+  contrasena = '';
+  confirmarPassword = '';
+  tipoUsuario = 'USUARIO';
+  mostrarPassword = false;
+  mostrarConfirmar = false;
+  cargando = false;
+  mensaje = '';
+  tipoMensaje = '';
 
   constructor(
     private router: Router,
@@ -28,66 +27,30 @@ export class RegistroComponent {
     private cdr: ChangeDetectorRef
   ) {}
 
-  irABienvenida(): void { this.router.navigate(['/']); }
-  irALogin(): void { this.router.navigate(['/login']); }
+  irABienvenida(): void {
+    this.router.navigate(['/']);
+  }
+
+  irALogin(): void {
+    this.router.navigate(['/login']);
+  }
 
   registrarse(): void {
     this.nombre = this.nombre.trim();
     this.documento = this.documento.trim();
-    this.correo = this.correo.trim();
+    this.correo = this.correo.trim().toLowerCase();
+    this.mensaje = '';
+    this.tipoMensaje = '';
 
-    if (!this.nombre || !this.documento || !this.correo || !this.contrasena || !this.confirmarPassword) {
-      this.mostrarMensaje('Todos los campos son obligatorios', 'error');
-      return;
-    }
+    const validacion = this.validarFormulario();
 
-    if (this.nombre.length < 3) {
-      this.mostrarMensaje('El nombre debe tener al menos 3 caracteres', 'error');
-      return;
-    }
-    if (this.nombre.length > 60) {
-      this.mostrarMensaje('El nombre no puede tener más de 60 caracteres', 'error');
-      return;
-    }
-
-    const documentoRegex = /^[0-9]+$/;
-    if (!documentoRegex.test(this.documento)) {
-      this.mostrarMensaje('El documento solo puede contener números', 'error');
-      return;
-    }
-    if (this.documento.length < 6) {
-      this.mostrarMensaje('El documento debe tener al menos 6 dígitos', 'error');
-      return;
-    }
-    if (this.documento.length > 12) {
-      this.mostrarMensaje('El documento no puede tener más de 12 dígitos', 'error');
-      return;
-    }
-
-    const correoRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!correoRegex.test(this.correo)) {
-      this.mostrarMensaje('El correo electrónico no es válido', 'error');
-      return;
-    }
-    if (this.tipoUsuario === 'ADMINISTRADOR' && !this.correo.endsWith('@unbosque.edu.co')) {
-      this.mostrarMensaje('El correo ingresado no es válido para registrarse como administrador', 'error');
-      return;
-    }
-
-    if (this.contrasena.length < 8) {
-      this.mostrarMensaje('La contraseña debe tener al menos 8 caracteres', 'error');
-      return;
-    }
-    if (this.contrasena.length > 50) {
-      this.mostrarMensaje('La contraseña no puede tener más de 50 caracteres', 'error');
-      return;
-    }
-    if (this.contrasena !== this.confirmarPassword) {
-      this.mostrarMensaje('Las contraseñas no coinciden', 'error');
+    if (validacion) {
+      this.mostrarMensaje(validacion, 'error');
       return;
     }
 
     this.cargando = true;
+    this.cdr.detectChanges();
 
     const data = {
       nombre: this.nombre,
@@ -98,24 +61,14 @@ export class RegistroComponent {
     };
 
     this.authService.register(data).subscribe({
-      next: (res) => {
+      next: res => {
         this.cargando = false;
-        this.mostrarMensaje(res || 'Cuenta creada. Revisa tu correo.', 'success');
+        this.mostrarMensaje(res || 'Cuenta creada. Revisa tu correo para verificarla.', 'success');
         setTimeout(() => this.router.navigate(['/verificar-correo'], { queryParams: { correo: this.correo } }), 2000);
       },
-      error: (err) => {
+      error: err => {
         this.cargando = false;
-        if (err.status === 0) {
-          this.mostrarMensaje('No se pudo conectar con el servidor', 'error');
-        } else if (err.status === 409) {
-          this.mostrarMensaje(err.error || 'El correo o documento ya está registrado', 'error');
-        } else if (err.status === 400) {
-          this.mostrarMensaje(err.error || 'Datos inválidos', 'error');
-        } else if (err.status === 502) {
-          this.mostrarMensaje('No se pudo enviar el correo de verificación', 'error');
-        } else {
-          this.mostrarMensaje(err.error || 'Error al registrarse', 'error');
-        }
+        this.mostrarMensaje(this.obtenerMensajeError(err), 'error');
       }
     });
   }
@@ -124,9 +77,74 @@ export class RegistroComponent {
     this.mensaje = msg;
     this.tipoMensaje = tipo;
     this.cdr.detectChanges();
+
     setTimeout(() => {
       this.mensaje = '';
       this.cdr.detectChanges();
     }, 5000);
+  }
+
+  private validarFormulario(): string {
+    if (!this.nombre || !this.documento || !this.correo || !this.contrasena || !this.confirmarPassword) {
+      return 'Todos los campos son obligatorios.';
+    }
+
+    if (this.nombre.length < 3) {
+      return 'El nombre debe tener al menos 3 caracteres.';
+    }
+
+    if (this.nombre.length > 60) {
+      return 'El nombre no puede tener más de 60 caracteres.';
+    }
+
+    if (!/^[0-9]+$/.test(this.documento)) {
+      return 'El documento solo puede contener números.';
+    }
+
+    if (this.documento.length < 6) {
+      return 'El documento debe tener al menos 6 dígitos.';
+    }
+
+    if (this.documento.length > 12) {
+      return 'El documento no puede tener más de 12 dígitos.';
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.correo)) {
+      return 'El correo electrónico no es válido.';
+    }
+
+    if (this.tipoUsuario === 'ADMINISTRADOR' && !this.correo.endsWith('@unbosque.edu.co')) {
+      return 'El correo ingresado no es válido para registrarse como administrador.';
+    }
+
+    if (this.contrasena.length < 8) {
+      return 'La contraseña debe tener al menos 8 caracteres.';
+    }
+
+    if (this.contrasena.length > 50) {
+      return 'La contraseña no puede tener más de 50 caracteres.';
+    }
+
+    if (this.contrasena !== this.confirmarPassword) {
+      return 'Las contraseñas no coinciden.';
+    }
+
+    return '';
+  }
+
+  private obtenerMensajeError(err: any): string {
+    const mensajeBack = typeof err?.error === 'string'
+      ? err.error
+      : err?.error?.message;
+
+    if (err?.status === 0) return 'No se pudo conectar con el servidor. Revisa que el back esté corriendo.';
+    if (err?.status === 400) return mensajeBack || 'Los datos ingresados no son válidos.';
+    if (err?.status === 401) return 'No tienes autorización para realizar este registro.';
+    if (err?.status === 403) return mensajeBack || 'No tienes permisos para realizar esta acción.';
+    if (err?.status === 409) return mensajeBack || 'El nombre, correo o documento ya está registrado.';
+    if (err?.status === 502) return 'La cuenta se creó, pero no se pudo enviar el correo de verificación.';
+    if (err?.status >= 500) return 'El servidor tuvo un problema. Intenta de nuevo en unos minutos.';
+
+    return mensajeBack || 'No se pudo completar el registro.';
   }
 }
