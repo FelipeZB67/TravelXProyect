@@ -16,7 +16,7 @@ import jsPDF from 'jspdf';
  * Permite consultar reservas guardadas, filtrarlas por tipo y generar
  * comprobantes en formato PDF con el detalle de cada reserva.
  */
-export class Cotizacion implements OnInit {
+export class CotizacionComponent implements OnInit {
   tabActivo: 'transporte' | 'hospedaje' = 'transporte';
 
   reservas: TravelOptionModel[] = [];
