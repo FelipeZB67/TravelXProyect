@@ -30,25 +30,27 @@
     <div class="content-header">
       <div class="header-left">
         <h1 class="content-title">
-          @if (seccionActiva === 'usuarios') {
-            <i class="fas fa-users"></i> Usuarios
-          }
-
-          @if (seccionActiva === 'administradores') {
-            <i class="fas fa-user-shield"></i> Administradores
-          }
-
-          @if (seccionActiva === 'reservas') {
-            <i class="fas fa-calendar-check"></i> Reservas
-          }
+          @if (seccionActiva === 'usuarios') { <i class="fas fa-users"></i> Usuarios }
+          @if (seccionActiva === 'administradores') { <i class="fas fa-user-shield"></i> Administradores }
+          @if (seccionActiva === 'reservas') { <i class="fas fa-calendar-check"></i> Reservas }
         </h1>
 
         <p class="content-subtitle">{{ datosActivos.length }} registros en total</p>
       </div>
 
-      <button class="btn-agregar" (click)="abrirModalCrear()">
-        <i class="fas fa-plus"></i> Agregar
-      </button>
+      <div class="header-actions">
+        <button class="btn-actualizar" (click)="actualizarLista()" [disabled]="cargando">
+          @if (cargando) {
+            <i class="fas fa-spinner fa-spin"></i> Actualizando
+          } @else {
+            <i class="fas fa-rotate-right"></i> Actualizar
+          }
+        </button>
+
+        <button class="btn-agregar" (click)="abrirModalCrear()">
+          <i class="fas fa-plus"></i> Agregar
+        </button>
+      </div>
     </div>
 
     @if (error) {
@@ -57,6 +59,37 @@
       </div>
     }
 
+    <div class="filtros-admin">
+      <div class="filtro-busqueda">
+        <i class="fas fa-search"></i>
+        <input
+          type="text"
+          [(ngModel)]="filtroTexto"
+          [placeholder]="seccionActiva === 'reservas' ? 'Buscar por usuario, origen, destino o tipo' : 'Buscar por nombre, correo o documento'"
+        />
+      </div>
+
+      @if (seccionActiva === 'reservas') {
+        <select class="filtro-select" [(ngModel)]="filtroTipoReserva">
+          <option value="TODOS">Todos los tipos</option>
+          <option value="FLIGHT">Vuelo</option>
+          <option value="BUS">Terrestre</option>
+          <option value="HOTEL">Hotel</option>
+          <option value="AIRBNB">Airbnb</option>
+        </select>
+
+        <select class="filtro-select" [(ngModel)]="filtroEstadoReserva">
+          <option value="TODOS">Todos los estados</option>
+          <option value="Guardada">Guardada</option>
+          <option value="No disponible">No disponible</option>
+        </select>
+      }
+
+      <button class="btn-limpiar-filtros" (click)="limpiarFiltros()">
+        <i class="fas fa-broom"></i> Limpiar
+      </button>
+    </div>
+
     <div class="tabla-wrapper">
       <table class="tabla">
         <thead>
@@ -64,7 +97,6 @@
           @for (col of columnasActivas; track col) {
             <th>{{ nombreColumna(col) }}</th>
           }
-
           <th>Acciones</th>
         </tr>
         </thead>
@@ -114,18 +146,9 @@
       <div class="modal-header">
         <h2>
           {{ modoEdicion ? 'Editar' : 'Agregar' }}
-
-          @if (seccionActiva === 'usuarios') {
-            usuario
-          }
-
-          @if (seccionActiva === 'administradores') {
-            administrador
-          }
-
-          @if (seccionActiva === 'reservas') {
-            reserva
-          }
+          @if (seccionActiva === 'usuarios') { usuario }
+          @if (seccionActiva === 'administradores') { administrador }
+          @if (seccionActiva === 'reservas') { reserva }
         </h2>
 
         <button class="modal-close" (click)="modalAbierto = false">
@@ -296,10 +319,7 @@
       </div>
 
       <div class="modal-footer">
-        <button class="btn-cancelar" (click)="modalAbierto = false" [disabled]="guardando">
-          Cancelar
-        </button>
-
+        <button class="btn-cancelar" (click)="modalAbierto = false">Cancelar</button>
         <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">
           @if (guardando) {
             <i class="fas fa-spinner fa-spin"></i> Guardando
@@ -320,18 +340,9 @@
       </div>
 
       <h2>
-        @if (seccionActiva === 'reservas') {
-          Eliminar reserva
-        } @else {
-          Eliminar usuario
-        }
+        @if (seccionActiva === 'reservas') { Eliminar reserva }
+        @else { Eliminar usuario }
       </h2>
-
-      @if (errorModal) {
-        <div class="estado-msg error">
-          <i class="fas fa-exclamation-circle"></i> {{ errorModal }}
-        </div>
-      }
 
       <p>
         ¿Seguro que deseas eliminar

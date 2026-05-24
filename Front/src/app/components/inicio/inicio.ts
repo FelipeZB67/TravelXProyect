@@ -543,7 +543,7 @@ export class InicioComponent implements OnInit {
     this.guardandoCuenta = true;
     this.cdr.detectChanges();
 
-    this.personaService.update(this.usuarioActual.id, persona).subscribe({
+    this.personaService.updateMiCuenta(persona).subscribe({
       next: () => {
         this.guardandoCuenta = false;
         this.usuarioActual = persona;
@@ -604,9 +604,33 @@ export class InicioComponent implements OnInit {
   /** Retorna las opciones de búsqueda filtradas según el tab activo. */
   get itemsActivos(): TravelOptionModel[] {
     return this.opcionesBusqueda.filter(option => {
-      if (this.tabActivo === 'aereo') return option.type === 'FLIGHT';
-      if (this.tabActivo === 'terrestre') return option.type === 'BUS';
-      return option.type === 'AIRBNB' || option.type === 'HOTEL';
+      if (this.tabActivo === 'aereo') {
+        return option.type === 'FLIGHT';
+      }
+
+      if (this.tabActivo === 'terrestre') {
+        return option.type === 'BUS';
+      }
+
+      const esHospedaje = option.type === 'AIRBNB' || option.type === 'HOTEL';
+
+      if (!esHospedaje) {
+        return false;
+      }
+
+      if (this.petFriendlyInput && option.petFriendly !== true) {
+        return false;
+      }
+
+      if (this.piscinaInput && option.hasPool !== true) {
+        return false;
+      }
+
+      if (this.jacuzziInput && option.hasJacuzzi !== true) {
+        return false;
+      }
+
+      return true;
     });
   }
 
@@ -775,39 +799,74 @@ export class InicioComponent implements OnInit {
   }
 
   private validarFormularioBusqueda(): string {
-    if (!this.nombreCiudadValido(this.destinoInput)) {
+    const ciudadOrigen = this.origenInput.trim();
+    const ciudadDestino = this.destinoInput.trim();
+
+    const fechaSalidaIso = this.fechaInputAISO(this.fechaSalidaInput);
+    const fechaRegresoIso = this.fechaInputAISO(this.fechaRegresoInput);
+    const hoyIso = this.hoyAISO();
+
+    if (!ciudadDestino) {
       return 'Completa el nombre de la ciudad de destino.';
+    }
+
+    if (this.tabActivo !== 'hotel' && !ciudadOrigen) {
+      return 'Completa el nombre de la ciudad de origen.';
     }
 
     if (!this.paisDestinoInput) {
       return 'Selecciona el país de destino.';
     }
 
-    if (this.tabActivo !== 'hotel' && !this.nombreCiudadValido(this.origenInput)) {
-      return 'Completa el nombre de la ciudad de origen.';
-    }
-
     if (this.tabActivo !== 'hotel' && !this.paisOrigenInput) {
       return 'Selecciona el país de origen.';
     }
 
-    if (!this.fechaSalidaInput || !this.fechaRegresoInput) {
-      return 'Selecciona la fecha de ida y la fecha de regreso.';
+    if (!this.nombreCiudadValido(ciudadDestino)) {
+      return 'La ciudad de destino solo puede contener letras, espacios y tildes.';
     }
 
-    if (new Date(this.fechaRegresoInput) < new Date(this.fechaSalidaInput)) {
+    if (this.tabActivo !== 'hotel' && !this.nombreCiudadValido(ciudadOrigen)) {
+      return 'La ciudad de origen solo puede contener letras, espacios y tildes.';
+    }
+
+    if (!this.fechaSalidaInput) {
+      return 'Selecciona la fecha de ida.';
+    }
+
+    if (!fechaSalidaIso) {
+      return 'La fecha de ida no es válida.';
+    }
+
+    if (fechaSalidaIso < hoyIso) {
+      return 'La fecha de ida no puede ser anterior a hoy.';
+    }
+
+    if (!this.fechaRegresoInput) {
+      return 'Selecciona la fecha de regreso.';
+    }
+
+    if (!fechaRegresoIso) {
+      return 'La fecha de regreso no es válida.';
+    }
+
+    if (fechaRegresoIso < hoyIso) {
+      return 'La fecha de regreso no puede ser anterior a hoy.';
+    }
+
+    if (fechaRegresoIso < fechaSalidaIso) {
       return 'La fecha de regreso no puede ser anterior a la fecha de ida.';
     }
 
-    if ((Number(this.adultosInput) || 0) < 1) {
+    if (!this.adultosInput || this.adultosInput < 1) {
       return 'Debe viajar al menos un adulto.';
     }
 
-    if ((Number(this.ninosInput) || 0) < 0) {
+    if (this.ninosInput < 0) {
       return 'La cantidad de niños no puede ser negativa.';
     }
 
-    if ((Number(this.mascotasInput) || 0) < 0) {
+    if (this.mascotasInput < 0) {
       return 'La cantidad de mascotas no puede ser negativa.';
     }
 
@@ -825,6 +884,32 @@ export class InicioComponent implements OnInit {
       this.precioMaximoInput < this.precioMinimoInput
     ) {
       return 'El precio máximo no puede ser menor que el precio mínimo.';
+    }
+
+    return '';
+  }
+
+  private hoyAISO(): string {
+    const hoy = new Date();
+    const year = hoy.getFullYear();
+    const month = String(hoy.getMonth() + 1).padStart(2, '0');
+    const day = String(hoy.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+
+  private fechaInputAISO(valor: string): string {
+    if (!valor) return '';
+
+    const limpia = valor.trim();
+
+    if (/^\d{4}-\d{2}-\d{2}$/.test(limpia)) {
+      return limpia;
+    }
+
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(limpia)) {
+      const [dia, mes, anio] = limpia.split('/');
+      return `${anio}-${mes}-${dia}`;
     }
 
     return '';

@@ -103,8 +103,15 @@ export class RegistroComponent {
   }
 
   private validarFormulario(): string {
+    const nombreRegex = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$/;
+    const documentoRegex = /^[0-9]+$/;
+
     if (!this.nombre || !this.documento || !this.correo || !this.contrasena || !this.confirmarPassword) {
       return 'Todos los campos son obligatorios.';
+    }
+
+    if (!nombreRegex.test(this.nombre)) {
+      return 'El nombre solo puede contener letras y espacios. No uses números ni caracteres especiales.';
     }
 
     if (this.nombre.length < 3) {
@@ -115,8 +122,8 @@ export class RegistroComponent {
       return 'El nombre no puede tener más de 60 caracteres.';
     }
 
-    if (!/^[0-9]+$/.test(this.documento)) {
-      return 'El documento solo puede contener números.';
+    if (!documentoRegex.test(this.documento)) {
+      return 'El documento solo puede contener números. No uses signos, espacios ni valores negativos.';
     }
 
     if (this.documento.length < 6) {

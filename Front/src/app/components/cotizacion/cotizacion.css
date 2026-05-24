@@ -410,3 +410,126 @@
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   }
 }
+
+.card-footer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: .75rem;
+}
+
+.btn-delete-reserva {
+  min-height: 42px;
+  border: none;
+  border-radius: 12px;
+  padding: 0 1rem;
+  background: #ffe8e8;
+  color: #e74c3c;
+  font-size: .88rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  transition: all .2s ease;
+}
+
+.btn-delete-reserva:hover {
+  background: #e74c3c;
+  color: #ffffff;
+}
+
+.delete-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(15, 23, 42, 0.52);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-modal {
+  width: min(420px, calc(100vw - 3rem));
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.32);
+  text-align: center;
+}
+
+.delete-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  background: #ffe8e8;
+  color: #e74c3c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 1.35rem;
+}
+
+.delete-modal h2 {
+  margin: 0 0 .6rem;
+  color: var(--text-dark);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.delete-modal p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: .92rem;
+  line-height: 1.5;
+}
+
+.delete-modal strong {
+  color: var(--text-dark);
+}
+
+.delete-warning {
+  display: block;
+  margin-top: .7rem;
+  color: #e74c3c;
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.delete-actions {
+  display: flex;
+  justify-content: center;
+  gap: .8rem;
+  margin-top: 1.5rem;
+}
+
+.btn-delete-cancel,
+.btn-delete-confirm {
+  min-height: 42px;
+  border: none;
+  border-radius: 12px;
+  padding: 0 1.1rem;
+  font-size: .9rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+}
+
+.btn-delete-cancel {
+  background: #eef3f8;
+  color: #53657d;
+}
+
+.btn-delete-confirm {
+  background: #e74c3c;
+  color: #ffffff;
+}
+
+.btn-delete-cancel:disabled,
+.btn-delete-confirm:disabled,
+.btn-delete-reserva:disabled {
+  opacity: .65;
+}

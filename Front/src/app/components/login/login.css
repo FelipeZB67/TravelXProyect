@@ -235,19 +235,6 @@
   color: var(--primary);
 }
 
-.forgot-link {
-  display: block;
-  text-align: right;
-  font-size: .8rem;
-  color: var(--primary);
-  font-weight: 500;
-  margin-top: .5rem;
-}
-
-.forgot-link:hover {
-  text-decoration: underline;
-}
-
 .btn-submit {
   width: 100%;
   min-height: 48px;

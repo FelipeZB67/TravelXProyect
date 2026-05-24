@@ -35,6 +35,10 @@ export class AdminComponent implements OnInit {
   error = '';
   errorModal = '';
 
+  filtroTexto = '';
+  filtroTipoReserva = 'TODOS';
+  filtroEstadoReserva = 'TODOS';
+
   personas: PersonaModel[] = [];
   reservasGuardadas: TravelOptionModel[] = [];
 
@@ -57,28 +61,57 @@ export class AdminComponent implements OnInit {
   cargarTodo(): void {
     this.cargando = true;
     this.error = '';
+    this.errorModal = '';
     this.cdr.detectChanges();
 
-    this.personaService.getAll().subscribe({
-      next: data => {
-        this.personas = data ?? [];
-        this.cargando = false;
-        this.cdr.detectChanges();
-      },
-      error: err => {
-        this.error = this.obtenerMensajeError(err, 'No se pudieron cargar las personas.');
-        this.cargando = false;
-        this.cdr.detectChanges();
-      }
-    });
+    if (this.seccionActiva === 'usuarios') {
+      this.personaService.getAllUsuarios().subscribe({
+        next: data => {
+          this.personas = data ?? [];
+          this.reservasGuardadas = [];
+          this.cargando = false;
+          this.cdr.detectChanges();
+        },
+        error: err => {
+          this.personas = [];
+          this.cargando = false;
+          this.error = this.obtenerMensajeError(err, 'No se pudieron cargar los usuarios.');
+          this.cdr.detectChanges();
+        }
+      });
+
+      return;
+    }
+
+    if (this.seccionActiva === 'administradores') {
+      this.personaService.getAllAdministradores().subscribe({
+        next: data => {
+          this.personas = data ?? [];
+          this.reservasGuardadas = [];
+          this.cargando = false;
+          this.cdr.detectChanges();
+        },
+        error: err => {
+          this.personas = [];
+          this.cargando = false;
+          this.error = this.obtenerMensajeError(err, 'No se pudieron cargar los administradores.');
+          this.cdr.detectChanges();
+        }
+      });
+
+      return;
+    }
 
     this.reservaService.todas().subscribe({
       next: data => {
         this.reservasGuardadas = data ?? [];
+        this.personas = [];
+        this.cargando = false;
         this.cdr.detectChanges();
       },
       error: err => {
         this.reservasGuardadas = [];
+        this.cargando = false;
         this.error = this.obtenerMensajeError(err, 'No se pudieron cargar las reservas.');
         this.cdr.detectChanges();
       }
@@ -94,6 +127,8 @@ export class AdminComponent implements OnInit {
     this.seccionActiva = seccion;
     this.error = '';
     this.errorModal = '';
+    this.limpiarFiltros();
+    this.cargarTodo();
   }
 
   /**
@@ -142,9 +177,9 @@ export class AdminComponent implements OnInit {
 
   /** Retorna el conjunto de datos correspondiente a la sección activa. */
   get datosActivos(): any[] {
-    if (this.seccionActiva === 'usuarios') return this.usuarios;
-    if (this.seccionActiva === 'administradores') return this.administradores;
-    return this.reservas;
+    if (this.seccionActiva === 'usuarios') return this.aplicarFiltros(this.usuarios);
+    if (this.seccionActiva === 'administradores') return this.aplicarFiltros(this.administradores);
+    return this.aplicarFiltros(this.reservas);
   }
 
   /** Retorna las columnas que deben mostrarse según la sección activa. */
@@ -613,24 +648,92 @@ export class AdminComponent implements OnInit {
     return '';
   }
 
+  actualizarLista(): void {
+    this.error = '';
+    this.errorModal = '';
+    this.cargarTodo();
+  }
+
+  limpiarFiltros(): void {
+    this.filtroTexto = '';
+    this.filtroTipoReserva = 'TODOS';
+    this.filtroEstadoReserva = 'TODOS';
+  }
+
+  private aplicarFiltros(items: any[]): any[] {
+    const texto = this.normalizarFiltro(this.filtroTexto);
+
+    return items.filter(item => {
+      const coincideTexto = !texto || Object.values(item)
+        .some(value => this.normalizarFiltro(String(value ?? '')).includes(texto));
+
+      if (!coincideTexto) return false;
+
+      if (this.seccionActiva === 'reservas') {
+        const coincideTipo = this.filtroTipoReserva === 'TODOS' || item.transporte === this.filtroTipoReserva;
+        const coincideEstado = this.filtroEstadoReserva === 'TODOS' || item.estado === this.filtroEstadoReserva;
+
+        return coincideTipo && coincideEstado;
+      }
+
+      return true;
+    });
+  }
+
+  private normalizarFiltro(valor: string): string {
+    return valor
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toLowerCase();
+  }
+
   private obtenerMensajeError(err: any, mensajeDefault: string): string {
     const mensajeBack = typeof err?.error === 'string'
       ? err.error
       : err?.error?.message;
 
-    if (err?.status === 0) return 'No se pudo conectar con el servidor. Revisa que el back esté corriendo.';
-    if (err?.status === 400) return mensajeBack || 'Los datos enviados no son válidos.';
-    if (err?.status === 401) return 'Tu sesión expiró. Inicia sesión nuevamente.';
-    if (err?.status === 403) return 'No tienes permisos para realizar esta acción.';
-    if (err?.status === 404) return mensajeBack || 'No se encontró el registro solicitado.';
+    const mensajeNormalizado = (mensajeBack ?? '').toLowerCase();
+
+    if (err?.status === 0) {
+      return 'No se pudo conectar con el servidor. Revisa que el back esté corriendo.';
+    }
+
+    if (err?.status === 400) {
+      return mensajeBack || 'Los datos enviados no son válidos.';
+    }
+
+    if (err?.status === 401) {
+      return 'Tu sesión expiró. Inicia sesión nuevamente.';
+    }
+
+    if (err?.status === 403) {
+      return 'No tienes permisos para realizar esta acción.';
+    }
+
+    if (err?.status === 404) {
+      return mensajeBack || 'No se encontró el registro solicitado.';
+    }
 
     if (err?.status === 409) {
-      if (mensajeBack?.toLowerCase().includes('correo')) return 'Ya existe una cuenta con ese correo.';
-      if (mensajeBack?.toLowerCase().includes('documento')) return 'Ya existe una cuenta con ese documento.';
+      if (mensajeNormalizado.includes('nombre')) {
+        return 'Ya existe una cuenta con ese nombre.';
+      }
+
+      if (mensajeNormalizado.includes('correo')) {
+        return 'Ya existe una cuenta con ese correo.';
+      }
+
+      if (mensajeNormalizado.includes('documento')) {
+        return 'Ya existe una cuenta con ese documento.';
+      }
+
       return mensajeBack || 'Ya existe un registro con esos datos.';
     }
 
-    if (err?.status >= 500) return 'El servidor tuvo un problema. Intenta de nuevo en unos minutos.';
+    if (err?.status >= 500) {
+      return 'El servidor tuvo un problema. Intenta de nuevo en unos minutos.';
+    }
 
     return mensajeBack || mensajeDefault;
   }

@@ -62,9 +62,15 @@
         <label>Documento de identidad</label>
         <div class="input-wrapper">
           <i class="fas fa-id-card"></i>
-          <input type="text" [(ngModel)]="documento"
-                 placeholder="Tu número de documento" class="form-input"
-                 maxlength="12"/>
+          <input
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="12"
+            [(ngModel)]="documento"
+            placeholder="Documento"
+            class="form-input"
+          />
         </div>
       </div>
 
