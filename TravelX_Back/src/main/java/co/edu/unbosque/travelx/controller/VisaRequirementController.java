@@ -21,7 +21,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 @RestController
 @RequestMapping("/visa")
-@CrossOrigin(origins = { "http://localhost:8081", "*" })
 @Tag(name = "Consulta de Visa", description = "Endpoints para consultar si un viajero requiere visa")
 public class VisaRequirementController {
 

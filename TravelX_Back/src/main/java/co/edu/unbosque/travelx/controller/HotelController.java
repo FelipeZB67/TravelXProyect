@@ -21,7 +21,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 @RestController
 @RequestMapping("/hotel")
-@CrossOrigin(origins = { "http://localhost:8081", "*" })
 @Tag(name = "Consulta de Hoteles", description = "Endpoints para consultar hoteles desde RapidAPI")
 public class HotelController {
 

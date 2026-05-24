@@ -22,7 +22,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 @RestController
 @RequestMapping("/airbnb")
-@CrossOrigin(origins = { "http://localhost:8081", "*" })
 @Tag(name = "Consulta de Airbnb", description = "Endpoints para consultar alojamientos tipo Airbnb desde RapidAPI")
 public class AirbnbController {
 
