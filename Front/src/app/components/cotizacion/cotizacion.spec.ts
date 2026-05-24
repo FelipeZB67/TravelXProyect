@@ -1,17 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { Cotizacion } from './cotizacion';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CotizacionComponent } from './cotizacion';
+import { ReservaService } from '../../services/reserva.service';
 
 describe('Cotizacion', () => {
-  let component: Cotizacion;
-  let fixture: ComponentFixture<Cotizacion>;
+  let component: CotizacionComponent;
+  let fixture: ComponentFixture<CotizacionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [Cotizacion],
+      declarations: [CotizacionComponent],
+      imports: [RouterTestingModule, HttpClientTestingModule],
+      providers: [ReservaService],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Cotizacion);
+    fixture = TestBed.createComponent(CotizacionComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

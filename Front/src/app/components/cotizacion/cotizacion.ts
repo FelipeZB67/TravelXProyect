@@ -10,7 +10,13 @@ import jsPDF from 'jspdf';
   templateUrl: './cotizacion.html',
   styleUrl: './cotizacion.css'
 })
-export class Cotizacion implements OnInit {
+
+/**
+ * Componente para la visualización y gestión de cotizaciones del usuario.
+ * Permite consultar reservas guardadas, filtrarlas por tipo y generar
+ * comprobantes en formato PDF con el detalle de cada reserva.
+ */
+export class CotizacionComponent implements OnInit {
   tabActivo: 'transporte' | 'hospedaje' = 'transporte';
 
   reservas: TravelOptionModel[] = [];
@@ -24,10 +30,15 @@ export class Cotizacion implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
+  /** Carga las reservas del usuario al inicializar el componente. */
   ngOnInit(): void {
     this.cargarReservas();
   }
 
+  /**
+   * Obtiene las reservas del usuario desde el servicio de reservas.
+   * Actualiza el estado de carga y maneja los errores de la petición.
+   */
   cargarReservas(): void {
     this.cargando = true;
     this.error = '';
@@ -47,35 +58,52 @@ export class Cotizacion implements OnInit {
     });
   }
 
+  /**
+   * Cambia el tab activo entre transporte y hospedaje.
+   *
+   * @param tab tab a activar
+   */
   cambiarTab(tab: 'transporte' | 'hospedaje'): void {
     this.tabActivo = tab;
     this.error = '';
   }
 
+  /** Retorna las reservas de tipo vuelo o bus. */
   get reservasTransporte(): TravelOptionModel[] {
     return this.reservas.filter(reserva => reserva.type === 'FLIGHT' || reserva.type === 'BUS');
   }
 
+  /** Retorna las reservas de tipo Airbnb u hotel. */
   get reservasHospedaje(): TravelOptionModel[] {
     return this.reservas.filter(reserva => reserva.type === 'AIRBNB' || reserva.type === 'HOTEL');
   }
 
+  /** Retorna las reservas del tab activo. */
   get reservasActivas(): TravelOptionModel[] {
     return this.tabActivo === 'transporte' ? this.reservasTransporte : this.reservasHospedaje;
   }
 
+  /** Calcula el precio total de todas las reservas de transporte. */
   get totalTransporte(): number {
     return this.reservasTransporte.reduce((acc, reserva) => acc + (reserva.price ?? 0), 0);
   }
 
+  /** Calcula el precio total de todas las reservas de hospedaje. */
   get totalHospedaje(): number {
     return this.reservasHospedaje.reduce((acc, reserva) => acc + (reserva.price ?? 0), 0);
   }
 
+  /** Retorna el total correspondiente al tab activo. */
   get totalActivo(): number {
     return this.tabActivo === 'transporte' ? this.totalTransporte : this.totalHospedaje;
   }
 
+  /**
+   * Convierte el tipo interno de una reserva a su nombre legible en español.
+   *
+   * @param reserva reserva cuyo tipo se desea traducir
+   * @returns nombre legible del tipo de reserva
+   */
   tipoReserva(reserva: TravelOptionModel): string {
     if (reserva.type === 'FLIGHT') return 'Aéreo';
     if (reserva.type === 'BUS') return 'Terrestre';
@@ -84,28 +112,58 @@ export class Cotizacion implements OnInit {
     return reserva.type ?? 'Reserva';
   }
 
+  /**
+   * Retorna la clase de ícono FontAwesome correspondiente al tipo de reserva.
+   *
+   * @param reserva reserva de la que se obtiene el ícono
+   * @returns clase CSS del ícono
+   */
   iconoReserva(reserva: TravelOptionModel): string {
     if (reserva.type === 'FLIGHT') return 'fas fa-plane';
     if (reserva.type === 'BUS') return 'fas fa-road';
     return 'fas fa-hotel';
   }
 
+  /**
+   * Retorna la clase CSS asociada al tipo de reserva para aplicar estilos visuales.
+   *
+   * @param reserva reserva de la que se obtiene la clase
+   * @returns nombre de la clase CSS
+   */
   claseReserva(reserva: TravelOptionModel): string {
     if (reserva.type === 'FLIGHT') return 'internacional';
     if (reserva.type === 'BUS') return 'nacional';
     return 'hospedaje';
   }
 
+  /**
+   * Genera el texto formateado del precio de una reserva.
+   *
+   * @param reserva reserva de la que se obtiene el precio
+   * @returns texto con el precio y la moneda, o un mensaje si no está disponible
+   */
   precioReserva(reserva: TravelOptionModel): string {
     if (reserva.priceText) return reserva.priceText;
     if (reserva.price !== undefined && reserva.price !== null) return `${reserva.price.toLocaleString('es-CO')} ${reserva.currency ?? 'USD'}`;
     return 'Precio no disponible';
   }
 
+  /**
+   * Indica si una reserva está siendo descargada en este momento.
+   *
+   * @param reserva reserva a verificar
+   * @returns true si la reserva está en proceso de descarga
+   */
   esDescargaActiva(reserva: TravelOptionModel): boolean {
     return this.descargandoId === `${reserva.id ?? ''}`;
   }
 
+  /**
+   * Genera y descarga el comprobante PDF de una reserva.
+   * Construye el documento con encabezado visual, itinerario de viaje y detalle de compra.
+   *
+   * @param reserva reserva de la que se genera el comprobante
+   */
   async imprimir(reserva: TravelOptionModel): Promise<void> {
     if (!reserva.id) {
       this.error = 'No se encontró el identificador de la cotización.';
@@ -272,6 +330,7 @@ export class Cotizacion implements OnInit {
     }
   }
 
+  /** Navega hacia la vista de inicio. */
   volver(): void {
     this.router.navigate(['/inicio']);
   }

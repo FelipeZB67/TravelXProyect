@@ -1,0 +1,1043 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  BienvenidaComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/bienvenida/bienvenida.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-bienvenida</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./bienvenida.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./bienvenida.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#irALogin" >irALogin</a>
+                            </li>
+                            <li>
+                                <a href="#irARegistro" >irARegistro</a>
+                            </li>
+                            <li>
+                                <a href="#scrollAFeatures" >scrollAFeatures</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/components/bienvenida/bienvenida.ts:15</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="irALogin"></a>
+                    <span class="name">
+                        <span ><b>irALogin</b></span>
+                        <a href="#irALogin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>irALogin()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="20"
+                                    class="link-to-prism">src/app/components/bienvenida/bienvenida.ts:20</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navega hacia la vista de inicio de sesión.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="irARegistro"></a>
+                    <span class="name">
+                        <span ><b>irARegistro</b></span>
+                        <a href="#irARegistro"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>irARegistro()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="25"
+                                    class="link-to-prism">src/app/components/bienvenida/bienvenida.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navega hacia la vista de registro de usuarios.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="scrollAFeatures"></a>
+                    <span class="name">
+                        <span ><b>scrollAFeatures</b></span>
+                        <a href="#scrollAFeatures"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>scrollAFeatures()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="30"
+                                    class="link-to-prism">src/app/components/bienvenida/bienvenida.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Desplaza la vista suavemente hacia la sección de características de la página.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+
+@Component({
+  selector: &#x27;app-bienvenida&#x27;,
+  templateUrl: &#x27;./bienvenida.html&#x27;,
+  styleUrls: [&#x27;./bienvenida.css&#x27;],
+  standalone: false
+})
+/**
+ * Componente de bienvenida de la aplicación.
+ * Presenta la pantalla inicial con opciones para iniciar sesión,
+ * registrarse o desplazarse hacia la sección de características.
+ */
+export class BienvenidaComponent {
+
+  constructor(private router: Router) {}
+
+  /** Navega hacia la vista de inicio de sesión. */
+  irALogin(): void {
+    this.router.navigate([&#x27;/login&#x27;]);
+  }
+
+  /** Navega hacia la vista de registro de usuarios. */
+  irARegistro(): void {
+    this.router.navigate([&#x27;/registro&#x27;]);
+  }
+
+  /** Desplaza la vista suavemente hacia la sección de características de la página. */
+  scrollAFeatures(): void {
+    const el &#x3D; document.getElementById(&#x27;features&#x27;);
+    if (el) el.scrollIntoView({ behavior: &#x27;smooth&#x27; });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;welcome-container&quot;&gt;
+
+  &lt;nav class&#x3D;&quot;top-nav&quot;&gt;
+    &lt;div class&#x3D;&quot;brand&quot;&gt;
+      &lt;i class&#x3D;&quot;fas fa-globe-americas&quot;&gt;&lt;/i&gt;
+      &lt;span&gt;TravelX&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;nav-buttons&quot;&gt;
+      &lt;button class&#x3D;&quot;btn-outline&quot; (click)&#x3D;&quot;irALogin()&quot;&gt;Iniciar sesión&lt;/button&gt;
+      &lt;button class&#x3D;&quot;btn-solid&quot; (click)&#x3D;&quot;irARegistro()&quot;&gt;Registrarse&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+
+  &lt;main class&#x3D;&quot;hero animate__animated animate__fadeIn&quot;&gt;
+    &lt;div class&#x3D;&quot;hero-content&quot;&gt;
+      &lt;p class&#x3D;&quot;eyebrow animate__animated animate__fadeInDown&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-plane-departure&quot;&gt;&lt;/i&gt; Explora sin límites
+      &lt;/p&gt;
+
+      &lt;h1 class&#x3D;&quot;hero-title animate__animated animate__fadeInUp&quot;&gt;
+        TravelX
+      &lt;/h1&gt;
+
+      &lt;p class&#x3D;&quot;hero-slogan animate__animated animate__fadeInUp&quot;&gt;
+        Planea vuelos, hospedajes, rutas y cotizaciones desde una sola experiencia.
+      &lt;/p&gt;
+
+      &lt;div class&#x3D;&quot;action-cards animate__animated animate__fadeInUp&quot;&gt;
+        &lt;button class&#x3D;&quot;action-card&quot; (click)&#x3D;&quot;irALogin()&quot;&gt;
+          &lt;span class&#x3D;&quot;action-icon&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-sign-in-alt&quot;&gt;&lt;/i&gt;
+          &lt;/span&gt;
+
+          &lt;span class&#x3D;&quot;action-text&quot;&gt;
+            &lt;strong&gt;¿Ya tienes una cuenta?&lt;/strong&gt;
+            &lt;small&gt;Inicia sesión aquí&lt;/small&gt;
+          &lt;/span&gt;
+
+          &lt;i class&#x3D;&quot;fas fa-arrow-right action-arrow&quot;&gt;&lt;/i&gt;
+        &lt;/button&gt;
+
+        &lt;button class&#x3D;&quot;action-card&quot; (click)&#x3D;&quot;irARegistro()&quot;&gt;
+          &lt;span class&#x3D;&quot;action-icon icon-2&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-user-plus&quot;&gt;&lt;/i&gt;
+          &lt;/span&gt;
+
+          &lt;span class&#x3D;&quot;action-text&quot;&gt;
+            &lt;strong&gt;¿Eres nuevo por aquí?&lt;/strong&gt;
+            &lt;small&gt;Crea una cuenta&lt;/small&gt;
+          &lt;/span&gt;
+
+          &lt;i class&#x3D;&quot;fas fa-arrow-right action-arrow&quot;&gt;&lt;/i&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;section class&#x3D;&quot;provider-strip&quot;&gt;
+      &lt;div class&#x3D;&quot;provider-label&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-link&quot;&gt;&lt;/i&gt;
+        APIs integradas
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;provider-marquee&quot;&gt;
+        &lt;div class&#x3D;&quot;provider-track&quot;&gt;
+          &lt;span&gt;Google Flights&lt;/span&gt;
+          &lt;span&gt;Nominatim&lt;/span&gt;
+          &lt;span&gt;RapidAPI&lt;/span&gt;
+          &lt;span&gt;Hotels API&lt;/span&gt;
+          &lt;span&gt;Airbnb API&lt;/span&gt;
+          &lt;span&gt;Terrestrial Transport&lt;/span&gt;
+          &lt;span&gt;Visa Requirements&lt;/span&gt;
+          &lt;span&gt;TravelX Reservas&lt;/span&gt;
+
+          &lt;span&gt;Google Flights&lt;/span&gt;
+          &lt;span&gt;Nominatim&lt;/span&gt;
+          &lt;span&gt;RapidAPI&lt;/span&gt;
+          &lt;span&gt;Hotels API&lt;/span&gt;
+          &lt;span&gt;Airbnb API&lt;/span&gt;
+          &lt;span&gt;Terrestrial Transport&lt;/span&gt;
+          &lt;span&gt;Visa Requirements&lt;/span&gt;
+          &lt;span&gt;TravelX Reservas&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+
+  &lt;section class&#x3D;&quot;feature-band&quot;&gt;
+    &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+      &lt;i class&#x3D;&quot;fas fa-plane&quot;&gt;&lt;/i&gt;
+      &lt;div&gt;
+        &lt;strong&gt;Vuelos&lt;/strong&gt;
+        &lt;span&gt;Búsquedas conectadas con proveedores externos.&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+      &lt;i class&#x3D;&quot;fas fa-hotel&quot;&gt;&lt;/i&gt;
+      &lt;div&gt;
+        &lt;strong&gt;Hospedajes&lt;/strong&gt;
+        &lt;span&gt;Opciones pensadas para organizar el viaje completo.&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+      &lt;i class&#x3D;&quot;fas fa-file-invoice-dollar&quot;&gt;&lt;/i&gt;
+      &lt;div&gt;
+        &lt;strong&gt;Cotizaciones&lt;/strong&gt;
+        &lt;span&gt;Reservas guardadas con comprobante descargable.&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./bienvenida.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.welcome-container {
+  height: 100vh;
+  min-width: 1180px;
+  background: #f4f8ff;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 64px 1fr 104px;
+}
+
+.top-nav {
+  min-height: 64px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(216, 234, 255, 0.75);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  color: var(--primary);
+}
+
+.brand i {
+  font-size: 1.25rem;
+}
+
+.brand span {
+  font-family: &#x27;Playfair Display&#x27;, serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+
+.btn-outline,
+.btn-solid {
+  min-height: 38px;
+  border-radius: 10px;
+  padding: 0 1.15rem;
+  font-size: .88rem;
+  font-weight: 700;
+  transition: all .25s ease;
+  cursor: pointer;
+}
+
+.btn-outline {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline:hover {
+  background: #eaf6ff;
+}
+
+.btn-solid {
+  background: linear-gradient(135deg, #3aa0e6 0%, #0055bb 100%);
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 8px 22px rgba(58, 160, 230, 0.3);
+}
+
+.btn-solid:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(58, 160, 230, 0.42);
+}
+
+.hero {
+  min-height: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3.8rem 3rem 5.1rem;
+  background-image:
+    linear-gradient(90deg, rgba(8, 35, 70, 0.72) 0%, rgba(8, 35, 70, 0.38) 48%, rgba(8, 35, 70, 0.1) 100%),
+    url(&#x27;/imagenes/hero-flight.jpg&#x27;);
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-content {
+  width: min(1180px, 100%);
+  color: #ffffff;
+}
+
+.eyebrow {
+  width: fit-content;
+  margin: 0 0 .7rem;
+  padding: .38rem .72rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.hero-title {
+  font-family: &#x27;Playfair Display&#x27;, serif;
+  font-size: 4.6rem;
+  line-height: .95;
+  font-weight: 900;
+  margin: 0 0 .65rem;
+  color: #ffffff;
+  letter-spacing: 0;
+}
+
+.hero-slogan {
+  width: min(560px, 100%);
+  margin: 0 0 1.35rem;
+  font-size: 1.02rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.action-cards {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+}
+
+.action-card {
+  width: 286px;
+  min-height: 66px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text-dark);
+  padding: .75rem .9rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  box-shadow: 0 18px 38px rgba(3, 19, 38, 0.2);
+  transition: all .25s ease;
+  cursor: pointer;
+}
+
+.action-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 52px rgba(3, 19, 38, 0.26);
+}
+
+.action-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: #e1f4ff;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+
+.action-icon.icon-2 {
+  background: #e6fff5;
+  color: #00b366;
+}
+
+.action-text {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: .12rem;
+}
+
+.action-text strong {
+  font-size: .88rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.action-text small {
+  font-size: .76rem;
+  color: var(--text-muted);
+}
+
+.action-arrow {
+  color: rgba(58, 160, 230, 0.55);
+  transition: all .25s ease;
+}
+
+.action-card:hover .action-arrow {
+  transform: translateX(4px);
+  color: var(--primary);
+}
+
+.provider-strip {
+  position: absolute;
+  left: 3rem;
+  right: 3rem;
+  bottom: 1rem;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(216, 234, 255, 0.8);
+  box-shadow: 0 18px 45px rgba(3, 19, 38, 0.18);
+  display: grid;
+  grid-template-columns: 168px 1fr;
+  align-items: center;
+  overflow: hidden;
+}
+
+.provider-label {
+  height: 100%;
+  padding: 0 1.1rem;
+  background: #f0f7ff;
+  color: var(--primary);
+  font-size: .75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.provider-marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+
+.provider-track {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  animation: providerSlide 26s linear infinite;
+}
+
+.provider-track span {
+  white-space: nowrap;
+  color: #3d4a55;
+  font-size: .88rem;
+  font-weight: 800;
+  opacity: .78;
+}
+
+.provider-track span:nth-child(3n) {
+  color: var(--primary);
+}
+
+.provider-track span:nth-child(4n) {
+  color: #111827;
+}
+
+.feature-band {
+  min-height: 0;
+  padding: .8rem 3rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .8rem;
+  background: #f4f8ff;
+}
+
+.feature-item {
+  min-height: 72px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #d8eaff;
+  padding: .75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  box-shadow: 0 10px 28px rgba(58, 160, 230, 0.08);
+}
+
+.feature-item i {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #eaf6ff;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .95rem;
+  flex-shrink: 0;
+}
+
+.feature-item strong {
+  display: block;
+  color: var(--text-dark);
+  font-size: .92rem;
+  font-weight: 800;
+}
+
+.feature-item span {
+  display: block;
+  margin-top: .12rem;
+  color: var(--text-muted);
+  font-size: .76rem;
+  line-height: 1.3;
+}
+
+@keyframes providerSlide {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 1280px) {
+  .top-nav {
+    padding: 0 2rem;
+  }
+
+  .hero {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .hero-title {
+    font-size: 4.15rem;
+  }
+
+  .provider-strip {
+    left: 2rem;
+    right: 2rem;
+  }
+
+  .feature-band {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .action-card {
+    width: 270px;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="welcome-container">  <nav class="top-nav">    <div class="brand">      <i class="fas fa-globe-americas"></i>      <span>TravelX</span>    </div>    <div class="nav-buttons">      <button class="btn-outline" (click)="irALogin()">Iniciar sesión</button>      <button class="btn-solid" (click)="irARegistro()">Registrarse</button>    </div>  </nav>  <main class="hero animate__animated animate__fadeIn">    <div class="hero-content">      <p class="eyebrow animate__animated animate__fadeInDown">        <i class="fas fa-plane-departure"></i> Explora sin límites      </p>      <h1 class="hero-title animate__animated animate__fadeInUp">        TravelX      </h1>      <p class="hero-slogan animate__animated animate__fadeInUp">        Planea vuelos, hospedajes, rutas y cotizaciones desde una sola experiencia.      </p>      <div class="action-cards animate__animated animate__fadeInUp">        <button class="action-card" (click)="irALogin()">          <span class="action-icon">            <i class="fas fa-sign-in-alt"></i>          </span>          <span class="action-text">            <strong>¿Ya tienes una cuenta?</strong>            <small>Inicia sesión aquí</small>          </span>          <i class="fas fa-arrow-right action-arrow"></i>        </button>        <button class="action-card" (click)="irARegistro()">          <span class="action-icon icon-2">            <i class="fas fa-user-plus"></i>          </span>          <span class="action-text">            <strong>¿Eres nuevo por aquí?</strong>            <small>Crea una cuenta</small>          </span>          <i class="fas fa-arrow-right action-arrow"></i>        </button>      </div>    </div>    <section class="provider-strip">      <div class="provider-label">        <i class="fas fa-link"></i>        APIs integradas      </div>      <div class="provider-marquee">        <div class="provider-track">          <span>Google Flights</span>          <span>Nominatim</span>          <span>RapidAPI</span>          <span>Hotels API</span>          <span>Airbnb API</span>          <span>Terrestrial Transport</span>          <span>Visa Requirements</span>          <span>TravelX Reservas</span>          <span>Google Flights</span>          <span>Nominatim</span>          <span>RapidAPI</span>          <span>Hotels API</span>          <span>Airbnb API</span>          <span>Terrestrial Transport</span>          <span>Visa Requirements</span>          <span>TravelX Reservas</span>        </div>      </div>    </section>  </main>  <section class="feature-band">    <div class="feature-item">      <i class="fas fa-plane"></i>      <div>        <strong>Vuelos</strong>        <span>Búsquedas conectadas con proveedores externos.</span>      </div>    </div>    <div class="feature-item">      <i class="fas fa-hotel"></i>      <div>        <strong>Hospedajes</strong>        <span>Opciones pensadas para organizar el viaje completo.</span>      </div>    </div>    <div class="feature-item">      <i class="fas fa-file-invoice-dollar"></i>      <div>        <strong>Cotizaciones</strong>        <span>Reservas guardadas con comprobante descargable.</span>      </div>    </div>  </section></div></div>'
+    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'App', 'selector': 'app-root'},{'name': 'BienvenidaComponent', 'selector': 'app-bienvenida'},{'name': 'Cotizacion', 'selector': 'app-cotizacion'},{'name': 'InicioComponent', 'selector': 'app-inicio'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'RegistroComponent', 'selector': 'app-registro'},{'name': 'VerificarCorreoComponent', 'selector': 'app-verificar-correo'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'BienvenidaComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'BienvenidaComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
