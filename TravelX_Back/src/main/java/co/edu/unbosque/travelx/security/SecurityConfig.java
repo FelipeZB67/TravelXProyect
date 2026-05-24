@@ -57,10 +57,9 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 						.requestMatchers(HttpMethod.POST, "/auth/verify").permitAll()
 						.requestMatchers("/persona/mi-cuenta").hasAnyRole("USUARIO", "ADMINISTRADOR")
-						.requestMatchers("/persona/**").hasRole("ADMINISTRADOR")
-						.requestMatchers("/reservas/admin/**").hasRole("ADMINISTRADOR")
-						.requestMatchers(HttpMethod.GET, "/reservas/todas").hasRole("ADMINISTRADOR")
-						.requestMatchers("/reservas/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
+						.requestMatchers("/persona/**").hasRole("ADMINISTRADOR").requestMatchers("/reservas/admin/**")
+						.hasRole("ADMINISTRADOR").requestMatchers(HttpMethod.GET, "/reservas/todas")
+						.hasRole("ADMINISTRADOR").requestMatchers("/reservas/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
 						.requestMatchers("/travel-search/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
 						.requestMatchers("/visa/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
 						.requestMatchers("/terrestrial/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
@@ -87,7 +86,8 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 
-		config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:4201", "https://gpcueb.org"));
+		config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:4201", "https://gpcueb.org",
+				"https://travelxoficial.netlify.app"));
 
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
