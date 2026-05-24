@@ -27,6 +27,8 @@ import co.edu.unbosque.travelx.entity.Persona.TipoUsuario;
 import co.edu.unbosque.travelx.repository.PersonaRepository;
 import co.edu.unbosque.travelx.service.EmailService;
 import co.edu.unbosque.travelx.service.PersonaService;
+import static org.mockito.Mockito.doNothing;
+import jakarta.mail.MessagingException;
 
 /**
  * Clase PersonaTest.
@@ -282,26 +284,26 @@ class PersonaTest {
 	 * Metodo comprobar registrar con verificacion.
 	 */
 	@Test
-	public void comprobarRegistrarConVerificacion() {
+	public void comprobarRegistrarConVerificacion() throws MessagingException {
+	    PersonaDTO dto = new PersonaDTO("Laura Lopez", "1001234572", "laura@gmail.com", "Pass123#",
+	            TipoUsuario.USUARIO);
+	    Persona entity = new Persona("Laura Lopez", "1001234572", "laura@gmail.com", "Pass123#",
+	            TipoUsuario.USUARIO);
 
-		PersonaDTO dto = new PersonaDTO("Laura Lopez", "1001234572", "laura@gmail.com", "Pass123#",
-				TipoUsuario.USUARIO);
-		Persona entity = new Persona("Laura Lopez", "1001234572", "laura@gmail.com", "Pass123#",
-				TipoUsuario.USUARIO);
+	    when(mapper.map(dto, Persona.class)).thenReturn(entity);
+	    when(personaRepository.findByNombre(dto.getNombre())).thenReturn(Optional.empty());
+	    when(personaRepository.findByCorreo(dto.getCorreo())).thenReturn(Optional.empty());
+	    when(personaRepository.findByDocumento(dto.getDocumento())).thenReturn(Optional.empty());
+	    when(passwordEncoder.encode(entity.getContrasena())).thenReturn("contrasenaCodificada");
+	    doNothing().when(emailService).enviarCodigoVerificacion(anyString(), anyString());
 
-		when(mapper.map(dto, Persona.class)).thenReturn(entity);
-		when(personaRepository.findByNombre(dto.getNombre())).thenReturn(Optional.empty());
-		when(personaRepository.findByCorreo(dto.getCorreo())).thenReturn(Optional.empty());
-		when(personaRepository.findByDocumento(dto.getDocumento())).thenReturn(Optional.empty());
-		when(passwordEncoder.encode(entity.getContrasena())).thenReturn("contrasenaCodificada");
+	    int resultado = personaService.registerWithVerification(dto);
 
-		int resultado = personaService.registerWithVerification(dto);
-
-		assertEquals(0, resultado);
-		assertFalse(entity.isEnabled());
-		assertFalse(entity.isCorreoVerificado());
-		verify(personaRepository, times(1)).save(entity);
-		verify(emailService, times(1)).enviarCodigoVerificacion(eq(entity.getCorreo()), anyString());
+	    assertEquals(0, resultado);
+	    assertFalse(entity.isEnabled());
+	    assertFalse(entity.isCorreoVerificado());
+	    verify(personaRepository, times(1)).save(entity);
+	    verify(emailService, times(1)).enviarCodigoVerificacion(eq(entity.getCorreo()), anyString());
 	}
 
 	/**

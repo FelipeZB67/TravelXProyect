@@ -322,6 +322,8 @@
 @media (max-width: 640px) {
   .login-container {
     flex-direction: column;
+    min-height: unset;
+    height: fit-content;
   }
 
   .left-panel {
@@ -347,7 +349,8 @@
   }
 
   .right-panel {
-    flex: 1;
+    flex: none;
+    height: fit-content;
     padding: 2rem 1.5rem;
     align-items: flex-start;
   }
@@ -362,5 +365,10 @@
 
   .form-group label {
     font-size: .92rem;
+  }
+
+  :host {
+    display: block;
+    height: fit-content;
   }
 }
