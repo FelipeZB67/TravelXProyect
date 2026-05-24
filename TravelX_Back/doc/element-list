@@ -1,0 +1,10 @@
+co.edu.unbosque.travelx
+co.edu.unbosque.travelx.configuration
+co.edu.unbosque.travelx.controller
+co.edu.unbosque.travelx.dto
+co.edu.unbosque.travelx.entity
+co.edu.unbosque.travelx.exception
+co.edu.unbosque.travelx.repository
+co.edu.unbosque.travelx.security
+co.edu.unbosque.travelx.service
+co.edu.unbosque.travelx.util
