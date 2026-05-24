@@ -1,17 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { Admin } from './admin';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AdminComponent } from './admin';
+import { PersonaService } from '../../services/persona.service';
+import { ReservaService } from '../../services/reserva.service';
 
 describe('Admin', () => {
-  let component: Admin;
-  let fixture: ComponentFixture<Admin>;
+  let component: AdminComponent;
+  let fixture: ComponentFixture<AdminComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [Admin],
+      declarations: [AdminComponent],
+      imports: [RouterTestingModule, HttpClientTestingModule],
+      providers: [PersonaService, ReservaService],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Admin);
+    fixture = TestBed.createComponent(AdminComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
