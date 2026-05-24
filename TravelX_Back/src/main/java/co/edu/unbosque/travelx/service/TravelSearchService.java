@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import co.edu.unbosque.travelx.dto.AirbnbSearchDTO;
 import co.edu.unbosque.travelx.dto.AirbnbSearchRequestDTO;
 import co.edu.unbosque.travelx.dto.AirportCodeDTO;
@@ -16,6 +19,11 @@ import co.edu.unbosque.travelx.dto.TravelOptionDTO;
 import co.edu.unbosque.travelx.dto.TravelSearchRequestDTO;
 import co.edu.unbosque.travelx.dto.TravelSearchResponseDTO;
 
+/**
+ * Servicio unificado de búsqueda de viajes que orquesta la consulta a múltiples
+ * proveedores externos (vuelos, Airbnb, transporte terrestre y hoteles),
+ * resolviendo ubicaciones y consolidando los resultados en una respuesta única.
+ */
 @Service
 public class TravelSearchService {
 
@@ -46,6 +54,14 @@ public class TravelSearchService {
 		this.mockFlightService = mockFlightService;
 	}
 
+	/**
+	 * Ejecuta una búsqueda unificada de opciones de viaje según los tipos de servicio
+	 * indicados en el request, validando las ubicaciones de origen y destino
+	 * antes de consultar cada proveedor.
+	 *
+	 * @param request objeto con los parámetros de búsqueda y los tipos de servicio a incluir
+	 * @return {@link TravelSearchResponseDTO} con las opciones encontradas y el estado de la búsqueda
+	 */
 	public TravelSearchResponseDTO search(TravelSearchRequestDTO request) {
 		TravelSearchResponseDTO response = new TravelSearchResponseDTO();
 		response.setRequest(request);
@@ -100,6 +116,15 @@ public class TravelSearchService {
 		return response;
 	}
 
+	/**
+	 * Consulta vuelos en Google Flights resolviendo los códigos IATA de los aeropuertos
+	 * de origen y destino a partir de las ubicaciones normalizadas por Nominatim.
+	 *
+	 * @param request             objeto con los parámetros de búsqueda
+	 * @param resolvedOrigin      ubicación resuelta del origen
+	 * @param resolvedDestination ubicación resuelta del destino
+	 * @return {@link TravelOptionDTO} con los vuelos encontrados y el estado de la consulta
+	 */
 	private TravelOptionDTO searchGoogleFlights(TravelSearchRequestDTO request,
 			NominatimResolvedLocationDTO resolvedOrigin, NominatimResolvedLocationDTO resolvedDestination) {
 
@@ -147,6 +172,14 @@ public class TravelSearchService {
 		return option;
 	}
 
+	/**
+	 * Consulta alojamientos tipo Airbnb usando el Google Place ID del destino
+	 * resuelto y los filtros del request.
+	 *
+	 * @param request     objeto con los parámetros de búsqueda
+	 * @param destination objeto con los códigos del destino, incluyendo el Google Place ID
+	 * @return {@link TravelOptionDTO} con los alojamientos encontrados y el estado de la consulta
+	 */
 	private TravelOptionDTO searchAirbnb(TravelSearchRequestDTO request, DestinationCodeDTO destination) {
 		AirbnbSearchRequestDTO airbnbRequest = new AirbnbSearchRequestDTO();
 		airbnbRequest.setPlaceId(destination.getGooglePlaceId());
@@ -172,11 +205,28 @@ public class TravelSearchService {
 		return option;
 	}
 
+	/**
+	 * Construye una opción de hotel marcada como no disponible, indicando que
+	 * Hotels4 no está activo en la cuenta actual de RapidAPI.
+	 *
+	 * @param request objeto con los parámetros de búsqueda
+	 * @return {@link TravelOptionDTO} con disponibilidad en {@code false} y mensaje explicativo
+	 */
 	private TravelOptionDTO buildHotelsUnavailableOption(TravelSearchRequestDTO request) {
 		return buildUnavailableOption(request, "HOTELS4", "HOTEL", "Hoteles desde Hotels4",
 				"Hotels4 no esta disponible en la cuenta actual de RapidAPI o requiere busqueda previa por property id.");
 	}
 
+	/**
+	 * Construye una opción de viaje marcada como no disponible con un mensaje personalizado.
+	 *
+	 * @param request  objeto con los parámetros de búsqueda
+	 * @param provider nombre del proveedor
+	 * @param type     tipo de servicio
+	 * @param title    título de la opción
+	 * @param message  mensaje explicativo de la no disponibilidad
+	 * @return {@link TravelOptionDTO} con disponibilidad en {@code false}
+	 */
 	private TravelOptionDTO buildUnavailableOption(TravelSearchRequestDTO request, String provider, String type,
 			String title, String message) {
 
@@ -190,6 +240,16 @@ public class TravelSearchService {
 		return option;
 	}
 
+	/**
+	 * Construye un {@link TravelOptionDTO} base con los datos comunes del request
+	 * antes de aplicar los resultados de la búsqueda.
+	 *
+	 * @param request  objeto con los parámetros de búsqueda
+	 * @param provider nombre del proveedor
+	 * @param type     tipo de servicio
+	 * @param title    título de la opción
+	 * @return {@link TravelOptionDTO} inicializado con los datos del request
+	 */
 	private TravelOptionDTO buildBaseOption(TravelSearchRequestDTO request, String provider, String type,
 			String title) {
 
@@ -211,6 +271,17 @@ public class TravelSearchService {
 		return option;
 	}
 
+	/**
+	 * Rellena los datos del proveedor en una opción de viaje extrayendo el precio
+	 * y evaluando si la respuesta contiene errores.
+	 *
+	 * @param option           opción de viaje a completar
+	 * @param statusCode       código de estado retornado por el proveedor
+	 * @param success          indicador de éxito de la consulta al proveedor
+	 * @param message          mensaje del proveedor
+	 * @param providerResponse respuesta JSON del proveedor
+	 * @param currency         moneda en la que se expresa el precio
+	 */
 	private void fillProviderData(TravelOptionDTO option, Integer statusCode, Boolean success, String message,
 			String providerResponse, String currency) {
 
@@ -233,6 +304,13 @@ public class TravelSearchService {
 		option.setProviderResponse(null);
 	}
 
+	/**
+	 * Construye el mensaje general de la respuesta indicando si todos los
+	 * proveedores estuvieron disponibles o si alguno presentó problemas.
+	 *
+	 * @param options lista de opciones de viaje retornadas por los proveedores
+	 * @return mensaje descriptivo del resultado de la búsqueda
+	 */
 	private String buildResponseMessage(List<TravelOptionDTO> options) {
 		boolean hasUnavailable = options.stream().anyMatch(option -> !Boolean.TRUE.equals(option.getAvailable()));
 
@@ -243,6 +321,13 @@ public class TravelSearchService {
 		return "Busqueda finalizada exitosamente.";
 	}
 
+	/**
+	 * Retorna el valor dado si no es nulo ni vacío, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo o vacío
+	 * @return valor original o valor por defecto
+	 */
 	private String defaultString(String value, String defaultValue) {
 		if (value == null || value.isBlank()) {
 			return defaultValue;
@@ -251,6 +336,13 @@ public class TravelSearchService {
 		return value;
 	}
 
+	/**
+	 * Retorna el valor dado si no es nulo, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo
+	 * @return valor original o valor por defecto
+	 */
 	private Integer defaultInteger(Integer value, Integer defaultValue) {
 		if (value == null) {
 			return defaultValue;
@@ -259,6 +351,13 @@ public class TravelSearchService {
 		return value;
 	}
 
+	/**
+	 * Evalúa si la respuesta JSON de un proveedor contiene indicadores de error,
+	 * verificando campos como {@code error}, {@code status} y {@code __typename}.
+	 *
+	 * @param providerResponse respuesta JSON del proveedor a evaluar
+	 * @return {@code true} si la respuesta contiene un error, {@code false} en caso contrario
+	 */
 	private boolean hasProviderError(String providerResponse) {
 		if (providerResponse == null || providerResponse.isBlank()) {
 			return true;
@@ -286,9 +385,16 @@ public class TravelSearchService {
 		}
 	}
 
+	/**
+	 * Extrae el mensaje de error desde la respuesta JSON de un proveedor,
+	 * buscando los campos {@code error} y {@code message}.
+	 *
+	 * @param providerResponse respuesta JSON del proveedor
+	 * @return mensaje de error extraído, o un mensaje genérico si no puede obtenerse
+	 */
 	private String extractProviderErrorMessage(String providerResponse) {
 		try {
-			com.google.gson.JsonObject root = com.google.gson.JsonParser.parseString(providerResponse)
+			JsonObject root = JsonParser.parseString(providerResponse)
 					.getAsJsonObject();
 
 			if (root.has("error") && !root.get("error").isJsonNull()) {

@@ -9,6 +9,10 @@ import java.time.Duration;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Cliente HTTP simplificado para realizar peticiones GET sin autenticación,
+ * gestionando errores de conexión y respuestas no exitosas.
+ */
 @Service
 public class SimpleHttpClientService {
 
@@ -16,6 +20,13 @@ public class SimpleHttpClientService {
 			.connectTimeout(Duration.ofSeconds(15))
 			.build();
 
+	/**
+	 * Realiza una petición GET a la URL indicada y retorna el cuerpo de la respuesta.
+	 *
+	 * @param url URL completa del endpoint a consultar
+	 * @return cuerpo de la respuesta en formato JSON, o un JSON de error si
+	 *         la respuesta no es exitosa o hay un fallo de conexión
+	 */
 	public String doGet(String url) {
 		HttpRequest request = HttpRequest.newBuilder()
 				.GET()

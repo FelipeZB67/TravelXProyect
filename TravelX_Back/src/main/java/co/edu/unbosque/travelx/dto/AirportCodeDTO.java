@@ -1,5 +1,9 @@
 package co.edu.unbosque.travelx.dto;
 
+/**
+ * Objeto de transferencia de datos que representa el resultado de una búsqueda
+ * de aeropuerto, incluyendo su código IATA y la respuesta del proveedor externo.
+ */
 public class AirportCodeDTO {
 
 	private String query;

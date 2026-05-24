@@ -12,11 +12,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import co.edu.unbosque.travelx.entity.Persona;
 import co.edu.unbosque.travelx.repository.PersonaRepository;
 
+/**
+ * Clase de configuración que precarga datos iniciales en la base de datos
+ * al arrancar la aplicación, creando usuarios por defecto si no existen.
+ */
 @Configuration
 public class LoadDataBase {
 
 	private static final Logger Log = LoggerFactory.getLogger(LoadDataBase.class);
 
+	/**
+     * Inicializa la base de datos con tres usuarios por defecto: un administrador,
+     * un usuario normal y un usuario sin rol. Si alguno ya existe, omite su creación.
+     *
+     * @param personaRepo repositorio de personas usado para buscar y guardar usuarios
+     * @param encoder     codificador de contraseñas usado para cifrar las claves por defecto
+     * @return un {@link CommandLineRunner} que ejecuta la lógica de precarga al inicio
+     */
 	@Bean
 	CommandLineRunner initDataBase(PersonaRepository personaRepo, PasswordEncoder encoder) {
 		return args -> {

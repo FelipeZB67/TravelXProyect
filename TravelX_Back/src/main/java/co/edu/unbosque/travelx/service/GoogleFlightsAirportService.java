@@ -12,6 +12,10 @@ import com.google.gson.JsonParser;
 
 import co.edu.unbosque.travelx.dto.AirportCodeDTO;
 
+/**
+ * Servicio que consulta aeropuertos y sus códigos IATA mediante la API
+ * de Google Flights en RapidAPI, procesando y mapeando la respuesta al DTO correspondiente.
+ */
 @Service
 public class GoogleFlightsAirportService {
 
@@ -27,6 +31,14 @@ public class GoogleFlightsAirportService {
 		this.rapidApiClient = rapidApiClient;
 	}
 
+	/**
+	 * Busca un aeropuerto según el nombre o ciudad y el código de país,
+	 * retornando su código IATA y nombre si es encontrado.
+	 *
+	 * @param query       nombre o ciudad del aeropuerto a buscar
+	 * @param countryCode código del país donde se ubica el aeropuerto
+	 * @return {@link AirportCodeDTO} con el código IATA y el estado de la consulta
+	 */
 	public AirportCodeDTO searchAirport(String query, String countryCode) {
 		AirportCodeDTO dto = new AirportCodeDTO();
 		dto.setQuery(removeAccents(query));
@@ -88,6 +100,12 @@ public class GoogleFlightsAirportService {
 		}
 	}
 
+	/**
+	 * Extrae el mensaje de error desde el objeto JSON de respuesta del proveedor.
+	 *
+	 * @param root objeto JSON raíz de la respuesta del proveedor
+	 * @return mensaje de error legible, o un mensaje genérico si no puede extraerse
+	 */
 	private String extractProviderError(JsonObject root) {
 		String error = readString(root, "error");
 
@@ -109,6 +127,14 @@ public class GoogleFlightsAirportService {
 		return error;
 	}
 
+	/**
+	 * Lee un campo de texto de un objeto JSON de forma segura,
+	 * retornando null si el campo no existe o es nulo.
+	 *
+	 * @param object    objeto JSON del que se desea leer el campo
+	 * @param fieldName nombre del campo a leer
+	 * @return valor del campo como texto, o null si no existe
+	 */
 	private String readString(JsonObject object, String fieldName) {
 		if (object.has(fieldName) && !object.get(fieldName).isJsonNull()) {
 			return object.get(fieldName).getAsString();
@@ -117,10 +143,22 @@ public class GoogleFlightsAirportService {
 		return null;
 	}
 
+	/**
+	 * Codifica un valor de texto en formato URL usando UTF-8.
+	 *
+	 * @param value texto a codificar
+	 * @return texto codificado para uso en URL
+	 */
 	private String encode(String value) {
 		return URLEncoder.encode(value, StandardCharsets.UTF_8);
 	}
 
+	/**
+	 * Elimina tildes y diacríticos de un texto normalizando su forma Unicode.
+	 *
+	 * @param value texto del que se desean eliminar los acentos
+	 * @return texto sin acentos ni caracteres diacríticos, o cadena vacía si es nulo
+	 */
 	private String removeAccents(String value) {
 		if (value == null) {
 			return "";

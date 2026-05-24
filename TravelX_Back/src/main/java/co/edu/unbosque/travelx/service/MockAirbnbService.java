@@ -13,6 +13,11 @@ import co.edu.unbosque.travelx.dto.MockAirbnbDTO;
 import co.edu.unbosque.travelx.dto.TravelOptionDTO;
 import co.edu.unbosque.travelx.dto.TravelSearchRequestDTO;
 
+/**
+ * Servicio que consulta alojamientos tipo Airbnb desde una MockAPI,
+ * aplicando filtros de ciudad, país, amenidades y precio para retornar
+ * la opción de hospedaje más adecuada según el request.
+ */
 @Service
 public class MockAirbnbService {
 
@@ -26,6 +31,14 @@ public class MockAirbnbService {
 		this.simpleHttpClientService = simpleHttpClientService;
 	}
 
+	/**
+	 * Busca un alojamiento disponible en la MockAPI aplicando los filtros
+	 * del request y mapeando el resultado a un {@link TravelOptionDTO}.
+	 *
+	 * @param request objeto con los parámetros de búsqueda, incluyendo destino,
+	 *                fechas, precio y amenidades requeridas
+	 * @return {@link TravelOptionDTO} con el alojamiento encontrado y el estado de la consulta
+	 */
 	public TravelOptionDTO searchLodging(TravelSearchRequestDTO request) {
 		String json = simpleHttpClientService.doGet(mockAirbnbUrl);
 
@@ -86,6 +99,13 @@ public class MockAirbnbService {
 		}
 	}
 
+	/**
+	 * Construye un {@link TravelOptionDTO} base con los datos comunes del request
+	 * antes de aplicar los resultados de la búsqueda.
+	 *
+	 * @param request objeto con los parámetros de búsqueda
+	 * @return {@link TravelOptionDTO} inicializado con los datos del request
+	 */
 	private TravelOptionDTO buildBaseOption(TravelSearchRequestDTO request) {
 		TravelOptionDTO option = new TravelOptionDTO();
 		option.setProvider("MOCKAPI_AIRBNB");
@@ -105,6 +125,13 @@ public class MockAirbnbService {
 		return option;
 	}
 
+	/**
+	 * Construye una descripción textual del alojamiento con su tipo,
+	 * número de habitaciones, camas, baños y calificación.
+	 *
+	 * @param lodging objeto con los datos del alojamiento
+	 * @return descripción formateada del alojamiento
+	 */
 	private String buildDescription(MockAirbnbDTO lodging) {
 		return defaultString(lodging.getTipo_alojamiento(), "Hospedaje")
 				+ " - " + defaultInteger(lodging.getMinBedrooms(), 0) + " habitaciones"
@@ -113,6 +140,13 @@ public class MockAirbnbService {
 				+ " - calificacion " + defaultDouble(lodging.getCalificacion(), 0.0);
 	}
 
+	/**
+	 * Verifica si un alojamiento cuenta con una amenidad específica.
+	 *
+	 * @param lodging objeto con los datos del alojamiento
+	 * @param amenity nombre de la amenidad a verificar
+	 * @return {@code true} si el alojamiento tiene la amenidad, {@code false} en caso contrario
+	 */
 	private boolean hasAmenity(MockAirbnbDTO lodging, String amenity) {
 		if (lodging.getAmenities() == null) {
 			return false;
@@ -125,6 +159,13 @@ public class MockAirbnbService {
 		return normalize(a).equals(normalize(b));
 	}
 
+	/**
+	 * Normaliza un texto eliminando tildes y diacríticos, convirtiéndolo
+	 * a minúsculas y eliminando espacios extremos.
+	 *
+	 * @param value texto a normalizar
+	 * @return texto normalizado, o cadena vacía si es nulo
+	 */
 	private String normalize(String value) {
 		if (value == null) {
 			return "";
@@ -136,6 +177,13 @@ public class MockAirbnbService {
 				.toLowerCase();
 	}
 
+	/**
+	 * Retorna el valor dado si no es nulo ni vacío, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo o vacío
+	 * @return valor original o valor por defecto
+	 */
 	private String defaultString(String value, String defaultValue) {
 		if (value == null || value.isBlank()) {
 			return defaultValue;
@@ -144,6 +192,13 @@ public class MockAirbnbService {
 		return value;
 	}
 
+	/**
+	 * Retorna el valor dado si no es nulo, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo
+	 * @return valor original o valor por defecto
+	 */
 	private Integer defaultInteger(Integer value, Integer defaultValue) {
 		if (value == null) {
 			return defaultValue;
@@ -152,6 +207,13 @@ public class MockAirbnbService {
 		return value;
 	}
 
+	/**
+	 * Retorna el valor dado si no es nulo, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo
+	 * @return valor original o valor por defecto
+	 */
 	private Double defaultDouble(Double value, Double defaultValue) {
 		if (value == null) {
 			return defaultValue;

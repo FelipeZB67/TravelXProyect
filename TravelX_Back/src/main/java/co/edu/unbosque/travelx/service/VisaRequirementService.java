@@ -10,6 +10,10 @@ import com.google.gson.JsonParser;
 
 import co.edu.unbosque.travelx.dto.VisaRequirementDTO;
 
+/**
+ * Servicio que consulta los requisitos de visa para un viajero según su país
+ * de pasaporte, país de destino y fecha de viaje, mediante la API de RapidAPI.
+ */
 @Service
 public class VisaRequirementService {
 
@@ -25,6 +29,15 @@ public class VisaRequirementService {
 		this.rapidApiClient = rapidApiClient;
 	}
 
+	/**
+	 * Consulta el requisito de visa para el país de pasaporte y destino indicados
+	 * en una fecha específica, mapeando la respuesta al DTO correspondiente.
+	 *
+	 * @param pcc   código del país del pasaporte del viajero
+	 * @param dcc   código del país de destino
+	 * @param fecha fecha prevista del viaje
+	 * @return {@link VisaRequirementDTO} con el resultado de la consulta y el estado del proveedor
+	 */
 	public VisaRequirementDTO checkVisaRequirement(String pcc, String dcc, LocalDate fecha) {
 		String url = "https://" + visaHost + "/v2/visa/check/history/"
 				+ pcc.toUpperCase() + "/"
@@ -44,6 +57,13 @@ public class VisaRequirementService {
 		return dto;
 	}
 
+	/**
+	 * Interpreta la respuesta JSON del proveedor y establece el requisito de visa,
+	 * mensaje y estado en el DTO según el resultado obtenido.
+	 *
+	 * @param dto  objeto donde se almacena el resultado de la consulta
+	 * @param json respuesta en formato JSON recibida del proveedor
+	 */
 	private void fillVisaStatus(VisaRequirementDTO dto, String json) {
 		if (json == null || json.isBlank()) {
 			dto.setVisaRequired(null);
@@ -105,6 +125,14 @@ public class VisaRequirementService {
 		}
 	}
 
+	/**
+	 * Determina si se requiere visa a partir del texto del requisito extraído,
+	 * evaluando palabras clave en el valor normalizado.
+	 *
+	 * @param root objeto JSON raíz de la respuesta del proveedor
+	 * @return {@code true} si se requiere visa, {@code false} si no se requiere,
+	 *         o {@code null} si no puede determinarse
+	 */
 	private Boolean extractVisaRequired(JsonObject root) {
 		String requirement = extractRequirement(root);
 
@@ -129,6 +157,13 @@ public class VisaRequirementService {
 		return null;
 	}
 
+	/**
+	 * Extrae el texto del requisito de visa desde la respuesta JSON del proveedor,
+	 * buscando primero en {@code data.current_rule} y luego en campos genéricos.
+	 *
+	 * @param root objeto JSON raíz de la respuesta del proveedor
+	 * @return texto del requisito de visa, o {@code null} si no se encuentra
+	 */
 	private String extractRequirement(JsonObject root) {
 		if (root.has("data") && root.get("data").isJsonObject()) {
 			JsonObject data = root.getAsJsonObject("data");
@@ -161,6 +196,12 @@ public class VisaRequirementService {
 		return null;
 	}
 
+	/**
+	 * Verifica si la respuesta del proveedor corresponde a un modo de demostración.
+	 *
+	 * @param root objeto JSON raíz de la respuesta del proveedor
+	 * @return {@code true} si la respuesta es demo, {@code false} en caso contrario
+	 */
 	private Boolean extractIsDemo(JsonObject root) {
 		if (root.has("meta") && root.get("meta").isJsonObject()) {
 			JsonObject meta = root.getAsJsonObject("meta");
@@ -173,6 +214,12 @@ public class VisaRequirementService {
 		return false;
 	}
 
+	/**
+	 * Extrae el mensaje del campo {@code meta} de la respuesta JSON del proveedor.
+	 *
+	 * @param root objeto JSON raíz de la respuesta del proveedor
+	 * @return mensaje del campo meta, o {@code null} si no existe
+	 */
 	private String extractMetaMessage(JsonObject root) {
 		if (root.has("meta") && root.get("meta").isJsonObject()) {
 			JsonObject meta = root.getAsJsonObject("meta");
@@ -182,6 +229,13 @@ public class VisaRequirementService {
 		return null;
 	}
 
+	/**
+	 * Extrae el mensaje de error desde una cadena JSON de error del proveedor.
+	 * Si no puede interpretarse como JSON, retorna la cadena original.
+	 *
+	 * @param error cadena con el error retornado por el proveedor
+	 * @return mensaje de error legible extraído del JSON, o la cadena original
+	 */
 	private String extractProviderMessage(String error) {
 		if (error == null || error.isBlank()) {
 			return "Error desconocido del proveedor de visa.";
@@ -200,6 +254,14 @@ public class VisaRequirementService {
 		return error;
 	}
 
+	/**
+	 * Lee un campo de texto de un objeto JSON de forma segura,
+	 * retornando null si el campo no existe o es nulo.
+	 *
+	 * @param object    objeto JSON del que se desea leer el campo
+	 * @param fieldName nombre del campo a leer
+	 * @return valor del campo como texto, o null si no existe
+	 */
 	private String readString(JsonObject object, String fieldName) {
 		if (object.has(fieldName) && !object.get(fieldName).isJsonNull()) {
 			return object.get(fieldName).getAsString();
@@ -208,6 +270,13 @@ public class VisaRequirementService {
 		return null;
 	}
 
+	/**
+	 * Retorna el valor dado si no es nulo ni vacío, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo o vacío
+	 * @return valor original o valor por defecto
+	 */
 	private String defaultString(String value, String defaultValue) {
 		if (value == null || value.isBlank()) {
 			return defaultValue;

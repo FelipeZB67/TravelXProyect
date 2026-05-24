@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import co.edu.unbosque.travelx.entity.Persona.TipoUsuario;
 
+/**
+ * Objeto de transferencia de datos que representa una persona en el sistema,
+ * incluyendo sus credenciales, documento de identidad y tipo de usuario.
+ * El campo {@code id} es de solo lectura en la serialización JSON.
+ */
 public class PersonaDTO {
 	
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)

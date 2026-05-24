@@ -8,9 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,9 +15,13 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+/**
+ * Entidad que representa una persona registrada en el sistema.
+ * Implementa {@link UserDetails} para integrarse con Spring Security,
+ * gestionando autenticación, roles y verificación de correo electrónico.
+ */
 @Entity
 @Table(name = "persona")
 public class Persona implements UserDetails {
@@ -52,6 +53,10 @@ public class Persona implements UserDetails {
 	private boolean credentialsNonExpired;
 	private boolean enabled;
 
+	/**
+	 * Constructor por defecto que inicializa una persona con la cuenta activa,
+	 * no bloqueada, credenciales vigentes, correo sin verificar y rol {@code NINGUNO}.
+	 */
 	public Persona() {
 		this.accountNonExpired = true;
 		this.accountNonLocked = true;
@@ -60,7 +65,7 @@ public class Persona implements UserDetails {
 		this.correoVerificado = false;
 		this.tipoUsuario = TipoUsuario.NINGUNO;
 	}
-
+	
 	public Persona(String nombre, String documento, String correo, String contrasena) {
 		super();
 		this.nombre = nombre;
@@ -79,10 +84,21 @@ public class Persona implements UserDetails {
 		this.tipoUsuario = tipoUsuario;
 	}
 
+	/**
+	 * Define los roles disponibles para una persona en el sistema.
+	 * {@code ADMINISTRADOR} tiene acceso total, {@code USUARIO} acceso estándar
+	 * y {@code NINGUNO} indica que aún no se ha asignado un rol.
+	 */
 	public enum TipoUsuario {
 		ADMINISTRADOR, USUARIO, NINGUNO
 	}
 
+	/**
+	 * Retorna la lista de roles asignados a la persona en formato requerido
+	 * por Spring Security, construyendo el rol como {@code ROLE_<tipoUsuario>}.
+	 *
+	 * @return colección con la autoridad asignada según el tipo de usuario
+	 */
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(new SimpleGrantedAuthority("ROLE_" + tipoUsuario.name()));
