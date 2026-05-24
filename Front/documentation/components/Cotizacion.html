@@ -1,0 +1,2316 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  Cotizacion</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/cotizacion/cotizacion.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-cotizacion</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./cotizacion.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./cotizacion.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                <a href="#descargandoId" >descargandoId</a>
+                            </li>
+                            <li>
+                                <a href="#error" >error</a>
+                            </li>
+                            <li>
+                                <a href="#reservas" >reservas</a>
+                            </li>
+                            <li>
+                                <a href="#tabActivo" >tabActivo</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cambiarTab" >cambiarTab</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#cargarImagenPdf" >cargarImagenPdf</a>
+                            </li>
+                            <li>
+                                <a href="#cargarReservas" >cargarReservas</a>
+                            </li>
+                            <li>
+                                <a href="#claseReserva" >claseReserva</a>
+                            </li>
+                            <li>
+                                <a href="#esDescargaActiva" >esDescargaActiva</a>
+                            </li>
+                            <li>
+                                <a href="#iconoReserva" >iconoReserva</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#imprimir" >imprimir</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#obtenerMensajeError" >obtenerMensajeError</a>
+                            </li>
+                            <li>
+                                <a href="#precioReserva" >precioReserva</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#textoPdf" >textoPdf</a>
+                            </li>
+                            <li>
+                                <a href="#tipoReserva" >tipoReserva</a>
+                            </li>
+                            <li>
+                                <a href="#volver" >volver</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#reservasTransporte" >reservasTransporte</a>
+                                </li>
+                                <li>
+                                    <a href="#reservasHospedaje" >reservasHospedaje</a>
+                                </li>
+                                <li>
+                                    <a href="#reservasActivas" >reservasActivas</a>
+                                </li>
+                                <li>
+                                    <a href="#totalTransporte" >totalTransporte</a>
+                                </li>
+                                <li>
+                                    <a href="#totalHospedaje" >totalHospedaje</a>
+                                </li>
+                                <li>
+                                    <a href="#totalActivo" >totalActivo</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, reservaService: <a href="../injectables/ReservaService.html" target="_self">ReservaService</a>, cdr: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:25</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>reservaService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ReservaService.html" target="_self" >ReservaService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>cdr</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank" >ChangeDetectorRef</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cambiarTab"></a>
+                    <span class="name">
+                        <span ><b>cambiarTab</b></span>
+                        <a href="#cambiarTab"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cambiarTab(tab: "transporte" | "hospedaje")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Cambia el tab activo entre transporte y hospedaje.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tab</td>
+                                            <td>
+                                                        <code>&quot;transporte&quot; | &quot;hospedaje&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>tab a activar</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarImagenPdf"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>cargarImagenPdf</b></span>
+                        <a href="#cargarImagenPdf"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>cargarImagenPdf(url: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="338"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:338</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>url</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string | null&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarReservas"></a>
+                    <span class="name">
+                        <span ><b>cargarReservas</b></span>
+                        <a href="#cargarReservas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarReservas()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtiene las reservas del usuario desde el servicio de reservas.
+Actualiza el estado de carga y maneja los errores de la petición.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="claseReserva"></a>
+                    <span class="name">
+                        <span ><b>claseReserva</b></span>
+                        <a href="#claseReserva"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>claseReserva(reserva: <a href="../interfaces/TravelOptionModel.html" target="_self">TravelOptionModel</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="133"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:133</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retorna la clase CSS asociada al tipo de reserva para aplicar estilos visuales.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reserva</td>
+                                            <td>
+                                                            <code><a href="../interfaces/TravelOptionModel.html" target="_self" >TravelOptionModel</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>reserva de la que se obtiene la clase</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>nombre de la clase CSS</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="esDescargaActiva"></a>
+                    <span class="name">
+                        <span ><b>esDescargaActiva</b></span>
+                        <a href="#esDescargaActiva"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>esDescargaActiva(reserva: <a href="../interfaces/TravelOptionModel.html" target="_self">TravelOptionModel</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="157"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:157</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Indica si una reserva está siendo descargada en este momento.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reserva</td>
+                                            <td>
+                                                            <code><a href="../interfaces/TravelOptionModel.html" target="_self" >TravelOptionModel</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>reserva a verificar</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>true si la reserva está en proceso de descarga</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="iconoReserva"></a>
+                    <span class="name">
+                        <span ><b>iconoReserva</b></span>
+                        <a href="#iconoReserva"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>iconoReserva(reserva: <a href="../interfaces/TravelOptionModel.html" target="_self">TravelOptionModel</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="121"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:121</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retorna la clase de ícono FontAwesome correspondiente al tipo de reserva.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reserva</td>
+                                            <td>
+                                                            <code><a href="../interfaces/TravelOptionModel.html" target="_self" >TravelOptionModel</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>reserva de la que se obtiene el ícono</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>clase CSS del ícono</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="imprimir"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>imprimir</b></span>
+                        <a href="#imprimir"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>imprimir(reserva: <a href="../interfaces/TravelOptionModel.html" target="_self">TravelOptionModel</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="167"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:167</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Genera y descarga el comprobante PDF de una reserva.
+Construye el documento con encabezado visual, itinerario de viaje y detalle de compra.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reserva</td>
+                                            <td>
+                                                            <code><a href="../interfaces/TravelOptionModel.html" target="_self" >TravelOptionModel</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>reserva de la que se genera el comprobante</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="34"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:34</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carga las reservas del usuario al inicializar el componente.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="obtenerMensajeError"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>obtenerMensajeError</b></span>
+                        <a href="#obtenerMensajeError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>obtenerMensajeError(err: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, mensajeDefault: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="373"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:373</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>err</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>mensajeDefault</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="precioReserva"></a>
+                    <span class="name">
+                        <span ><b>precioReserva</b></span>
+                        <a href="#precioReserva"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>precioReserva(reserva: <a href="../interfaces/TravelOptionModel.html" target="_self">TravelOptionModel</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="145"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:145</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Genera el texto formateado del precio de una reserva.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reserva</td>
+                                            <td>
+                                                            <code><a href="../interfaces/TravelOptionModel.html" target="_self" >TravelOptionModel</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>reserva de la que se obtiene el precio</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>texto con el precio y la moneda, o un mensaje si no está disponible</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="textoPdf"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>textoPdf</b></span>
+                        <a href="#textoPdf"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>textoPdf(valor?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="369"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:369</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>valor</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tipoReserva"></a>
+                    <span class="name">
+                        <span ><b>tipoReserva</b></span>
+                        <a href="#tipoReserva"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>tipoReserva(reserva: <a href="../interfaces/TravelOptionModel.html" target="_self">TravelOptionModel</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="107"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:107</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Convierte el tipo interno de una reserva a su nombre legible en español.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reserva</td>
+                                            <td>
+                                                            <code><a href="../interfaces/TravelOptionModel.html" target="_self" >TravelOptionModel</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>reserva cuyo tipo se desea traducir</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>nombre legible del tipo de reserva</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="volver"></a>
+                    <span class="name">
+                        <span ><b>volver</b></span>
+                        <a href="#volver"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>volver()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="334"
+                                    class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:334</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navega hacia la vista de inicio.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="descargandoId"></a>
+                    <span class="name">
+                        <span ><b>descargandoId</b></span>
+                        <a href="#descargandoId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="error"></a>
+                    <span class="name">
+                        <span ><b>error</b></span>
+                        <a href="#error"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reservas"></a>
+                    <span class="name">
+                        <span ><b>reservas</b></span>
+                        <a href="#reservas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/TravelOptionModel.html" target="_self" >TravelOptionModel[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tabActivo"></a>
+                    <span class="name">
+                        <span ><b>tabActivo</b></span>
+                        <a href="#tabActivo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;transporte&quot; | &quot;hospedaje&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;transporte&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:20</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="reservasTransporte"></a>
+                        <span class="name"><b>reservasTransporte</b><a href="#reservasTransporte"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>reservasTransporte()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:72</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Retorna las reservas de tipo vuelo o bus.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/TravelOptionModel.html" target="_self" >TravelOptionModel[]</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="reservasHospedaje"></a>
+                        <span class="name"><b>reservasHospedaje</b><a href="#reservasHospedaje"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>reservasHospedaje()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:77</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Retorna las reservas de tipo Airbnb u hotel.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/TravelOptionModel.html" target="_self" >TravelOptionModel[]</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="reservasActivas"></a>
+                        <span class="name"><b>reservasActivas</b><a href="#reservasActivas"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>reservasActivas()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:82</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Retorna las reservas del tab activo.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/TravelOptionModel.html" target="_self" >TravelOptionModel[]</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="totalTransporte"></a>
+                        <span class="name"><b>totalTransporte</b><a href="#totalTransporte"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>totalTransporte()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:87</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Calcula el precio total de todas las reservas de transporte.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="totalHospedaje"></a>
+                        <span class="name"><b>totalHospedaje</b><a href="#totalHospedaje"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>totalHospedaje()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:92</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Calcula el precio total de todas las reservas de hospedaje.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="totalActivo"></a>
+                        <span class="name"><b>totalActivo</b><a href="#totalActivo"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>totalActivo()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/app/components/cotizacion/cotizacion.ts:97</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Retorna el total correspondiente al tab activo.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ChangeDetectorRef, Component, OnInit } from &#x27;@angular/core&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { TravelOptionModel } from &#x27;../../models/travel-option.model&#x27;;
+import { ReservaService } from &#x27;../../services/reserva.service&#x27;;
+import jsPDF from &#x27;jspdf&#x27;;
+
+@Component({
+  selector: &#x27;app-cotizacion&#x27;,
+  standalone: false,
+  templateUrl: &#x27;./cotizacion.html&#x27;,
+  styleUrl: &#x27;./cotizacion.css&#x27;
+})
+
+/**
+ * Componente para la visualización y gestión de cotizaciones del usuario.
+ * Permite consultar reservas guardadas, filtrarlas por tipo y generar
+ * comprobantes en formato PDF con el detalle de cada reserva.
+ */
+export class Cotizacion implements OnInit {
+  tabActivo: &#x27;transporte&#x27; | &#x27;hospedaje&#x27; &#x3D; &#x27;transporte&#x27;;
+
+  reservas: TravelOptionModel[] &#x3D; [];
+  cargando &#x3D; false;
+  error &#x3D; &#x27;&#x27;;
+  descargandoId &#x3D; &#x27;&#x27;;
+
+  constructor(
+    private router: Router,
+    private reservaService: ReservaService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  /** Carga las reservas del usuario al inicializar el componente. */
+  ngOnInit(): void {
+    this.cargarReservas();
+  }
+
+  /**
+   * Obtiene las reservas del usuario desde el servicio de reservas.
+   * Actualiza el estado de carga y maneja los errores de la petición.
+   */
+  cargarReservas(): void {
+    this.cargando &#x3D; true;
+    this.error &#x3D; &#x27;&#x27;;
+    this.cdr.detectChanges();
+
+    this.reservaService.misReservas().subscribe({
+      next: data &#x3D;&gt; {
+        this.reservas &#x3D; data ?? [];
+        this.cargando &#x3D; false;
+        this.cdr.detectChanges();
+      },
+      error: err &#x3D;&gt; {
+        this.error &#x3D; this.obtenerMensajeError(err, &#x27;No se pudieron cargar tus cotizaciones.&#x27;);
+        this.cargando &#x3D; false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  /**
+   * Cambia el tab activo entre transporte y hospedaje.
+   *
+   * @param tab tab a activar
+   */
+  cambiarTab(tab: &#x27;transporte&#x27; | &#x27;hospedaje&#x27;): void {
+    this.tabActivo &#x3D; tab;
+    this.error &#x3D; &#x27;&#x27;;
+  }
+
+  /** Retorna las reservas de tipo vuelo o bus. */
+  get reservasTransporte(): TravelOptionModel[] {
+    return this.reservas.filter(reserva &#x3D;&gt; reserva.type &#x3D;&#x3D;&#x3D; &#x27;FLIGHT&#x27; || reserva.type &#x3D;&#x3D;&#x3D; &#x27;BUS&#x27;);
+  }
+
+  /** Retorna las reservas de tipo Airbnb u hotel. */
+  get reservasHospedaje(): TravelOptionModel[] {
+    return this.reservas.filter(reserva &#x3D;&gt; reserva.type &#x3D;&#x3D;&#x3D; &#x27;AIRBNB&#x27; || reserva.type &#x3D;&#x3D;&#x3D; &#x27;HOTEL&#x27;);
+  }
+
+  /** Retorna las reservas del tab activo. */
+  get reservasActivas(): TravelOptionModel[] {
+    return this.tabActivo &#x3D;&#x3D;&#x3D; &#x27;transporte&#x27; ? this.reservasTransporte : this.reservasHospedaje;
+  }
+
+  /** Calcula el precio total de todas las reservas de transporte. */
+  get totalTransporte(): number {
+    return this.reservasTransporte.reduce((acc, reserva) &#x3D;&gt; acc + (reserva.price ?? 0), 0);
+  }
+
+  /** Calcula el precio total de todas las reservas de hospedaje. */
+  get totalHospedaje(): number {
+    return this.reservasHospedaje.reduce((acc, reserva) &#x3D;&gt; acc + (reserva.price ?? 0), 0);
+  }
+
+  /** Retorna el total correspondiente al tab activo. */
+  get totalActivo(): number {
+    return this.tabActivo &#x3D;&#x3D;&#x3D; &#x27;transporte&#x27; ? this.totalTransporte : this.totalHospedaje;
+  }
+
+  /**
+   * Convierte el tipo interno de una reserva a su nombre legible en español.
+   *
+   * @param reserva reserva cuyo tipo se desea traducir
+   * @returns nombre legible del tipo de reserva
+   */
+  tipoReserva(reserva: TravelOptionModel): string {
+    if (reserva.type &#x3D;&#x3D;&#x3D; &#x27;FLIGHT&#x27;) return &#x27;Aéreo&#x27;;
+    if (reserva.type &#x3D;&#x3D;&#x3D; &#x27;BUS&#x27;) return &#x27;Terrestre&#x27;;
+    if (reserva.type &#x3D;&#x3D;&#x3D; &#x27;AIRBNB&#x27;) return &#x27;Airbnb&#x27;;
+    if (reserva.type &#x3D;&#x3D;&#x3D; &#x27;HOTEL&#x27;) return &#x27;Hotel&#x27;;
+    return reserva.type ?? &#x27;Reserva&#x27;;
+  }
+
+  /**
+   * Retorna la clase de ícono FontAwesome correspondiente al tipo de reserva.
+   *
+   * @param reserva reserva de la que se obtiene el ícono
+   * @returns clase CSS del ícono
+   */
+  iconoReserva(reserva: TravelOptionModel): string {
+    if (reserva.type &#x3D;&#x3D;&#x3D; &#x27;FLIGHT&#x27;) return &#x27;fas fa-plane&#x27;;
+    if (reserva.type &#x3D;&#x3D;&#x3D; &#x27;BUS&#x27;) return &#x27;fas fa-road&#x27;;
+    return &#x27;fas fa-hotel&#x27;;
+  }
+
+  /**
+   * Retorna la clase CSS asociada al tipo de reserva para aplicar estilos visuales.
+   *
+   * @param reserva reserva de la que se obtiene la clase
+   * @returns nombre de la clase CSS
+   */
+  claseReserva(reserva: TravelOptionModel): string {
+    if (reserva.type &#x3D;&#x3D;&#x3D; &#x27;FLIGHT&#x27;) return &#x27;internacional&#x27;;
+    if (reserva.type &#x3D;&#x3D;&#x3D; &#x27;BUS&#x27;) return &#x27;nacional&#x27;;
+    return &#x27;hospedaje&#x27;;
+  }
+
+  /**
+   * Genera el texto formateado del precio de una reserva.
+   *
+   * @param reserva reserva de la que se obtiene el precio
+   * @returns texto con el precio y la moneda, o un mensaje si no está disponible
+   */
+  precioReserva(reserva: TravelOptionModel): string {
+    if (reserva.priceText) return reserva.priceText;
+    if (reserva.price !&#x3D;&#x3D; undefined &amp;&amp; reserva.price !&#x3D;&#x3D; null) return &#x60;${reserva.price.toLocaleString(&#x27;es-CO&#x27;)} ${reserva.currency ?? &#x27;USD&#x27;}&#x60;;
+    return &#x27;Precio no disponible&#x27;;
+  }
+
+  /**
+   * Indica si una reserva está siendo descargada en este momento.
+   *
+   * @param reserva reserva a verificar
+   * @returns true si la reserva está en proceso de descarga
+   */
+  esDescargaActiva(reserva: TravelOptionModel): boolean {
+    return this.descargandoId &#x3D;&#x3D;&#x3D; &#x60;${reserva.id ?? &#x27;&#x27;}&#x60;;
+  }
+
+  /**
+   * Genera y descarga el comprobante PDF de una reserva.
+   * Construye el documento con encabezado visual, itinerario de viaje y detalle de compra.
+   *
+   * @param reserva reserva de la que se genera el comprobante
+   */
+  async imprimir(reserva: TravelOptionModel): Promise&lt;void&gt; {
+    if (!reserva.id) {
+      this.error &#x3D; &#x27;No se encontró el identificador de la cotización.&#x27;;
+      return;
+    }
+
+    this.descargandoId &#x3D; &#x60;${reserva.id}&#x60;;
+    this.error &#x3D; &#x27;&#x27;;
+    this.cdr.detectChanges();
+
+    try {
+      const doc &#x3D; new jsPDF(&#x27;p&#x27;, &#x27;mm&#x27;, &#x27;a4&#x27;);
+      const nombreArchivo &#x3D; &#x60;comprobante-travelx-${reserva.id}.pdf&#x60;;
+
+      const imagenVuelo &#x3D; &#x27;https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w&#x3D;1600&amp;auto&#x3D;format&amp;fit&#x3D;crop&#x27;;
+      const imagenHeader &#x3D; await this.cargarImagenPdf(imagenVuelo);
+
+      if (imagenHeader) {
+        doc.addImage(imagenHeader, &#x27;JPEG&#x27;, 0, 0, 210, 62);
+      } else {
+        doc.setFillColor(10, 34, 64);
+        doc.rect(0, 0, 210, 62, &#x27;F&#x27;);
+      }
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      doc.setFontSize(24);
+      doc.text(&#x27;TravelX&#x27;, 16, 22);
+
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+      doc.setFontSize(11);
+      doc.text(&#x27;Comprobante de reserva&#x27;, 16, 31);
+
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      doc.setFontSize(17);
+      doc.text(this.tipoReserva(reserva), 158, 22);
+
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+      doc.setFontSize(9);
+      doc.text(&#x60;Reserva TX-${reserva.id}&#x60;, 158, 31);
+
+      doc.setFillColor(255, 255, 255);
+      doc.roundedRect(15, 48, 180, 26, 4, 4, &#x27;F&#x27;);
+
+      doc.setTextColor(12, 35, 58);
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      doc.setFontSize(8);
+      doc.text(&#x27;ESTADO&#x27;, 23, 59);
+      doc.text(&#x27;FECHA DE EMISIÓN&#x27;, 78, 59);
+      doc.text(&#x27;PROVEEDOR&#x27;, 137, 59);
+
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+      doc.setFontSize(10);
+      doc.text(reserva.available &#x3D;&#x3D;&#x3D; false ? &#x27;No disponible&#x27; : &#x27;Disponible&#x27;, 23, 67);
+      doc.text(new Date().toLocaleDateString(&#x27;es-CO&#x27;), 78, 67);
+      doc.text(this.textoPdf(reserva.provider), 137, 67);
+
+      doc.setTextColor(15, 29, 48);
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      doc.setFontSize(18);
+      doc.text(&#x27;Itinerario de viaje&#x27;, 16, 92);
+
+      doc.setDrawColor(35, 145, 235);
+      doc.setLineWidth(0.9);
+      doc.line(16, 98, 194, 98);
+
+      doc.setFillColor(239, 247, 255);
+      doc.roundedRect(16, 107, 178, 42, 4, 4, &#x27;F&#x27;);
+
+      doc.setFontSize(8);
+      doc.setTextColor(84, 105, 130);
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      doc.text(&#x27;ORIGEN&#x27;, 26, 119);
+      doc.text(&#x27;DESTINO&#x27;, 143, 119);
+
+      doc.setTextColor(12, 35, 58);
+      doc.setFontSize(15);
+      doc.text(this.textoPdf(reserva.originCity), 26, 130);
+      doc.text(this.textoPdf(reserva.destinationCity), 143, 130);
+
+      doc.setFontSize(9);
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+      doc.setTextColor(82, 101, 126);
+      doc.text(this.textoPdf(reserva.originCountry), 26, 138);
+      doc.text(this.textoPdf(reserva.destinationCountry), 143, 138);
+
+      doc.setTextColor(35, 145, 235);
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      doc.setFontSize(18);
+      doc.text(&#x27;&gt;&#x27;, 103, 131);
+
+      doc.setTextColor(15, 29, 48);
+      doc.setFontSize(9);
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      doc.text(&#x27;Fecha de ida&#x27;, 26, 162);
+      doc.text(&#x27;Fecha de regreso&#x27;, 72, 162);
+      doc.text(&#x27;Clase&#x27;, 122, 162);
+      doc.text(&#x27;Pasajeros&#x27;, 156, 162);
+
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+      doc.setTextColor(82, 101, 126);
+      doc.text(this.textoPdf(reserva.departureDate), 26, 170);
+      doc.text(this.textoPdf(reserva.returnDate), 72, 170);
+      doc.text(this.textoPdf(reserva.travelClass), 122, 170);
+      doc.text(&#x60;${reserva.adults ?? 0} adulto(s), ${reserva.children ?? 0} niño(s)&#x60;, 156, 170);
+
+      doc.setTextColor(15, 29, 48);
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      doc.setFontSize(16);
+      doc.text(&#x27;Detalle de compra&#x27;, 16, 192);
+
+      doc.setFillColor(255, 255, 255);
+      doc.roundedRect(16, 201, 178, 44, 3, 3, &#x27;F&#x27;);
+      doc.setDrawColor(220, 230, 242);
+      doc.setLineWidth(0.7);
+      doc.roundedRect(16, 201, 178, 44, 3, 3, &#x27;S&#x27;);
+
+      doc.setFontSize(8);
+      doc.setTextColor(84, 105, 130);
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      doc.text(&#x27;SERVICIO&#x27;, 24, 214);
+      doc.text(&#x27;DESCRIPCIÓN&#x27;, 83, 214);
+      doc.text(&#x27;TOTAL&#x27;, 171, 214);
+
+      const servicio &#x3D; doc.splitTextToSize(reserva.title ?? this.tipoReserva(reserva), 48);
+      const detalle &#x3D; doc.splitTextToSize(reserva.description || reserva.providerMessage || &#x27;Reserva generada en TravelX.&#x27;, 68);
+
+      doc.setTextColor(12, 35, 58);
+      doc.setFontSize(9);
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      doc.text(servicio, 24, 225);
+
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+      doc.text(detalle, 83, 225);
+
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      doc.setTextColor(35, 145, 235);
+      doc.text(this.precioReserva(reserva), 171, 225);
+
+      doc.setFillColor(15, 29, 48);
+      doc.roundedRect(16, 258, 178, 18, 3, 3, &#x27;F&#x27;);
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(10);
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+      doc.text(&#x27;Total pagado&#x27;, 24, 270);
+
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      doc.setFontSize(15);
+      doc.text(this.precioReserva(reserva), 176, 270, { align: &#x27;right&#x27; });
+
+      doc.setTextColor(98, 116, 138);
+      doc.setFontSize(8);
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+      doc.text(&#x27;Comprobante generado por TravelX&#x27;, 16, 287);
+      doc.text(&#x27;Gracias por viajar con TravelX.&#x27;, 194, 287, { align: &#x27;right&#x27; });
+
+      doc.save(nombreArchivo);
+    } catch {
+      this.error &#x3D; &#x27;No se pudo generar el comprobante. Intenta de nuevo.&#x27;;
+    } finally {
+      this.descargandoId &#x3D; &#x27;&#x27;;
+      this.cdr.detectChanges();
+    }
+  }
+
+  /** Navega hacia la vista de inicio. */
+  volver(): void {
+    this.router.navigate([&#x27;/inicio&#x27;]);
+  }
+
+  private cargarImagenPdf(url: string): Promise&lt;string | null&gt; {
+    return new Promise(resolve &#x3D;&gt; {
+      const imagen &#x3D; new Image();
+      imagen.crossOrigin &#x3D; &#x27;anonymous&#x27;;
+
+      imagen.onload &#x3D; () &#x3D;&gt; {
+        const canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+        canvas.width &#x3D; 1600;
+        canvas.height &#x3D; 520;
+
+        const ctx &#x3D; canvas.getContext(&#x27;2d&#x27;);
+
+        if (!ctx) {
+          resolve(null);
+          return;
+        }
+
+        ctx.filter &#x3D; &#x27;blur(5px)&#x27;;
+        ctx.drawImage(imagen, -35, -35, 1670, 590);
+        ctx.filter &#x3D; &#x27;none&#x27;;
+        ctx.fillStyle &#x3D; &#x27;rgba(8, 28, 54, 0.68)&#x27;;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        resolve(canvas.toDataURL(&#x27;image/jpeg&#x27;, 0.92));
+      };
+
+      imagen.onerror &#x3D; () &#x3D;&gt; resolve(null);
+      imagen.src &#x3D; url;
+    });
+  }
+
+  private textoPdf(valor?: string): string {
+    return valor &amp;&amp; valor.trim() ? valor.trim() : &#x27;No disponible&#x27;;
+  }
+
+  private obtenerMensajeError(err: any, mensajeDefault: string): string {
+    const mensajeBack &#x3D; typeof err?.error &#x3D;&#x3D;&#x3D; &#x27;string&#x27;
+      ? err.error
+      : err?.error?.message;
+
+    if (err?.status &#x3D;&#x3D;&#x3D; 0) return &#x27;No se pudo conectar con el servidor. Revisa que el back esté corriendo.&#x27;;
+    if (err?.status &#x3D;&#x3D;&#x3D; 400) return mensajeBack || &#x27;Los datos enviados no son válidos.&#x27;;
+    if (err?.status &#x3D;&#x3D;&#x3D; 401) return &#x27;Tu sesión expiró. Inicia sesión nuevamente.&#x27;;
+    if (err?.status &#x3D;&#x3D;&#x3D; 403) return &#x27;No tienes permisos para ver estas cotizaciones.&#x27;;
+    if (err?.status &#x3D;&#x3D;&#x3D; 404) return mensajeBack || &#x27;No se encontraron cotizaciones.&#x27;;
+    if (err?.status &gt;&#x3D; 500) return &#x27;El servidor tuvo un problema al cargar tus cotizaciones. Intenta de nuevo en unos minutos.&#x27;;
+
+    return mensajeBack || mensajeDefault;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;cot-wrapper&quot;&gt;
+
+  &lt;nav class&#x3D;&quot;navbar&quot;&gt;
+    &lt;div class&#x3D;&quot;navbar-left&quot;&gt;
+      &lt;i class&#x3D;&quot;fas fa-globe-americas nav-logo-icon&quot;&gt;&lt;/i&gt;
+      &lt;span class&#x3D;&quot;nav-logo-text&quot;&gt;TravelX&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;navbar-tabs&quot;&gt;
+      &lt;button class&#x3D;&quot;tab-btn&quot; [class.active]&#x3D;&quot;tabActivo &#x3D;&#x3D;&#x3D; &#x27;transporte&#x27;&quot; (click)&#x3D;&quot;cambiarTab(&#x27;transporte&#x27;)&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-plane&quot;&gt;&lt;/i&gt; Transporte
+      &lt;/button&gt;
+
+      &lt;button class&#x3D;&quot;tab-btn&quot; [class.active]&#x3D;&quot;tabActivo &#x3D;&#x3D;&#x3D; &#x27;hospedaje&#x27;&quot; (click)&#x3D;&quot;cambiarTab(&#x27;hospedaje&#x27;)&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-hotel&quot;&gt;&lt;/i&gt; Hospedaje
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;navbar-right&quot;&gt;
+      &lt;button class&#x3D;&quot;btn-back&quot; (click)&#x3D;&quot;volver()&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-arrow-left&quot;&gt;&lt;/i&gt; Volver
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+
+  &lt;div class&#x3D;&quot;cot-hero&quot;&gt;
+    &lt;div class&#x3D;&quot;hero-overlay&quot;&gt;&lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;hero-content&quot;&gt;
+      &lt;h1 class&#x3D;&quot;hero-title animate__animated animate__fadeInDown&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-file-invoice-dollar&quot;&gt;&lt;/i&gt; Mis Cotizaciones
+      &lt;/h1&gt;
+
+      &lt;p class&#x3D;&quot;hero-subtitle animate__animated animate__fadeInUp&quot;&gt;
+        Revisa tus reservas guardadas y genera el comprobante imprimible
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;cot-content&quot;&gt;
+
+    @if (cargando) {
+      &lt;div class&#x3D;&quot;estado-msg&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-spinner fa-spin&quot;&gt;&lt;/i&gt; Cargando cotizaciones...
+      &lt;/div&gt;
+    }
+
+    @if (error) {
+      &lt;div class&#x3D;&quot;estado-msg error&quot;&gt;
+        &lt;i class&#x3D;&quot;fas fa-exclamation-circle&quot;&gt;&lt;/i&gt; {{ error }}
+      &lt;/div&gt;
+    }
+
+    @if (!cargando) {
+      @if (reservasActivas.length &#x3D;&#x3D;&#x3D; 0) {
+        &lt;div class&#x3D;&quot;estado-msg&quot;&gt;
+          &lt;i class&#x3D;&quot;fas fa-inbox&quot;&gt;&lt;/i&gt; No hay cotizaciones guardadas en esta categoría.
+        &lt;/div&gt;
+      } @else {
+        &lt;div class&#x3D;&quot;resumen-bar&quot;&gt;
+          &lt;span&gt;
+            &lt;i class&#x3D;&quot;fas fa-list&quot;&gt;&lt;/i&gt; {{ reservasActivas.length }} cotización(es)
+          &lt;/span&gt;
+
+          &lt;span class&#x3D;&quot;resumen-total&quot;&gt;
+            &lt;i class&#x3D;&quot;fas fa-dollar-sign&quot;&gt;&lt;/i&gt; Total: ${{ totalActivo.toLocaleString(&#x27;es-CO&#x27;) }} USD
+          &lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;cards-grid&quot;&gt;
+          @for (reserva of reservasActivas; track reserva.id) {
+            &lt;div class&#x3D;&quot;cot-card animate__animated animate__fadeInUp&quot;&gt;
+
+              &lt;div class&#x3D;&quot;card-header-band&quot; [class]&#x3D;&quot;claseReserva(reserva)&quot;&gt;
+                &lt;i [class]&#x3D;&quot;iconoReserva(reserva)&quot;&gt;&lt;/i&gt;
+                &lt;span&gt;{{ tipoReserva(reserva) }}&lt;/span&gt;
+
+                @if (reserva.available &#x3D;&#x3D;&#x3D; false) {
+                  &lt;span class&#x3D;&quot;visa-badge visa-req&quot;&gt;
+                    &lt;i class&#x3D;&quot;fas fa-exclamation-circle&quot;&gt;&lt;/i&gt; No disponible
+                  &lt;/span&gt;
+                } @else {
+                  &lt;span class&#x3D;&quot;visa-badge visa-ok&quot;&gt;
+                    &lt;i class&#x3D;&quot;fas fa-check-circle&quot;&gt;&lt;/i&gt; Disponible
+                  &lt;/span&gt;
+                }
+              &lt;/div&gt;
+
+              &lt;div class&#x3D;&quot;card-body&quot;&gt;
+                &lt;div class&#x3D;&quot;ruta&quot;&gt;
+                  @if (reserva.type !&#x3D;&#x3D; &#x27;AIRBNB&#x27; &amp;&amp; reserva.type !&#x3D;&#x3D; &#x27;HOTEL&#x27;) {
+                    &lt;div class&#x3D;&quot;ruta-ciudad&quot;&gt;
+                      &lt;span class&#x3D;&quot;ruta-label&quot;&gt;Origen&lt;/span&gt;
+                      &lt;span class&#x3D;&quot;ruta-valor&quot;&gt;{{ reserva.originCity || &#x27;No disponible&#x27; }}&lt;/span&gt;
+                      &lt;span class&#x3D;&quot;ruta-pais&quot;&gt;{{ reserva.originCountry || &#x27;No disponible&#x27; }}&lt;/span&gt;
+                    &lt;/div&gt;
+
+                    &lt;div class&#x3D;&quot;ruta-arrow&quot;&gt;
+                      &lt;i class&#x3D;&quot;fas fa-arrow-right&quot;&gt;&lt;/i&gt;
+                    &lt;/div&gt;
+                  }
+
+                  &lt;div class&#x3D;&quot;ruta-ciudad text-right&quot;&gt;
+                    &lt;span class&#x3D;&quot;ruta-label&quot;&gt;Destino&lt;/span&gt;
+                    &lt;span class&#x3D;&quot;ruta-valor&quot;&gt;{{ reserva.destinationCity || &#x27;No disponible&#x27; }}&lt;/span&gt;
+                    &lt;span class&#x3D;&quot;ruta-pais&quot;&gt;{{ reserva.destinationCountry || &#x27;No disponible&#x27; }}&lt;/span&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;info-grid&quot;&gt;
+                  &lt;div class&#x3D;&quot;info-item&quot;&gt;
+                    &lt;i class&#x3D;&quot;fas fa-calendar&quot;&gt;&lt;/i&gt;
+
+                    &lt;div&gt;
+                      &lt;span class&#x3D;&quot;info-label&quot;&gt;Fechas&lt;/span&gt;
+                      &lt;span class&#x3D;&quot;info-valor&quot;&gt;
+                        {{ reserva.departureDate || &#x27;No disponible&#x27; }} → {{ reserva.returnDate || &#x27;No disponible&#x27; }}
+                      &lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+
+                  &lt;div class&#x3D;&quot;info-item&quot;&gt;
+                    &lt;i class&#x3D;&quot;fas fa-building&quot;&gt;&lt;/i&gt;
+
+                    &lt;div&gt;
+                      &lt;span class&#x3D;&quot;info-label&quot;&gt;Proveedor&lt;/span&gt;
+                      &lt;span class&#x3D;&quot;info-valor&quot;&gt;{{ reserva.provider || &#x27;No disponible&#x27; }}&lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+
+                  &lt;div class&#x3D;&quot;info-item&quot;&gt;
+                    &lt;i class&#x3D;&quot;fas fa-circle-info&quot;&gt;&lt;/i&gt;
+
+                    &lt;div&gt;
+                      &lt;span class&#x3D;&quot;info-label&quot;&gt;Detalle&lt;/span&gt;
+                      &lt;span class&#x3D;&quot;info-valor&quot;&gt;
+                        {{ reserva.description || reserva.providerMessage || reserva.title || &#x27;Sin detalle disponible&#x27; }}
+                      &lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;precio-row precio-row-simple&quot;&gt;
+                  &lt;div class&#x3D;&quot;precio-item total&quot;&gt;
+                    &lt;span class&#x3D;&quot;precio-label&quot;&gt;Precio&lt;/span&gt;
+                    &lt;span class&#x3D;&quot;precio-val&quot;&gt;{{ precioReserva(reserva) }}&lt;/span&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;div class&#x3D;&quot;card-footer&quot;&gt;
+                &lt;button class&#x3D;&quot;btn-pdf&quot; (click)&#x3D;&quot;imprimir(reserva)&quot; [disabled]&#x3D;&quot;esDescargaActiva(reserva)&quot;&gt;
+                  @if (esDescargaActiva(reserva)) {
+                    &lt;i class&#x3D;&quot;fas fa-spinner fa-spin&quot;&gt;&lt;/i&gt; Generando
+                  } @else {
+                    &lt;i class&#x3D;&quot;fas fa-print&quot;&gt;&lt;/i&gt; Imprimir comprobante
+                  }
+                &lt;/button&gt;
+              &lt;/div&gt;
+
+            &lt;/div&gt;
+          }
+        &lt;/div&gt;
+      }
+    }
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="cot-wrapper">  <nav class="navbar">    <div class="navbar-left">      <i class="fas fa-globe-americas nav-logo-icon"></i>      <span class="nav-logo-text">TravelX</span>    </div>    <div class="navbar-tabs">      <button class="tab-btn" [class.active]="tabActivo === \'transporte\'" (click)="cambiarTab(\'transporte\')">        <i class="fas fa-plane"></i> Transporte      </button>      <button class="tab-btn" [class.active]="tabActivo === \'hospedaje\'" (click)="cambiarTab(\'hospedaje\')">        <i class="fas fa-hotel"></i> Hospedaje      </button>    </div>    <div class="navbar-right">      <button class="btn-back" (click)="volver()">        <i class="fas fa-arrow-left"></i> Volver      </button>    </div>  </nav>  <div class="cot-hero">    <div class="hero-overlay"></div>    <div class="hero-content">      <h1 class="hero-title animate__animated animate__fadeInDown">        <i class="fas fa-file-invoice-dollar"></i> Mis Cotizaciones      </h1>      <p class="hero-subtitle animate__animated animate__fadeInUp">        Revisa tus reservas guardadas y genera el comprobante imprimible      </p>    </div>  </div>  <div class="cot-content">    @if (cargando) {      <div class="estado-msg">        <i class="fas fa-spinner fa-spin"></i> Cargando cotizaciones...      </div>    }    @if (error) {      <div class="estado-msg error">        <i class="fas fa-exclamation-circle"></i> {{ error }}      </div>    }    @if (!cargando) {      @if (reservasActivas.length === 0) {        <div class="estado-msg">          <i class="fas fa-inbox"></i> No hay cotizaciones guardadas en esta categoría.        </div>      } @else {        <div class="resumen-bar">          <span>            <i class="fas fa-list"></i> {{ reservasActivas.length }} cotización(es)          </span>          <span class="resumen-total">            <i class="fas fa-dollar-sign"></i> Total: ${{ totalActivo.toLocaleString(\'es-CO\') }} USD          </span>        </div>        <div class="cards-grid">          @for (reserva of reservasActivas; track reserva.id) {            <div class="cot-card animate__animated animate__fadeInUp">              <div class="card-header-band" [class]="claseReserva(reserva)">                <i [class]="iconoReserva(reserva)"></i>                <span>{{ tipoReserva(reserva) }}</span>                @if (reserva.available === false) {                  <span class="visa-badge visa-req">                    <i class="fas fa-exclamation-circle"></i> No disponible                  </span>                } @else {                  <span class="visa-badge visa-ok">                    <i class="fas fa-check-circle"></i> Disponible                  </span>                }              </div>              <div class="card-body">                <div class="ruta">                  @if (reserva.type !== \'AIRBNB\' && reserva.type !== \'HOTEL\') {                    <div class="ruta-ciudad">                      <span class="ruta-label">Origen</span>                      <span class="ruta-valor">{{ reserva.originCity || \'No disponible\' }}</span>                      <span class="ruta-pais">{{ reserva.originCountry || \'No disponible\' }}</span>                    </div>                    <div class="ruta-arrow">                      <i class="fas fa-arrow-right"></i>                    </div>                  }                  <div class="ruta-ciudad text-right">                    <span class="ruta-label">Destino</span>                    <span class="ruta-valor">{{ reserva.destinationCity || \'No disponible\' }}</span>                    <span class="ruta-pais">{{ reserva.destinationCountry || \'No disponible\' }}</span>                  </div>                </div>                <div class="info-grid">                  <div class="info-item">                    <i class="fas fa-calendar"></i>                    <div>                      <span class="info-label">Fechas</span>                      <span class="info-valor">                        {{ reserva.departureDate || \'No disponible\' }} → {{ reserva.returnDate || \'No disponible\' }}                      </span>                    </div>                  </div>                  <div class="info-item">                    <i class="fas fa-building"></i>                    <div>                      <span class="info-label">Proveedor</span>                      <span class="info-valor">{{ reserva.provider || \'No disponible\' }}</span>                    </div>                  </div>                  <div class="info-item">                    <i class="fas fa-circle-info"></i>                    <div>                      <span class="info-label">Detalle</span>                      <span class="info-valor">                        {{ reserva.description || reserva.providerMessage || reserva.title || \'Sin detalle disponible\' }}                      </span>                    </div>                  </div>                </div>                <div class="precio-row precio-row-simple">                  <div class="precio-item total">                    <span class="precio-label">Precio</span>                    <span class="precio-val">{{ precioReserva(reserva) }}</span>                  </div>                </div>              </div>              <div class="card-footer">                <button class="btn-pdf" (click)="imprimir(reserva)" [disabled]="esDescargaActiva(reserva)">                  @if (esDescargaActiva(reserva)) {                    <i class="fas fa-spinner fa-spin"></i> Generando                  } @else {                    <i class="fas fa-print"></i> Imprimir comprobante                  }                </button>              </div>            </div>          }        </div>      }    }  </div></div></div>'
+    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'App', 'selector': 'app-root'},{'name': 'BienvenidaComponent', 'selector': 'app-bienvenida'},{'name': 'Cotizacion', 'selector': 'app-cotizacion'},{'name': 'InicioComponent', 'selector': 'app-inicio'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'RegistroComponent', 'selector': 'app-registro'},{'name': 'VerificarCorreoComponent', 'selector': 'app-verificar-correo'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'Cotizacion'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'Cotizacion.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

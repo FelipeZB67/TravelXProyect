@@ -1,0 +1,392 @@
+<div class="inicio-wrapper">
+
+  <nav class="navbar">
+    <div class="navbar-left">
+      <i class="fas fa-globe-americas nav-logo-icon"></i>
+      <span class="nav-logo-text">TravelX</span>
+    </div>
+
+    <div class="navbar-tabs">
+      <button class="tab-btn" [class.active]="tabActivo === 'aereo'" (click)="cambiarTab('aereo')">
+        <i class="fas fa-plane"></i> Aéreos
+      </button>
+
+      <button class="tab-btn" [class.active]="tabActivo === 'terrestre'" (click)="cambiarTab('terrestre')">
+        <i class="fas fa-bus"></i> Terrestres
+      </button>
+
+      <button class="tab-btn" [class.active]="tabActivo === 'hotel'" (click)="cambiarTab('hotel')">
+        <i class="fas fa-hotel"></i> Hoteles
+      </button>
+    </div>
+
+    <div class="navbar-right">
+      <button class="btn-logout" (click)="irACotizacion()">
+        <i class="fas fa-file-invoice-dollar"></i> Cotizaciones
+      </button>
+
+      <button class="btn-logout" (click)="abrirCuenta()">
+        <i class="fas fa-user-circle"></i> Cuenta
+      </button>
+
+      <button class="btn-logout" (click)="cerrarSesion()">
+        <i class="fas fa-sign-out-alt"></i> Salir
+      </button>
+    </div>
+  </nav>
+
+  <div class="hero-bar" [style.backgroundImage]="heroBackground">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-bar-content">
+      <h1 class="hero-title animate__animated animate__fadeInDown">
+        @if (tabActivo === 'aereo') {
+          <i class="fas fa-plane-departure"></i> Viajes Aéreos
+        }
+
+        @if (tabActivo === 'terrestre') {
+          <i class="fas fa-route"></i> Viajes Terrestres
+        }
+
+        @if (tabActivo === 'hotel') {
+          <i class="fas fa-concierge-bell"></i> Hoteles
+        }
+      </h1>
+
+      <p class="hero-subtitle animate__animated animate__fadeInUp">
+        @if (tabActivo === 'aereo') {
+          Explora destinos alrededor del mundo
+        }
+
+        @if (tabActivo === 'terrestre') {
+          Descubre rutas disponibles por tierra
+        }
+
+        @if (tabActivo === 'hotel') {
+          Encuentra hospedajes para tu destino
+        }
+      </p>
+
+      <div class="filtros-card">
+        <div class="filtros-grid">
+
+          @if (tabActivo !== 'hotel') {
+            <div class="form-field">
+              <label>Ciudad de origen</label>
+              <div class="input-shell">
+                <i class="fas fa-map-marker-alt input-icon"></i>
+                <input class="filtro-input" type="text" [(ngModel)]="origenInput" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>País de origen</label>
+              <div class="input-shell">
+                <i class="fas fa-flag input-icon"></i>
+                <select class="filtro-input" [(ngModel)]="paisOrigenInput">
+                  @for (pais of paises; track pais) {
+                    <option [value]="pais">{{ pais }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          }
+
+          <div class="form-field">
+            <label>{{ tabActivo === 'hotel' ? 'Ciudad' : 'Ciudad de destino' }}</label>
+            <div class="input-shell">
+              <i class="fas fa-location-arrow input-icon"></i>
+              <input class="filtro-input" type="text" [(ngModel)]="destinoInput" autocomplete="off">
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>País de destino</label>
+            <div class="input-shell">
+              <i class="fas fa-flag input-icon"></i>
+              <select class="filtro-input" [(ngModel)]="paisDestinoInput">
+                @for (pais of paises; track pais) {
+                  <option [value]="pais">{{ pais }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>Fecha de ida</label>
+            <div class="input-shell">
+              <i class="fas fa-calendar input-icon"></i>
+              <input class="filtro-input" type="date" [(ngModel)]="fechaSalidaInput">
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>Fecha de regreso</label>
+            <div class="input-shell">
+              <i class="fas fa-calendar-check input-icon"></i>
+              <input class="filtro-input" type="date" [(ngModel)]="fechaRegresoInput">
+            </div>
+          </div>
+
+          <div class="form-field small-field">
+            <label>Adultos</label>
+            <div class="input-shell">
+              <i class="fas fa-user input-icon"></i>
+              <input class="filtro-input" type="number" min="1" [(ngModel)]="adultosInput">
+            </div>
+          </div>
+
+          <div class="form-field small-field">
+            <label>Niños</label>
+            <div class="input-shell">
+              <i class="fas fa-child input-icon"></i>
+              <input class="filtro-input" type="number" min="0" [(ngModel)]="ninosInput">
+            </div>
+          </div>
+
+          @if (tabActivo === 'hotel') {
+            <div class="form-field small-field">
+              <label>Mascotas</label>
+              <div class="input-shell">
+                <i class="fas fa-paw input-icon"></i>
+                <input class="filtro-input" type="number" min="0" [(ngModel)]="mascotasInput">
+              </div>
+            </div>
+          }
+
+          <div class="form-field action-field">
+            <label>&nbsp;</label>
+            <button class="btn-buscar" (click)="buscar()" [disabled]="cargando">
+              @if (cargando) {
+                <i class="fas fa-spinner fa-spin"></i> Buscando
+              } @else {
+                <i class="fas fa-search"></i> Buscar
+              }
+            </button>
+          </div>
+
+        </div>
+
+        @if (tabActivo === 'hotel') {
+          <div class="opciones-hotel">
+            <label>
+              <input type="checkbox" [(ngModel)]="piscinaInput">
+              Piscina
+            </label>
+
+            <label>
+              <input type="checkbox" [(ngModel)]="jacuzziInput">
+              Jacuzzi
+            </label>
+
+            <label>
+              <input type="checkbox" [(ngModel)]="petFriendlyInput">
+              Pet friendly
+            </label>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="content-area">
+    @if (error) {
+      <div class="estado-msg error">
+        <i class="fas fa-exclamation-circle"></i> {{ error }}
+      </div>
+    }
+
+    @if (mensajeBusqueda && !error) {
+      <div class="estado-msg success">
+        <i class="fas fa-check-circle"></i> {{ mensajeBusqueda }}
+      </div>
+    }
+
+    @if (!cargando && itemsActivos.length === 0) {
+      <div class="estado-msg">
+        <i class="fas fa-search-location"></i> Realiza una búsqueda para ver opciones disponibles.
+      </div>
+    }
+
+    <div class="cards-grid">
+      @for (item of itemsActivos; track $index) {
+        <div class="viaje-card animate__animated animate__fadeInUp" [class.card-disabled]="!item.available">
+          <div class="card-image">
+            <img [src]="imagenItem(item)" [alt]="item.title || 'Opción TravelX'">
+
+            <div class="card-badge">
+              @if (item.type === 'FLIGHT') {
+                <i class="fas fa-plane"></i>
+              }
+
+              @if (item.type === 'BUS') {
+                <i class="fas fa-bus"></i>
+              }
+
+              @if (item.type === 'AIRBNB' || item.type === 'HOTEL') {
+                <i class="fas fa-hotel"></i>
+              }
+            </div>
+          </div>
+
+          <div class="card-body">
+            <h3 class="card-title">{{ item.title }}</h3>
+
+            <div class="card-route route-detailed">
+              @if (item.type !== 'AIRBNB' && item.type !== 'HOTEL') {
+                <span>
+                  <i class="fas fa-map-marker-alt"></i>
+                  {{ item.originCity }}, {{ item.originCountry }}
+                </span>
+
+                <i class="fas fa-arrow-right route-arrow"></i>
+              }
+
+              <span>
+                <i class="fas fa-map-marker-alt destino-icon"></i>
+                {{ item.destinationCity }}, {{ item.destinationCountry }}
+              </span>
+            </div>
+
+            <p class="card-description">{{ descripcionItem(item) }}</p>
+
+            <div class="card-footer">
+              <div class="card-duration">
+                <i class="fas fa-calendar"></i> {{ item.departureDate }} - {{ item.returnDate }}
+              </div>
+
+              <div class="card-price">
+                {{ precioItem(item) }}
+              </div>
+            </div>
+
+            <button class="btn-ver" (click)="reservar(item)" [disabled]="!item.available || reservandoId === claveReserva(item)">
+              @if (reservandoId === claveReserva(item)) {
+                Guardando <i class="fas fa-spinner fa-spin"></i>
+              } @else {
+                Reservar <i class="fas fa-arrow-right"></i>
+              }
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>
+
+@if (modalCuentaAbierto) {
+  <div class="cuenta-overlay" (click)="cerrarCuenta()">
+    <div class="cuenta-modal" (click)="$event.stopPropagation()">
+      <div class="cuenta-header">
+        <div>
+          <h2><i class="fas fa-user-circle"></i> Mi cuenta</h2>
+          <p>Consulta y actualiza tus datos personales</p>
+        </div>
+
+        <button class="cuenta-close" (click)="cerrarCuenta()" [disabled]="guardandoCuenta || eliminandoCuenta">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="cuenta-body">
+        @if (cargandoCuenta) {
+          <div class="cuenta-message">
+            <i class="fas fa-spinner fa-spin"></i> Cargando datos de la cuenta...
+          </div>
+        } @else {
+          @if (errorCuenta) {
+            <div class="cuenta-alert cuenta-error">
+              <i class="fas fa-exclamation-circle"></i> {{ errorCuenta }}
+            </div>
+          }
+
+          @if (mensajeCuenta) {
+            <div class="cuenta-alert cuenta-success">
+              <i class="fas fa-check-circle"></i> {{ mensajeCuenta }}
+            </div>
+          }
+
+          <div class="cuenta-grid">
+            <div class="cuenta-field">
+              <label>Nombre</label>
+              <div class="cuenta-input-shell">
+                <i class="fas fa-user"></i>
+                <input class="cuenta-input" [(ngModel)]="cuentaFormulario.nombre" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="cuenta-field">
+              <label>Correo</label>
+              <div class="cuenta-input-shell readonly">
+                <i class="fas fa-lock"></i>
+                <input class="cuenta-input" [(ngModel)]="cuentaFormulario.correo" disabled>
+              </div>
+            </div>
+
+            <div class="cuenta-field">
+              <label>Documento</label>
+              <div class="cuenta-input-shell">
+                <i class="fas fa-id-card"></i>
+                <input class="cuenta-input" [(ngModel)]="cuentaFormulario.documento" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="cuenta-field">
+              <label>Nueva contraseña</label>
+              <div class="cuenta-input-shell">
+                <i class="fas fa-lock"></i>
+                <input class="cuenta-input" type="password" [(ngModel)]="cuentaFormulario.contrasena" placeholder="Opcional">
+              </div>
+            </div>
+          </div>
+
+          @if (modalEliminarCuentaAbierto) {
+            <div class="cuenta-delete-box">
+              <div>
+                <strong>¿Eliminar tu cuenta?</strong>
+                <span>Esta acción no se puede deshacer.</span>
+              </div>
+
+              <div class="cuenta-delete-actions">
+                <button class="btn-cuenta-cancel" (click)="cancelarEliminarCuenta()" [disabled]="eliminandoCuenta">
+                  Cancelar
+                </button>
+
+                <button class="btn-cuenta-danger" (click)="confirmarEliminarCuenta()" [disabled]="eliminandoCuenta">
+                  @if (eliminandoCuenta) {
+                    <i class="fas fa-spinner fa-spin"></i> Eliminando
+                  } @else {
+                    <i class="fas fa-trash"></i> Confirmar
+                  }
+                </button>
+              </div>
+            </div>
+          }
+        }
+      </div>
+
+      @if (!cargandoCuenta) {
+        <div class="cuenta-footer">
+          <button class="btn-cuenta-danger-soft" (click)="abrirEliminarCuenta()" [disabled]="guardandoCuenta || eliminandoCuenta">
+            <i class="fas fa-trash"></i> Eliminar cuenta
+          </button>
+
+          <div class="cuenta-footer-actions">
+            <button class="btn-cuenta-cancel" (click)="cerrarCuenta()" [disabled]="guardandoCuenta || eliminandoCuenta">
+              Cerrar
+            </button>
+
+            <button class="btn-cuenta-save" (click)="guardarCuenta()" [disabled]="guardandoCuenta || eliminandoCuenta">
+              @if (guardandoCuenta) {
+                <i class="fas fa-spinner fa-spin"></i> Guardando
+              } @else {
+                <i class="fas fa-save"></i> Guardar cambios
+              }
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}
