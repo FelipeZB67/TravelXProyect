@@ -119,6 +119,21 @@ public class ReservaController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> eliminarReservaPropia(
+			@PathVariable Long id,
+			@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+
+		String correo = obtenerCorreoDesdeHeader(authorizationHeader);
+
+		if (correo == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+
+		reservaService.eliminarPropia(id, correo);
+		return ResponseEntity.noContent().build();
+	}
+	
 	/**
 	 * Genera una página HTML con el detalle de una reserva propia del usuario autenticado,
 	 * lista para ser impresa desde el navegador.

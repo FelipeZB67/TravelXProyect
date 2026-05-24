@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import co.edu.unbosque.travelx.dto.TravelOptionDTO;
 import co.edu.unbosque.travelx.entity.Reserva;
 import co.edu.unbosque.travelx.repository.ReservaRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Servicio que gestiona las operaciones sobre reservas de viaje,
@@ -148,6 +150,18 @@ public class ReservaService {
 		reservaRepository.deleteById(id);
 	}
 
+	
+	public void eliminarPropia(Long id, String username) {
+		Reserva reserva = reservaRepository.findById(id)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reserva no encontrada."));
+
+		if (!reserva.getUsername().equals(username)) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No puedes eliminar una reserva que no pertenece a tu cuenta.");
+		}
+
+		reservaRepository.delete(reserva);
+	}
+	
 	/**
 	 * Aplica valores por defecto a los campos vacíos o nulos de una reserva
 	 * creada o actualizada desde el panel de administración.
