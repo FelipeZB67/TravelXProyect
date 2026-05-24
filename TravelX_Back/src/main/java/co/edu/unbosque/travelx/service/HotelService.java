@@ -4,9 +4,18 @@ import java.nio.charset.StandardCharsets;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import co.edu.unbosque.travelx.dto.HotelDetailsDTO;
 import co.edu.unbosque.travelx.dto.HotelDetailsRequestDTO;
 
+/**
+ * Servicio que gestiona la consulta de detalles de hoteles mediante la API
+ * de Hotels en RapidAPI, construyendo la URL de consulta, procesando la respuesta
+ * y mapeando el resultado al DTO correspondiente.
+ */
 @Service
 public class HotelService {
 
@@ -22,6 +31,13 @@ public class HotelService {
 		this.rapidApiClient = rapidApiClient;
 	}
 
+	/**
+	 * Consulta el detalle de un hotel usando su ID y los filtros del request,
+	 * consultando la API externa y mapeando la respuesta al DTO.
+	 *
+	 * @param request objeto con el ID del hotel, fechas de estancia y configuración de huéspedes
+	 * @return {@link HotelDetailsDTO} con los detalles del hotel y el estado de la consulta
+	 */
 	public HotelDetailsDTO getDetails(HotelDetailsRequestDTO request) {
 		String checkIn = defaultString(request.getCheckIn(), "2020-01-08");
 		String checkOut = defaultString(request.getCheckOut(), "2020-01-15");
@@ -58,6 +74,14 @@ public class HotelService {
 
 		
 	}
+	
+	/**
+	 * Retorna el valor dado si no es nulo ni vacío, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo o vacío
+	 * @return valor original o valor por defecto
+	 */
 	private String defaultString(String value, String defaultValue) {
 		if (value == null || value.isBlank()) {
 			return defaultValue;
@@ -70,6 +94,13 @@ public class HotelService {
 		return URLEncoder.encode(value, StandardCharsets.UTF_8);
 	}
 	
+	/**
+	 * Interpreta la respuesta JSON del proveedor y establece el estado,
+	 * mensaje y respuesta en el DTO según el resultado obtenido.
+	 *
+	 * @param dto  objeto donde se almacena el estado de la consulta
+	 * @param json respuesta en formato JSON recibida del proveedor
+	 */
 	private void fillProviderStatus(HotelDetailsDTO dto, String json) {
 		if (json == null || json.isBlank()) {
 			dto.setSuccess(false);
@@ -79,7 +110,7 @@ public class HotelService {
 		}
 
 		try {
-			com.google.gson.JsonObject root = com.google.gson.JsonParser.parseString(json).getAsJsonObject();
+			JsonObject root = JsonParser.parseString(json).getAsJsonObject();
 
 			if (root.has("statusCode")) {
 				dto.setStatusCode(root.get("statusCode").getAsInt());
@@ -103,6 +134,13 @@ public class HotelService {
 		}
 	}
 
+	/**
+	 * Extrae el mensaje de error desde una cadena JSON de error del proveedor.
+	 * Si no puede interpretarse como JSON, retorna la cadena original.
+	 *
+	 * @param error cadena con el error retornado por el proveedor
+	 * @return mensaje de error legible extraído del JSON, o la cadena original
+	 */
 	private String extractProviderMessage(String error) {
 		if (error == null || error.isBlank()) {
 			return "Error desconocido del proveedor de hoteles.";
@@ -121,6 +159,14 @@ public class HotelService {
 		return error;
 	}
 
+	/**
+	 * Lee un campo de texto de un objeto JSON de forma segura,
+	 * retornando null si el campo no existe o es nulo.
+	 *
+	 * @param object    objeto JSON del que se desea leer el campo
+	 * @param fieldName nombre del campo a leer
+	 * @return valor del campo como texto, o null si no existe
+	 */
 	private String readString(com.google.gson.JsonObject object, String fieldName) {
 		if (object.has(fieldName) && !object.get(fieldName).isJsonNull()) {
 			return object.get(fieldName).getAsString();

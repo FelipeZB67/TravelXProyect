@@ -1,5 +1,10 @@
 package co.edu.unbosque.travelx.dto;
 
+/**
+ * Objeto de transferencia de datos que representa una opción de viaje unificada,
+ * incluyendo información de transporte u hospedaje, origen, destino, fechas,
+ * precio, configuración de pasajeros y respuesta del proveedor externo.
+ */
 public class TravelOptionDTO {
 
 	private String provider; 

@@ -5,6 +5,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+/**
+ * Servicio para el envío de correos electrónicos en TravelX,
+ * utilizando {@link JavaMailSender} para la comunicación con el servidor SMTP.
+ */
 @Service
 public class EmailService {
 
@@ -17,6 +21,12 @@ public class EmailService {
 		this.mailSender = mailSender;
 	}
 
+	/**
+	 * Envía un correo electrónico con el código de verificación al destinatario indicado.
+	 *
+	 * @param destino dirección de correo electrónico del destinatario
+	 * @param codigo  código de verificación a incluir en el mensaje
+	 */
 	public void enviarCodigoVerificacion(String destino, String codigo) {
 		SimpleMailMessage mensaje = new SimpleMailMessage();
 		mensaje.setFrom(fromEmail);

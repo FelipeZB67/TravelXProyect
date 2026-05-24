@@ -1,5 +1,9 @@
 package co.edu.unbosque.travelx.dto;
 
+/**
+ * Objeto de transferencia de datos que encapsula los filtros y parámetros
+ * necesarios para realizar una búsqueda de alojamientos tipo Airbnb.
+ */
 public class AirbnbSearchRequestDTO {
 
 	private String placeId;

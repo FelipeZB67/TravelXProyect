@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 
 import co.edu.unbosque.travelx.dto.DestinationCodeDTO;
 
+/**
+ * Servicio que resuelve destinos turísticos a sus códigos e identificadores
+ * correspondientes (IATA, Google Place ID, Kiwi) mediante un mapa interno
+ * precargado con ciudades soportadas.
+ */
 @Service
 public class DestinationResolverService {
 
@@ -47,14 +52,35 @@ public class DestinationResolverService {
 						"City:medellin_co"));
 	}
 
+	/**
+	 * Busca y retorna los códigos del destino correspondiente a la ciudad y país indicados.
+	 *
+	 * @param city    nombre de la ciudad a resolver
+	 * @param country nombre del país donde se ubica la ciudad
+	 * @return {@link DestinationCodeDTO} con los códigos del destino, o {@code null} si no se encuentra
+	 */
 	public DestinationCodeDTO resolve(String city, String country) {
 		return destinations.get(key(city, country));
 	}
 
+	/**
+	 * Genera la clave de búsqueda normalizada combinando ciudad y país.
+	 *
+	 * @param city    nombre de la ciudad
+	 * @param country nombre del país
+	 * @return clave en formato {@code ciudad|pais} normalizada y en minúsculas
+	 */
 	private String key(String city, String country) {
 		return normalize(city) + "|" + normalize(country);
 	}
 
+	/**
+	 * Normaliza un texto eliminando tildes y diacríticos, convirtiéndolo
+	 * a minúsculas y eliminando espacios extremos.
+	 *
+	 * @param value texto a normalizar
+	 * @return texto normalizado sin acentos ni caracteres especiales, o cadena vacía si es nulo
+	 */
 	private String normalize(String value) {
 		if (value == null) {
 			return "";

@@ -1,5 +1,10 @@
 package co.edu.unbosque.travelx.dto;
 
+/**
+ * Objeto de transferencia de datos que encapsula los parámetros de búsqueda
+ * unificada de viajes, permitiendo configurar origen, destino, fechas,
+ * pasajeros, tipos de servicio a incluir y filtros de hospedaje.
+ */
 public class TravelSearchRequestDTO {
 
 	private String ciudadOrigen;

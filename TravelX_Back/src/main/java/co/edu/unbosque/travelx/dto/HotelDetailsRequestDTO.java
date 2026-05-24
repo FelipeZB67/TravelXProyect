@@ -1,5 +1,10 @@
 package co.edu.unbosque.travelx.dto;
 
+/**
+ * Objeto de transferencia de datos que encapsula los parámetros necesarios
+ * para consultar el detalle de un hotel, incluyendo fechas de estancia,
+ * número de huéspedes, moneda e idioma.
+ */
 public class HotelDetailsRequestDTO {
 
 	private Long id;

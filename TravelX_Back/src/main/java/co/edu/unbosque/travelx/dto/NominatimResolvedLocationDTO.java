@@ -1,5 +1,10 @@
 package co.edu.unbosque.travelx.dto;
 
+/**
+ * Objeto de transferencia de datos que representa el resultado de una resolución
+ * geográfica mediante Nominatim, incluyendo coordenadas, nombre normalizado
+ * y código de país del lugar encontrado.
+ */
 public class NominatimResolvedLocationDTO {
 
 	private String query;
