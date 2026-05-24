@@ -5,7 +5,7 @@ import { LoginComponent } from './components/login/login';
 import { RegistroComponent } from './components/registro/registro';
 import { InicioComponent } from './components/inicio/inicio';
 import { AdminComponent } from './components/admin/admin';
-import { Cotizacion } from './components/cotizacion/cotizacion';
+import { CotizacionComponent } from './components/cotizacion/cotizacion';
 import { authGuard } from './guards/auth-guard';
 import { VerificarCorreoComponent } from './components/verificar-correo/verificar-correo';
 
@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'registro', component: RegistroComponent },
   { path: 'verificar-correo', component: VerificarCorreoComponent },
   { path: 'inicio', component: InicioComponent, canActivate: [authGuard] },
-  { path: 'cotizacion', component: Cotizacion, canActivate: [authGuard] },
+  { path: 'cotizacion', component: CotizacionComponent, canActivate: [authGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRADOR'] } },
   { path: '**', redirectTo: '' }
 ];
