@@ -6,6 +6,8 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.JsonObject;
+
 import co.edu.unbosque.travelx.dto.AirbnbSearchDTO;
 import co.edu.unbosque.travelx.dto.AirbnbSearchRequestDTO;
 
@@ -25,62 +27,59 @@ public class AirbnbService {
 	}
 
 	public AirbnbSearchDTO searchByPlaceId(AirbnbSearchRequestDTO request) {
-		Integer adults = request.getAdults() == null ? 1 : request.getAdults();
-		Integer children = request.getChildren() == null ? 0 : request.getChildren();
-		Integer infants = request.getInfants() == null ? 0 : request.getInfants();
-		Integer pets = request.getPets() == null ? 0 : request.getPets();
-		Integer priceMin = request.getPriceMin() == null ? 0 : request.getPriceMin();
-		Integer priceMax = request.getPriceMax() == null ? 0 : request.getPriceMax();
-		Integer minBedrooms = request.getMinBedrooms() == null ? 0 : request.getMinBedrooms();
-		Integer minBeds = request.getMinBeds() == null ? 0 : request.getMinBeds();
-		Boolean guestFavorite = request.getGuestFavorite() == null ? false : request.getGuestFavorite();
-		Boolean ib = request.getIb() == null ? false : request.getIb();
+		String placeId = defaultString(request.getPlaceId(), "ChIJ7cv00DwsDogRAMDACa2m4K8");
+		Integer adults = defaultInteger(request.getAdults(), 1);
+		Boolean guestFavorite = defaultBoolean(request.getGuestFavorite(), false);
+		Boolean ib = defaultBoolean(request.getIb(), false);
 		String currency = defaultString(request.getCurrency(), "USD");
 
 		StringBuilder url = new StringBuilder("https://" + airbnbHost + "/api/v2/searchPropertyByPlaceId");
-		url.append("?placeId=").append(encode(request.getPlaceId()));
+		url.append("?placeId=").append(encode(placeId));
 		url.append("&adults=").append(adults);
-		url.append("&children=").append(children);
-		url.append("&infants=").append(infants);
-		url.append("&pets=").append(pets);
-		url.append("&priceMin=").append(priceMin);
-		url.append("&priceMax=").append(priceMax);
-		url.append("&minBedrooms=").append(minBedrooms);
-		url.append("&minBeds=").append(minBeds);
 		url.append("&guestFavorite=").append(guestFavorite);
 		url.append("&ib=").append(ib);
 		url.append("&currency=").append(encode(currency));
 
-		appendIfPresent(url, "nextPageCursor", request.getNextPageCursor());
-		appendIfPresent(url, "checkin", request.getCheckin());
-		appendIfPresent(url, "checkout", request.getCheckout());
-		appendIfPresent(url, "amenities", request.getAmenities());
-		appendIfPresent(url, "flexibleDateSearchFilterType", request.getFlexibleDateSearchFilterType());
-
 		String json = rapidApiClient.doGet(url.toString(), airbnbHost, airbnbKey);
 
 		AirbnbSearchDTO dto = new AirbnbSearchDTO();
-		dto.setPlaceId(request.getPlaceId());
-		dto.setNextPageCursor(request.getNextPageCursor());
-		dto.setCheckin(request.getCheckin());
-		dto.setCheckout(request.getCheckout());
+		dto.setPlaceId(placeId);
 		dto.setAdults(adults);
-		dto.setChildren(children);
-		dto.setInfants(infants);
-		dto.setPets(pets);
-		dto.setPriceMin(priceMin);
-		dto.setPriceMax(priceMax);
-		dto.setMinBedrooms(minBedrooms);
-		dto.setMinBeds(minBeds);
-		dto.setAmenities(request.getAmenities());
 		dto.setGuestFavorite(guestFavorite);
 		dto.setIb(ib);
-		dto.setFlexibleDateSearchFilterType(request.getFlexibleDateSearchFilterType());
 		dto.setCurrency(currency);
 
 		fillProviderStatus(dto, json);
 
 		return dto;
+	}
+	
+	private String defaultString(String value, String defaultValue) {
+		if (value == null || value.isBlank()) {
+			return defaultValue;
+		}
+
+		return value;
+	}
+
+	private Integer defaultInteger(Integer value, Integer defaultValue) {
+		if (value == null) {
+			return defaultValue;
+		}
+
+		return value;
+	}
+
+	private Boolean defaultBoolean(Boolean value, Boolean defaultValue) {
+		if (value == null) {
+			return defaultValue;
+		}
+
+		return value;
+	}
+
+	private String encode(String value) {
+		return java.net.URLEncoder.encode(value, java.nio.charset.StandardCharsets.UTF_8);
 	}
 
 	private void fillProviderStatus(AirbnbSearchDTO dto, String json) {
@@ -92,7 +91,7 @@ public class AirbnbService {
 		}
 
 		try {
-			com.google.gson.JsonObject root = com.google.gson.JsonParser.parseString(json).getAsJsonObject();
+			JsonObject root = com.google.gson.JsonParser.parseString(json).getAsJsonObject();
 
 			if (root.has("statusCode")) {
 				dto.setStatusCode(root.get("statusCode").getAsInt());
@@ -101,6 +100,20 @@ public class AirbnbService {
 				String error = readString(root, "error");
 				dto.setMessage(extractProviderMessage(error));
 				dto.setProviderResponse(error);
+				return;
+			}
+
+			if (root.has("status") && !root.get("status").isJsonNull() && !root.get("status").getAsBoolean()) {
+				dto.setStatusCode(200);
+				dto.setSuccess(false);
+
+				if (root.has("message") && !root.get("message").isJsonNull()) {
+					dto.setMessage(root.get("message").getAsString());
+				} else {
+					dto.setMessage("Error del proveedor de Airbnb.");
+				}
+
+				dto.setProviderResponse(json);
 				return;
 			}
 
@@ -146,17 +159,5 @@ public class AirbnbService {
 		if (value != null && !value.isBlank()) {
 			url.append("&").append(name).append("=").append(encode(value));
 		}
-	}
-
-	private String defaultString(String value, String defaultValue) {
-		if (value == null || value.isBlank()) {
-			return defaultValue;
-		}
-
-		return value;
-	}
-
-	private String encode(String value) {
-		return URLEncoder.encode(value, StandardCharsets.UTF_8);
 	}
 }
