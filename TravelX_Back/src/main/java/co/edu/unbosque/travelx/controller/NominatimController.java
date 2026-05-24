@@ -17,7 +17,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 @RestController
 @RequestMapping("/nominatim")
-@CrossOrigin(origins = { "http://localhost:8081", "*" })
 @Tag(name = "Nominatim", description = "Endpoints para resolver ciudades usando OpenStreetMap")
 public class NominatimController {
 

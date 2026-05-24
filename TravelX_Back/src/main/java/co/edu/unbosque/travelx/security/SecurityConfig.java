@@ -51,21 +51,21 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.configurationSource(corsConfigurationSource()))
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login").permitAll()
+				.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+						.requestMatchers("/auth/login").permitAll()
 						.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
 						.requestMatchers(HttpMethod.PUT, "/persona/mi-cuenta").hasAnyRole("USUARIO", "ADMINISTRADOR")
-						.requestMatchers("/persona/**").hasRole("ADMINISTRADOR").requestMatchers("/travel-search/**")
-						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/visa/**")
-						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/hotel/**")
+						.requestMatchers("/persona/**").hasRole("ADMINISTRADOR").requestMatchers("/reservas/admin/**")
+						.hasRole("ADMINISTRADOR").requestMatchers(HttpMethod.GET, "/reservas/todas")
+						.hasRole("ADMINISTRADOR").requestMatchers("/reservas/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
+						.requestMatchers("/travel-search/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
+						.requestMatchers("/visa/**").hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/hotel/**")
 						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/airbnb/**")
 						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/google-flights/**")
 						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/terrestrial/**")
 						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/nominatim/**")
 						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/google-flights-airport/**")
-						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/reservas/admin/**")
-						.hasRole("ADMINISTRADOR").requestMatchers(HttpMethod.GET, "/reservas/todas")
-						.hasRole("ADMINISTRADOR").requestMatchers("/reservas/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
-						.anyRequest().authenticated())
+						.hasAnyRole("USUARIO", "ADMINISTRADOR").anyRequest().authenticated())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider())
 				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -83,8 +83,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 
-		config.setAllowedOrigins(
-				List.of("http://localhost:4200", "http://localhost:4201", "https://TU-DOMINIO-FRONTEND.com"));
+		config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:4201", "https://gpcueb.org"));
 
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
