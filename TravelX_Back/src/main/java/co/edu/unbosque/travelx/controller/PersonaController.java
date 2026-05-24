@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import co.edu.unbosque.travelx.dto.PersonaDTO;
 import co.edu.unbosque.travelx.entity.Persona.TipoUsuario;
 import co.edu.unbosque.travelx.service.PersonaService;
+import co.edu.unbosque.travelx.security.JwtUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 /**
  * Controlador REST para la administración de personas en TravelX.
@@ -32,6 +34,8 @@ public class PersonaController {
 
 	@Autowired
 	private PersonaService personaService;
+	@Autowired
+	private JwtUtil jwtUtil;
 
 	public PersonaController() {
 	}
@@ -334,6 +338,55 @@ public class PersonaController {
 		}
 
 		return new ResponseEntity<>(found, HttpStatus.ACCEPTED);
+	}
+	
+	@PutMapping(path = "/mi-cuenta", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> actualizarMiCuenta(
+			@RequestBody PersonaDTO nueva,
+			@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+
+		String correoToken = obtenerCorreoDesdeHeader(authorizationHeader);
+
+		if (correoToken == null) {
+			return new ResponseEntity<>("Sesión inválida. Vuelve a iniciar sesión.", HttpStatus.UNAUTHORIZED);
+		}
+
+		PersonaDTO actual = personaService.getByCorreo(correoToken);
+
+		if (actual == null || actual.getId() == null) {
+			return new ResponseEntity<>("No se encontró la cuenta del usuario.", HttpStatus.NOT_FOUND);
+		}
+
+		nueva.setCorreo(correoToken);
+		nueva.setTipoUsuario(actual.getTipoUsuario());
+
+		int status = personaService.updateById(actual.getId(), nueva);
+
+		switch (status) {
+		case 0:
+			return new ResponseEntity<>("Cuenta actualizada exitosamente", HttpStatus.ACCEPTED);
+		case 2:
+			return new ResponseEntity<>("Correo ya registrado", HttpStatus.CONFLICT);
+		case 3:
+			return new ResponseEntity<>("Documento ya registrado", HttpStatus.CONFLICT);
+		case 4:
+			return new ResponseEntity<>("Persona no encontrada", HttpStatus.NOT_FOUND);
+		default:
+			return new ResponseEntity<>("Error al actualizar la cuenta", HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	private String obtenerCorreoDesdeHeader(String authorizationHeader) {
+		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+			return null;
+		}
+
+		try {
+			String token = authorizationHeader.substring(7);
+			return jwtUtil.extractUsername(token);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }

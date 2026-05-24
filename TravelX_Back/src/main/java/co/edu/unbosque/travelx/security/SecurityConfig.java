@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.http.HttpMethod;
 
 /**
  * Clase de configuración de seguridad de la aplicación.
@@ -67,6 +68,7 @@ public class SecurityConfig {
 						.requestMatchers("/reservas/**").permitAll()
 						.requestMatchers("/google-flights-airport", "/google-flights-airport/**").permitAll()
 						
+						.requestMatchers(HttpMethod.PUT, "/persona/mi-cuenta").authenticated()
 						.requestMatchers("/persona/**").hasRole("ADMINISTRADOR")
 						.anyRequest().authenticated())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

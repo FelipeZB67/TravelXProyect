@@ -66,6 +66,10 @@ export class ReservaService {
     return this.http.delete<void>(`${this.urlBase}/admin/eliminar/${id}`);
   }
 
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.urlBase}/${id}`);
+  }
+
   /**
    * Obtiene el comprobante en texto de una reserva por su identificador.
    *
