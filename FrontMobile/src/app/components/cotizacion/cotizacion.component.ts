@@ -7,8 +7,8 @@ import jsPDF from 'jspdf';
 @Component({
   selector: 'app-cotizacion',
   standalone: false,
-  templateUrl: './cotizacion.html',
-  styleUrl: './cotizacion.css'
+  templateUrl: './cotizacion.component.html',
+  styleUrl: './cotizacion.component.css'
 })
 
 /**
@@ -16,13 +16,16 @@ import jsPDF from 'jspdf';
  * Permite consultar reservas guardadas, filtrarlas por tipo y generar
  * comprobantes en formato PDF con el detalle de cada reserva.
  */
-export class Cotizacion implements OnInit {
+export class CotizacionComponent implements OnInit {
   tabActivo: 'transporte' | 'hospedaje' = 'transporte';
 
   reservas: TravelOptionModel[] = [];
   cargando = false;
   error = '';
   descargandoId = '';
+  modalEliminarAbierto = false;
+  reservaEliminando?: TravelOptionModel;
+  eliminando = false;
 
   constructor(
     private router: Router,
@@ -328,6 +331,49 @@ export class Cotizacion implements OnInit {
       this.descargandoId = '';
       this.cdr.detectChanges();
     }
+  }
+
+  abrirEliminar(reserva: TravelOptionModel): void {
+    this.error = '';
+
+    if (!reserva.id) {
+      this.error = 'No se encontró el identificador de la reserva.';
+      return;
+    }
+
+    this.reservaEliminando = reserva;
+    this.modalEliminarAbierto = true;
+  }
+
+  cancelarEliminar(): void {
+    if (this.eliminando) return;
+
+    this.modalEliminarAbierto = false;
+    this.reservaEliminando = undefined;
+  }
+
+  confirmarEliminar(): void {
+    if (!this.reservaEliminando?.id) {
+      this.error = 'No se encontró el identificador de la reserva.';
+      return;
+    }
+
+    this.eliminando = true;
+    this.error = '';
+
+    this.reservaService.eliminar(this.reservaEliminando.id).subscribe({
+      next: () => {
+        const idEliminado = this.reservaEliminando?.id;
+        this.reservas = this.reservas.filter(reserva => reserva.id !== idEliminado);
+        this.eliminando = false;
+        this.modalEliminarAbierto = false;
+        this.reservaEliminando = undefined;
+      },
+      error: err => {
+        this.error = this.obtenerMensajeError(err, 'No se pudo eliminar la reserva.');
+        this.eliminando = false;
+      }
+    });
   }
 
   /** Navega hacia la vista de inicio. */
