@@ -12,7 +12,7 @@ import { InicioComponent } from './components/inicio/inicio';
 import { AdminComponent } from './components/admin/admin';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { VerificarCorreoComponent } from './components/verificar-correo/verificar-correo';
-import { Cotizacion } from './components/cotizacion/cotizacion';
+import { CotizacionComponent } from './components/cotizacion/cotizacion.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     InicioComponent,
     AdminComponent,
     VerificarCorreoComponent,
-    Cotizacion,
+    CotizacionComponent,
   ],
   imports: [
     BrowserModule,
