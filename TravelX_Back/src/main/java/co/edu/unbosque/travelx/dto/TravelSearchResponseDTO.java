@@ -2,6 +2,11 @@ package co.edu.unbosque.travelx.dto;
 
 import java.util.List;
 
+/**
+ * Objeto de transferencia de datos que representa la respuesta de una búsqueda
+ * unificada de viajes, incluyendo las ubicaciones resueltas de origen y destino,
+ * la solicitud original y la lista de opciones de viaje disponibles.
+ */
 public class TravelSearchResponseDTO {
 
 	private Boolean success;

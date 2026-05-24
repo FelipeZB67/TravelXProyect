@@ -1,5 +1,10 @@
 package co.edu.unbosque.travelx.dto;
 
+/**
+ * Objeto de transferencia de datos que representa el resultado de una consulta
+ * de requisito de visa, indicando si se requiere visa según el país de pasaporte,
+ * el país de destino y la fecha de viaje, junto con la respuesta del proveedor externo.
+ */
 public class VisaRequirementDTO {
 
 	private String passportCountryCode;

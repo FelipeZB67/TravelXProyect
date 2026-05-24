@@ -20,6 +20,12 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+/**
+ * Clase de configuración de seguridad de la aplicación.
+ * Define la cadena de filtros, reglas de autorización por endpoint,
+ * política de sesiones sin estado, configuración CORS y los beans
+ * necesarios para la autenticación mediante JWT.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -32,6 +38,15 @@ public class SecurityConfig {
 		this.userDetailsService = userDetailsService;
 	}
 
+	/**
+	 * Configura la cadena de filtros de seguridad, deshabilitando CSRF,
+	 * aplicando la configuración CORS, definiendo los endpoints públicos y
+	 * protegidos, estableciendo sesiones sin estado y registrando el filtro JWT.
+	 *
+	 * @param http objeto de configuración de seguridad HTTP
+	 * @return {@link SecurityFilterChain} con la configuración aplicada
+	 * @throws Exception si ocurre un error durante la configuración
+	 */
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
@@ -41,8 +56,6 @@ public class SecurityConfig {
 						.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 						.requestMatchers("/persona/create", "/persona/createjson").permitAll()
 						.requestMatchers("/persona/getall", "/persona/getbycorreo", "/persona/deletebyid/**").permitAll()
-
-						// TEMPORAL: endpoints publicos para probar APIs externas
 						.requestMatchers("/visa/**").permitAll()
 						.requestMatchers("/hotel/**").permitAll()
 						.requestMatchers("/airbnb/**").permitAll()
@@ -63,6 +76,12 @@ public class SecurityConfig {
 		return http.build();
 	}
 
+	/**
+	 * Configura y retorna la fuente de configuración CORS, permitiendo
+	 * cualquier origen, los métodos HTTP estándar y todas las cabeceras.
+	 *
+	 * @return {@link CorsConfigurationSource} con la política CORS definida
+	 */
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 	    CorsConfiguration config = new CorsConfiguration();
@@ -75,6 +94,12 @@ public class SecurityConfig {
 	    return source;
 	}
 
+	/**
+	 * Crea y configura el proveedor de autenticación basado en {@link UserDetailsService}
+	 * y el codificador de contraseñas BCrypt.
+	 *
+	 * @return {@link AuthenticationProvider} configurado para autenticación por base de datos
+	 */
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
@@ -82,11 +107,24 @@ public class SecurityConfig {
 		return authProvider;
 	}
 
+	/**
+	 * Expone el {@link AuthenticationManager} como bean de Spring
+	 * para ser inyectado en los controladores de autenticación.
+	 *
+	 * @param config configuración de autenticación de Spring Security
+	 * @return {@link AuthenticationManager} obtenido desde la configuración
+	 * @throws Exception si ocurre un error al obtener el administrador de autenticación
+	 */
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
 	}
-
+	
+	/**
+	 * Crea y expone el codificador de contraseñas BCrypt como bean de Spring.
+	 *
+	 * @return {@link PasswordEncoder} basado en el algoritmo BCrypt
+	 */
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

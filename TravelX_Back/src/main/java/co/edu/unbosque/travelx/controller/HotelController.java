@@ -15,6 +15,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+/**
+ * Controlador REST para la consulta de detalles de hoteles desde RapidAPI,
+ * delegando la lógica al servicio {@link HotelService}.
+ */
 @RestController
 @RequestMapping("/hotel")
 @CrossOrigin(origins = { "http://localhost:8081", "*" })
@@ -27,6 +31,20 @@ public class HotelController {
 	public HotelController() {
 	}
 
+	/**
+	 * Consulta el detalle de un hotel usando su ID y filtros opcionales
+	 * enviados como parámetros de consulta en la URL.
+	 *
+	 * @param id       identificador del hotel a consultar
+	 * @param checkIn  fecha de entrada
+	 * @param checkOut fecha de salida
+	 * @param adults1  número de adultos
+	 * @param children1 edades de los niños separadas por comas
+	 * @param currency moneda en la que se muestran los precios
+	 * @param locale   idioma y región para la respuesta
+	 * @return {@link ResponseEntity} con el detalle del hotel y código 202 si es exitoso,
+	 *         o 400 si la respuesta es nula o indica fallo
+	 */
 	@Operation(summary = "Consultar detalle de hotel", description = "Consulta el detalle de un hotel usando el id retornado por la API de hoteles.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "202", description = "Consulta realizada exitosamente"),
@@ -60,6 +78,14 @@ public class HotelController {
 		return new ResponseEntity<>(respuesta, HttpStatus.ACCEPTED);
 	}
 
+	/**
+	 * Consulta el detalle de un hotel recibiendo todos los parámetros
+	 * encapsulados en un objeto JSON en el cuerpo de la petición.
+	 *
+	 * @param request objeto con el ID del hotel y los filtros de consulta
+	 * @return {@link ResponseEntity} con el detalle del hotel y código 202 si es exitoso,
+	 *         o 400 si la respuesta es nula o indica fallo
+	 */
 	@Operation(summary = "Consultar detalle de hotel por JSON", description = "Consulta el detalle de un hotel enviando los parametros en formato JSON.")
 	@PostMapping(path = "/detailsjson", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<HotelDetailsDTO> consultarDetalleHotelJSON(@RequestBody HotelDetailsRequestDTO request) {

@@ -1,50 +1,39 @@
 package co.edu.unbosque.travelx.dto;
 
 /**
- * Objeto de transferencia de datos que representa una opción de viaje unificada,
- * incluyendo información de transporte u hospedaje, origen, destino, fechas,
- * precio, configuración de pasajeros y respuesta del proveedor externo.
+ * Objeto de transferencia de datos que representa un vuelo proveniente de la MockAPI,
+ * con información de proveedor, origen, destino, fechas, precio y configuración de pasajeros.
  */
-public class TravelOptionDTO {
+public class MockFlightDTO {
 
-	private String provider; 
-	private String type; 
-
+	private String id;
+	private String provider;
+	private String type;
 	private String title;
 	private String description;
-
 	private String originCity;
 	private String originCountry;
 	private String destinationCity;
 	private String destinationCountry;
-
 	private String departureDate;
 	private String returnDate;
-
 	private String currency;
 	private Double price;
 	private String priceText;
-
 	private Integer adults;
 	private Integer children;
 	private Integer pets;
-
 	private String travelClass;
 
-	private Boolean hasPool;
-	private Boolean hasJacuzzi;
-	private Boolean petFriendly;
+	public MockFlightDTO() {
+	}
 
-	private Boolean available;
-	private String bookingUrl;
+	public String getId() {
+		return id;
+	}
 
-	private Integer providerStatusCode;
-	private Boolean providerSuccess;
-	private String providerMessage;
-
-	private String providerResponse;
-
-	public TravelOptionDTO() {
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getProvider() {
@@ -182,78 +171,4 @@ public class TravelOptionDTO {
 	public void setTravelClass(String travelClass) {
 		this.travelClass = travelClass;
 	}
-
-	public Boolean getHasPool() {
-		return hasPool;
-	}
-
-	public void setHasPool(Boolean hasPool) {
-		this.hasPool = hasPool;
-	}
-
-	public Boolean getHasJacuzzi() {
-		return hasJacuzzi;
-	}
-
-	public void setHasJacuzzi(Boolean hasJacuzzi) {
-		this.hasJacuzzi = hasJacuzzi;
-	}
-
-	public Boolean getPetFriendly() {
-		return petFriendly;
-	}
-
-	public void setPetFriendly(Boolean petFriendly) {
-		this.petFriendly = petFriendly;
-	}
-
-	public Boolean getAvailable() {
-		return available;
-	}
-
-	public void setAvailable(Boolean available) {
-		this.available = available;
-	}
-
-	public String getBookingUrl() {
-		return bookingUrl;
-	}
-
-	public void setBookingUrl(String bookingUrl) {
-		this.bookingUrl = bookingUrl;
-	}
-
-	public Integer getProviderStatusCode() {
-		return providerStatusCode;
-	}
-
-	public void setProviderStatusCode(Integer providerStatusCode) {
-		this.providerStatusCode = providerStatusCode;
-	}
-
-	public Boolean getProviderSuccess() {
-		return providerSuccess;
-	}
-
-	public void setProviderSuccess(Boolean providerSuccess) {
-		this.providerSuccess = providerSuccess;
-	}
-
-	public String getProviderMessage() {
-		return providerMessage;
-	}
-
-	public void setProviderMessage(String providerMessage) {
-		this.providerMessage = providerMessage;
-	}
-
-	public String getProviderResponse() {
-		return providerResponse;
-	}
-
-	public void setProviderResponse(String providerResponse) {
-		this.providerResponse = providerResponse;
-	}
-
-	
 }

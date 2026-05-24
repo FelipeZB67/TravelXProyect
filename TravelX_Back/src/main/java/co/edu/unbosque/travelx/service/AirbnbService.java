@@ -1,14 +1,18 @@
 package co.edu.unbosque.travelx.service;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.google.gson.JsonObject;
 
 import co.edu.unbosque.travelx.dto.AirbnbSearchDTO;
 import co.edu.unbosque.travelx.dto.AirbnbSearchRequestDTO;
 
+/**
+ * Servicio que gestiona la consulta de alojamientos tipo Airbnb
+ * mediante la API externa de RapidAPI, construyendo la URL de consulta,
+ * procesando la respuesta y mapeando el resultado a un DTO.
+ */
 @Service
 public class AirbnbService {
 
@@ -24,65 +28,103 @@ public class AirbnbService {
 		this.rapidApiClient = rapidApiClient;
 	}
 
+	/**
+	 * Realiza una búsqueda de alojamientos Airbnb usando el Place ID del destino
+	 * y los filtros del request, consultando la API externa y mapeando la respuesta.
+	 *
+	 * @param request objeto con los parámetros de búsqueda
+	 * @return {@link AirbnbSearchDTO} con los resultados y el estado de la consulta
+	 */
 	public AirbnbSearchDTO searchByPlaceId(AirbnbSearchRequestDTO request) {
-		Integer adults = request.getAdults() == null ? 1 : request.getAdults();
-		Integer children = request.getChildren() == null ? 0 : request.getChildren();
-		Integer infants = request.getInfants() == null ? 0 : request.getInfants();
-		Integer pets = request.getPets() == null ? 0 : request.getPets();
-		Integer priceMin = request.getPriceMin() == null ? 0 : request.getPriceMin();
-		Integer priceMax = request.getPriceMax() == null ? 0 : request.getPriceMax();
-		Integer minBedrooms = request.getMinBedrooms() == null ? 0 : request.getMinBedrooms();
-		Integer minBeds = request.getMinBeds() == null ? 0 : request.getMinBeds();
-		Boolean guestFavorite = request.getGuestFavorite() == null ? false : request.getGuestFavorite();
-		Boolean ib = request.getIb() == null ? false : request.getIb();
+		String placeId = defaultString(request.getPlaceId(), "ChIJ7cv00DwsDogRAMDACa2m4K8");
+		Integer adults = defaultInteger(request.getAdults(), 1);
+		Boolean guestFavorite = defaultBoolean(request.getGuestFavorite(), false);
+		Boolean ib = defaultBoolean(request.getIb(), false);
 		String currency = defaultString(request.getCurrency(), "USD");
 
 		StringBuilder url = new StringBuilder("https://" + airbnbHost + "/api/v2/searchPropertyByPlaceId");
-		url.append("?placeId=").append(encode(request.getPlaceId()));
+		url.append("?placeId=").append(encode(placeId));
 		url.append("&adults=").append(adults);
-		url.append("&children=").append(children);
-		url.append("&infants=").append(infants);
-		url.append("&pets=").append(pets);
-		url.append("&priceMin=").append(priceMin);
-		url.append("&priceMax=").append(priceMax);
-		url.append("&minBedrooms=").append(minBedrooms);
-		url.append("&minBeds=").append(minBeds);
 		url.append("&guestFavorite=").append(guestFavorite);
 		url.append("&ib=").append(ib);
 		url.append("&currency=").append(encode(currency));
 
-		appendIfPresent(url, "nextPageCursor", request.getNextPageCursor());
-		appendIfPresent(url, "checkin", request.getCheckin());
-		appendIfPresent(url, "checkout", request.getCheckout());
-		appendIfPresent(url, "amenities", request.getAmenities());
-		appendIfPresent(url, "flexibleDateSearchFilterType", request.getFlexibleDateSearchFilterType());
-
 		String json = rapidApiClient.doGet(url.toString(), airbnbHost, airbnbKey);
 
 		AirbnbSearchDTO dto = new AirbnbSearchDTO();
-		dto.setPlaceId(request.getPlaceId());
-		dto.setNextPageCursor(request.getNextPageCursor());
-		dto.setCheckin(request.getCheckin());
-		dto.setCheckout(request.getCheckout());
+		dto.setPlaceId(placeId);
 		dto.setAdults(adults);
-		dto.setChildren(children);
-		dto.setInfants(infants);
-		dto.setPets(pets);
-		dto.setPriceMin(priceMin);
-		dto.setPriceMax(priceMax);
-		dto.setMinBedrooms(minBedrooms);
-		dto.setMinBeds(minBeds);
-		dto.setAmenities(request.getAmenities());
 		dto.setGuestFavorite(guestFavorite);
 		dto.setIb(ib);
-		dto.setFlexibleDateSearchFilterType(request.getFlexibleDateSearchFilterType());
 		dto.setCurrency(currency);
 
 		fillProviderStatus(dto, json);
 
 		return dto;
 	}
+	
+	/**
+	 * Retorna el valor dado si no es nulo ni vacío, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo o vacío
+	 * @return valor original o valor por defecto
+	 */
+	private String defaultString(String value, String defaultValue) {
+		if (value == null || value.isBlank()) {
+			return defaultValue;
+		}
 
+		return value;
+	}
+
+	/**
+	 * Retorna el valor dado si no es nulo, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo
+	 * @return valor original o valor por defecto
+	 */
+	private Integer defaultInteger(Integer value, Integer defaultValue) {
+		if (value == null) {
+			return defaultValue;
+		}
+
+		return value;
+	}
+
+	/**
+	 * Retorna el valor dado si no es nulo, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo
+	 * @return valor original o valor por defecto
+	 */
+	private Boolean defaultBoolean(Boolean value, Boolean defaultValue) {
+		if (value == null) {
+			return defaultValue;
+		}
+
+		return value;
+	}
+
+	/**
+	 * Codifica un valor de texto en formato URL usando UTF-8.
+	 *
+	 * @param value texto a codificar
+	 * @return texto codificado para uso en URL
+	 */
+	private String encode(String value) {
+		return java.net.URLEncoder.encode(value, java.nio.charset.StandardCharsets.UTF_8);
+	}
+
+	/**
+	 * Interpreta la respuesta JSON del proveedor y establece el estado,
+	 * mensaje y respuesta en el DTO según el resultado obtenido.
+	 *
+	 * @param dto  objeto donde se almacena el estado de la consulta
+	 * @param json respuesta en formato JSON recibida del proveedor
+	 */
 	private void fillProviderStatus(AirbnbSearchDTO dto, String json) {
 		if (json == null || json.isBlank()) {
 			dto.setSuccess(false);
@@ -92,7 +134,7 @@ public class AirbnbService {
 		}
 
 		try {
-			com.google.gson.JsonObject root = com.google.gson.JsonParser.parseString(json).getAsJsonObject();
+			JsonObject root = com.google.gson.JsonParser.parseString(json).getAsJsonObject();
 
 			if (root.has("statusCode")) {
 				dto.setStatusCode(root.get("statusCode").getAsInt());
@@ -101,6 +143,20 @@ public class AirbnbService {
 				String error = readString(root, "error");
 				dto.setMessage(extractProviderMessage(error));
 				dto.setProviderResponse(error);
+				return;
+			}
+
+			if (root.has("status") && !root.get("status").isJsonNull() && !root.get("status").getAsBoolean()) {
+				dto.setStatusCode(200);
+				dto.setSuccess(false);
+
+				if (root.has("message") && !root.get("message").isJsonNull()) {
+					dto.setMessage(root.get("message").getAsString());
+				} else {
+					dto.setMessage("Error del proveedor de Airbnb.");
+				}
+
+				dto.setProviderResponse(json);
 				return;
 			}
 
@@ -116,6 +172,13 @@ public class AirbnbService {
 		}
 	}
 
+	/**
+	 * Extrae el mensaje de error desde una cadena JSON de error del proveedor.
+	 * Si no puede interpretarse como JSON, retorna la cadena original.
+	 *
+	 * @param error cadena con el error retornado por el proveedor
+	 * @return mensaje de error legible extraído del JSON, o la cadena original
+	 */
 	private String extractProviderMessage(String error) {
 		if (error == null || error.isBlank()) {
 			return "Error desconocido del proveedor de Airbnb.";
@@ -134,6 +197,14 @@ public class AirbnbService {
 		return error;
 	}
 
+	/**
+	 * Lee un campo de texto de un objeto JSON de forma segura,
+	 * retornando null si el campo no existe o es nulo.
+	 *
+	 * @param object    objeto JSON del que se desea leer el campo
+	 * @param fieldName nombre del campo a leer
+	 * @return valor del campo como texto, o null si no existe
+	 */
 	private String readString(com.google.gson.JsonObject object, String fieldName) {
 		if (object.has(fieldName) && !object.get(fieldName).isJsonNull()) {
 			return object.get(fieldName).getAsString();
@@ -142,21 +213,16 @@ public class AirbnbService {
 		return null;
 	}
 
+	/**
+	 * Añade un parámetro a la URL solo si su valor no es nulo ni vacío.
+	 *
+	 * @param url   constructor de la URL donde se añade el parámetro
+	 * @param name  nombre del parámetro en la URL
+	 * @param value valor del parámetro a añadir
+	 */
 	private void appendIfPresent(StringBuilder url, String name, String value) {
 		if (value != null && !value.isBlank()) {
 			url.append("&").append(name).append("=").append(encode(value));
 		}
-	}
-
-	private String defaultString(String value, String defaultValue) {
-		if (value == null || value.isBlank()) {
-			return defaultValue;
-		}
-
-		return value;
-	}
-
-	private String encode(String value) {
-		return URLEncoder.encode(value, StandardCharsets.UTF_8);
 	}
 }

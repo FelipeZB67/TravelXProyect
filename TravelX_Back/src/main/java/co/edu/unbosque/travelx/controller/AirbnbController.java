@@ -15,6 +15,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+/**
+ * Controlador REST para la consulta de alojamientos tipo Airbnb.
+ * Expone endpoints para buscar propiedades mediante parámetros de URL o JSON,
+ * delegando la lógica al servicio {@link AirbnbService}.
+ */
 @RestController
 @RequestMapping("/airbnb")
 @CrossOrigin(origins = { "http://localhost:8081", "*" })
@@ -27,6 +32,30 @@ public class AirbnbController {
 	public AirbnbController() {
 	}
 
+	/**
+     * Busca alojamientos tipo Airbnb usando el Place ID del destino y filtros opcionales
+     * enviados como parámetros de consulta en la URL.
+     *
+     * @param placeId                      identificador del lugar destino
+     * @param nextPageCursor               cursor para paginar resultados
+     * @param checkin                      fecha de entrada
+     * @param checkout                     fecha de salida
+     * @param adults                       número de adultos
+     * @param children                     número de niños
+     * @param infants                      número de infantes
+     * @param pets                         número de mascotas
+     * @param priceMin                     precio mínimo por noche
+     * @param priceMax                     precio máximo por noche
+     * @param minBedrooms                  número mínimo de habitaciones
+     * @param minBeds                      número mínimo de camas
+     * @param amenities                    amenidades requeridas
+     * @param guestFavorite                filtro de favoritos de huéspedes
+     * @param ib                           filtro de reserva instantánea
+     * @param flexibleDateSearchFilterType tipo de filtro de fechas flexibles
+     * @param currency                     moneda en la que se muestran los precios
+     * @return {@link ResponseEntity} con los resultados de la búsqueda y código 202,
+     *         o 400 si la consulta falla o retorna un resultado nulo
+     */
 	@Operation(summary = "Buscar alojamientos por Place ID", description = "Busca propiedades tipo Airbnb usando el Place ID del destino.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "202", description = "Consulta realizada exitosamente"),
@@ -80,6 +109,14 @@ public class AirbnbController {
 		return new ResponseEntity<>(respuesta, HttpStatus.ACCEPTED);
 	}
 
+	 /**
+     * Busca alojamientos tipo Airbnb recibiendo todos los parámetros de búsqueda
+     * encapsulados en un objeto JSON en el cuerpo de la petición.
+     *
+     * @param request objeto con todos los filtros y parámetros de búsqueda
+     * @return {@link ResponseEntity} con los resultados de la búsqueda y código 202,
+     *         o 400 si la consulta falla o retorna un resultado nulo
+     */
 	@Operation(summary = "Buscar alojamientos por JSON", description = "Busca propiedades tipo Airbnb enviando los parametros en formato JSON.")
 	@PostMapping(path = "/searchjson", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AirbnbSearchDTO> buscarPorPlaceIdJSON(@RequestBody AirbnbSearchRequestDTO request) {

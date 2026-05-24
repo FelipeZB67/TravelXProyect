@@ -1,5 +1,10 @@
 package co.edu.unbosque.travelx.dto;
 
+/**
+ * Objeto de transferencia de datos que representa una ruta de transporte terrestre,
+ * incluyendo información de origen, destino, operador, precio, duración,
+ * distancia y características del servicio.
+ */
 public class TerrestrialRouteDTO {
 
 	private String origen;

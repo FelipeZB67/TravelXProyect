@@ -7,9 +7,21 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/**
+ * Servicio que extrae precios desde respuestas JSON de proveedores externos,
+ * realizando búsquedas recursivas sobre la estructura del JSON para localizar
+ * el primer valor de precio disponible.
+ */
 @Service
 public class PriceExtractorService {
 
+	/**
+	 * Extrae el primer precio encontrado en una respuesta JSON genérica,
+	 * buscando recursivamente claves relacionadas con precios.
+	 *
+	 * @param json cadena JSON de la que se desea extraer el precio
+	 * @return primer precio encontrado como {@link Double}, o {@code null} si no se encuentra
+	 */
 	public Double extractFirstPrice(String json) {
 		if (json == null || json.isBlank()) {
 			return null;
@@ -23,6 +35,14 @@ public class PriceExtractorService {
 		}
 	}
 
+	/**
+	 * Extrae el precio desde una respuesta JSON con estructura específica de Kiwi,
+	 * priorizando el campo {@code topResults.best.price.amount} antes de realizar
+	 * una búsqueda recursiva.
+	 *
+	 * @param json cadena JSON de respuesta de Kiwi
+	 * @return precio extraído como {@link Double}, o {@code null} si no se encuentra
+	 */
 	public Double extractKiwiPrice(String json) {
 		if (json == null || json.isBlank()) {
 			return null;
@@ -53,6 +73,13 @@ public class PriceExtractorService {
 		}
 	}
 
+	/**
+	 * Busca recursivamente el primer valor de precio en un elemento JSON,
+	 * evaluando claves relacionadas con precios en objetos y recorriendo arrays.
+	 *
+	 * @param element elemento JSON donde se realiza la búsqueda
+	 * @return primer precio encontrado como {@link Double}, o {@code null} si no se encuentra
+	 */
 	private Double searchPrice(JsonElement element) {
 		if (element == null || element.isJsonNull()) {
 			return null;
@@ -96,6 +123,13 @@ public class PriceExtractorService {
 		return null;
 	}
 
+	/**
+	 * Busca recursivamente un precio en la estructura JSON de Kiwi,
+	 * priorizando objetos con la forma {@code price.amount}.
+	 *
+	 * @param element elemento JSON donde se realiza la búsqueda
+	 * @return precio encontrado como {@link Double}, o {@code null} si no se encuentra
+	 */
 	private Double searchKiwiPrice(JsonElement element) {
 		if (element == null || element.isJsonNull()) {
 			return null;
@@ -134,6 +168,13 @@ public class PriceExtractorService {
 		return null;
 	}
 
+	/**
+	 * Determina si una clave JSON está relacionada con un valor de precio,
+	 * verificando si contiene términos comunes de precios.
+	 *
+	 * @param key nombre de la clave JSON en minúsculas
+	 * @return {@code true} si la clave está relacionada con un precio
+	 */
 	private boolean isPriceKey(String key) {
 		return key.contains("price")
 				|| key.contains("amount")
@@ -149,6 +190,13 @@ public class PriceExtractorService {
 				|| key.contains("basefare");
 	}
 
+	/**
+	 * Convierte un elemento JSON a un valor numérico de tipo {@link Double},
+	 * soportando primitivos numéricos, cadenas de texto y objetos con campos de precio.
+	 *
+	 * @param value elemento JSON que representa un precio
+	 * @return valor numérico del precio, o {@code null} si no puede convertirse
+	 */
 	private Double parsePrice(JsonElement value) {
 		try {
 			if (value == null || value.isJsonNull()) {

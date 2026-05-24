@@ -1,5 +1,9 @@
 package co.edu.unbosque.travelx.dto;
 
+/**
+ * Objeto de transferencia de datos que representa los códigos e identificadores
+ * asociados a un destino, incluyendo su código IATA, Place ID de Google y código Kiwi.
+ */
 public class DestinationCodeDTO {
 
 	private String cityName;

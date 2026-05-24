@@ -11,6 +11,10 @@ import co.edu.unbosque.travelx.service.GoogleFlightsAirportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+/**
+ * Controlador REST para la búsqueda dinámica de aeropuertos y sus códigos IATA,
+ * delegando la lógica al servicio {@link GoogleFlightsAirportService}.
+ */
 @RestController
 @RequestMapping("/google-flights-airport")
 @CrossOrigin(origins = { "http://localhost:8081", "*" })
@@ -20,6 +24,15 @@ public class GoogleFlightsAirportController {
 	@Autowired
 	private GoogleFlightsAirportService googleFlightsAirportService;
 
+	/**
+	 * Busca un aeropuerto según el nombre o ciudad y el código de país,
+	 * retornando su código IATA si es encontrado.
+	 *
+	 * @param query       nombre o ciudad del aeropuerto a buscar
+	 * @param countryCode código del país donde se ubica el aeropuerto
+	 * @return {@link ResponseEntity} con el código IATA y código 202 si se encuentra,
+	 *         o 404 si no se hallaron resultados
+	 */
 	@Operation(summary = "Buscar aeropuerto", description = "Busca un aeropuerto y retorna su codigo IATA.")
 	@GetMapping("/search")
 	public ResponseEntity<AirportCodeDTO> searchAirport(
