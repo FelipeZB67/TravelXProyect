@@ -102,4 +102,9 @@ export class PersonaService {
   delete(id: number): Observable<string> {
     return this.http.delete(`${this.UrlBase}/deletebyid/${id}`, { responseType: 'text' });
   }
+
+  updateMiCuenta(persona: PersonaModel): Observable<string> {
+    return this.http.put(`${this.UrlBase}/mi-cuenta`, persona, { responseType: 'text' });
+  }
+
 }
