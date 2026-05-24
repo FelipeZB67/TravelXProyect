@@ -59,7 +59,7 @@ public class TravelSearchController {
 		request.setIncluirVuelos(false);
 		request.setIncluirTransporteTerrestre(false);
 		request.setIncluirAirbnb(true);
-		request.setIncluirHoteles(true);
+		request.setIncluirHoteles(false);
 
 		TravelSearchResponseDTO response = travelSearchService.search(request);
 

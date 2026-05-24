@@ -26,11 +26,14 @@ public class TravelSearchService {
 	private final TerrestrialTransportService terrestrialTransportService;
 	private final NominatimService nominatimService;
 	private final GoogleFlightsAirportService googleFlightsAirportService;
+	private final MockAirbnbService mockAirbnbService;
+	private final MockFlightService mockFlightService;
 
 	public TravelSearchService(GoogleFlightsService googleFlightsService, AirbnbService airbnbService,
 			DestinationResolverService destinationResolverService, PriceExtractorService priceExtractorService,
 			TerrestrialTransportService terrestrialTransportService, NominatimService nominatimService,
-			GoogleFlightsAirportService googleFlightsAirportService) {
+			GoogleFlightsAirportService googleFlightsAirportService, MockAirbnbService mockAirbnbService,
+			MockFlightService mockFlightService) {
 
 		this.googleFlightsService = googleFlightsService;
 		this.airbnbService = airbnbService;
@@ -39,6 +42,8 @@ public class TravelSearchService {
 		this.terrestrialTransportService = terrestrialTransportService;
 		this.nominatimService = nominatimService;
 		this.googleFlightsAirportService = googleFlightsAirportService;
+		this.mockAirbnbService = mockAirbnbService;
+		this.mockFlightService = mockFlightService;
 	}
 
 	public TravelSearchResponseDTO search(TravelSearchRequestDTO request) {
@@ -73,6 +78,7 @@ public class TravelSearchService {
 
 		if (Boolean.TRUE.equals(request.getIncluirVuelos())) {
 			options.add(searchGoogleFlights(request, resolvedOrigin, resolvedDestination));
+			options.add(mockFlightService.searchFlight(request));
 		}
 
 		if (Boolean.TRUE.equals(request.getIncluirTransporteTerrestre())) {
@@ -80,12 +86,7 @@ public class TravelSearchService {
 		}
 
 		if (Boolean.TRUE.equals(request.getIncluirAirbnb())) {
-			if (destination != null) {
-				options.add(searchAirbnb(request, destination));
-			} else {
-				options.add(buildUnavailableOption(request, "AIRBNB19", "AIRBNB", "Alojamientos tipo Airbnb",
-						"No se pudo resolver Google Place ID para el destino."));
-			}
+			options.add(mockAirbnbService.searchLodging(request));
 		}
 
 		if (Boolean.TRUE.equals(request.getIncluirHoteles())) {
@@ -149,14 +150,9 @@ public class TravelSearchService {
 	private TravelOptionDTO searchAirbnb(TravelSearchRequestDTO request, DestinationCodeDTO destination) {
 		AirbnbSearchRequestDTO airbnbRequest = new AirbnbSearchRequestDTO();
 		airbnbRequest.setPlaceId(destination.getGooglePlaceId());
-		airbnbRequest.setCheckin(request.getFechaSalida());
-		airbnbRequest.setCheckout(request.getFechaRegreso());
 		airbnbRequest.setAdults(defaultInteger(request.getAdultos(), 1));
-		airbnbRequest.setChildren(defaultInteger(request.getNinos(), 0));
-		airbnbRequest.setInfants(0);
-		airbnbRequest.setPets(defaultInteger(request.getMascotas(), 0));
-		airbnbRequest.setPriceMin(defaultInteger(request.getPrecioMinimo(), 0));
-		airbnbRequest.setPriceMax(defaultInteger(request.getPrecioMaximo(), 0));
+		airbnbRequest.setGuestFavorite(false);
+		airbnbRequest.setIb(false);
 		airbnbRequest.setCurrency(defaultString(request.getMoneda(), "USD"));
 
 		if (Boolean.TRUE.equals(request.getPetFriendly())) {
