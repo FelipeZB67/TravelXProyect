@@ -18,6 +18,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+/**
+ * Controlador REST para la administración de personas en TravelX.
+ * Expone endpoints para crear, consultar, actualizar y eliminar personas,
+ * delegando la lógica al servicio {@link PersonaService}.
+ */
 @RestController
 @RequestMapping("/persona")
 @CrossOrigin(origins = { "http://localhost:8081", "*" })
@@ -31,6 +36,13 @@ public class PersonaController {
 	public PersonaController() {
 	}
 
+	/**
+	 * Crea una nueva persona recibiendo los datos en formato JSON.
+	 *
+	 * @param nueva objeto con los datos de la persona a crear
+	 * @return {@link ResponseEntity} con código 201 si es exitoso, 409 si hay datos
+	 *         duplicados, o 400 si ocurre un error de validación
+	 */
 	@Operation(summary = "Crear persona (JSON)", description = "Crea una nueva persona enviando los datos en formato JSON.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Persona creada exitosamente"),
 			@ApiResponse(responseCode = "409", description = "Datos duplicados"),
@@ -56,6 +68,17 @@ public class PersonaController {
 		}
 	}
 
+	/**
+	 * Crea una nueva persona recibiendo los datos como parámetros de consulta en la URL.
+	 *
+	 * @param nombre      nombre de usuario
+	 * @param documento   número de documento de identidad
+	 * @param correo      correo electrónico
+	 * @param contrasena  contraseña
+	 * @param tipoUsuario rol asignado a la persona
+	 * @return {@link ResponseEntity} con código 201 si es exitoso, 409 si hay datos
+	 *         duplicados, o 400 si ocurre un error de validación
+	 */
 	@Operation(summary = "Crear persona (parámetros)", description = "Crea una nueva persona usando parámetros.")
 	@PostMapping("/create")
 	public ResponseEntity<String> crearPersona(@RequestParam String nombre, @RequestParam String documento,
@@ -82,6 +105,11 @@ public class PersonaController {
 		}
 	}
 
+	/**
+	 * Retorna la lista de todas las personas registradas en el sistema.
+	 *
+	 * @return {@link ResponseEntity} con la lista y código 202, o 204 si no hay registros
+	 */
 	@Operation(summary = "Obtener todas las personas", description = "Retorna todas las personas registradas.")
 	@GetMapping("/getall")
 	public ResponseEntity<List<PersonaDTO>> obtenerTodas() {
@@ -94,6 +122,11 @@ public class PersonaController {
 		return new ResponseEntity<>(lista, HttpStatus.ACCEPTED);
 	}
 
+	/**
+	 * Retorna la lista de todas las personas con rol ADMINISTRADOR.
+	 *
+	 * @return {@link ResponseEntity} con la lista y código 202, o 204 si no hay registros
+	 */
 	@Operation(summary = "Obtener administradores", description = "Retorna todas las personas con rol ADMINISTRADOR.")
 	@GetMapping("/getall/administradores")
 	public ResponseEntity<List<PersonaDTO>> obtenerAdmins() {
@@ -106,6 +139,11 @@ public class PersonaController {
 		return new ResponseEntity<>(lista, HttpStatus.ACCEPTED);
 	}
 
+	/**
+	 * Retorna la lista de todas las personas con rol USUARIO.
+	 *
+	 * @return {@link ResponseEntity} con la lista y código 202, o 204 si no hay registros
+	 */
 	@Operation(summary = "Obtener usuarios", description = "Retorna todas las personas con rol USUARIO.")
 	@GetMapping("/getall/usuarios")
 	public ResponseEntity<List<PersonaDTO>> obtenerUsuarios() {
@@ -118,6 +156,11 @@ public class PersonaController {
 		return new ResponseEntity<>(lista, HttpStatus.ACCEPTED);
 	}
 
+	/**
+	 * Retorna la lista de todas las personas con rol NINGUNO.
+	 *
+	 * @return {@link ResponseEntity} con la lista y código 202, o 204 si no hay registros
+	 */
 	@Operation(summary = "Obtener usuarios sin rol", description = "Retorna todas las personas con rol NINGUNO.")
 	@GetMapping("/getall/ninguno")
 	public ResponseEntity<List<PersonaDTO>> obtenerNinguno() {
@@ -130,6 +173,12 @@ public class PersonaController {
 		return new ResponseEntity<>(lista, HttpStatus.ACCEPTED);
 	}
 
+	/**
+	 * Busca y retorna una persona según su ID.
+	 *
+	 * @param id identificador de la persona a buscar
+	 * @return {@link ResponseEntity} con la persona y código 202, o 404 si no existe
+	 */
 	@Operation(summary = "Obtener persona por ID", description = "Busca una persona mediante su ID.")
 	@GetMapping("/getbyid/{id}")
 	public ResponseEntity<?> obtenerPorId(@PathVariable Long id) {
@@ -142,6 +191,15 @@ public class PersonaController {
 		return new ResponseEntity<>("Persona no encontrada", HttpStatus.NOT_FOUND);
 	}
 
+	/**
+	 * Actualiza los datos de una persona identificada por su ID,
+	 * recibiendo los nuevos datos en formato JSON.
+	 *
+	 * @param id    identificador de la persona a actualizar
+	 * @param nueva objeto con los nuevos datos de la persona
+	 * @return {@link ResponseEntity} con código 202 si es exitoso, 409 si hay datos
+	 *         duplicados, 404 si no existe, o 400 si ocurre un error de validación
+	 */
 	@Operation(summary = "Actualizar persona (JSON)", description = "Actualiza una persona enviando JSON.")
 	@PutMapping(path = "/updatejson", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> actualizarJSON(@RequestParam Long id, @RequestBody PersonaDTO nueva) {
@@ -166,6 +224,19 @@ public class PersonaController {
 		}
 	}
 
+	/**
+	 * Actualiza los datos de una persona identificada por su ID,
+	 * recibiendo los nuevos datos como parámetros de consulta en la URL.
+	 *
+	 * @param id          identificador de la persona a actualizar
+	 * @param nombre      nuevo nombre de usuario
+	 * @param documento   nuevo número de documento
+	 * @param correo      nuevo correo electrónico
+	 * @param contrasena  nueva contraseña
+	 * @param tipoUsuario nuevo rol asignado
+	 * @return {@link ResponseEntity} con código 202 si es exitoso, 409 si hay datos
+	 *         duplicados, 404 si no existe, o 400 si ocurre un error de validación
+	 */
 	@Operation(summary = "Actualizar persona (parámetros)", description = "Actualiza una persona usando parámetros.")
 	@PutMapping("/update")
 	public ResponseEntity<String> actualizarPersona(@RequestParam Long id, @RequestParam String nombre,
@@ -194,6 +265,12 @@ public class PersonaController {
 		}
 	}
 
+	/**
+	 * Elimina una persona del sistema según su ID.
+	 *
+	 * @param id identificador de la persona a eliminar
+	 * @return {@link ResponseEntity} con código 202 si es exitoso, o 404 si no existe
+	 */
 	@Operation(summary = "Eliminar persona", description = "Elimina una persona por ID.")
 	@DeleteMapping("/deletebyid/{id}")
 	public ResponseEntity<String> eliminarPersona(@PathVariable Long id) {
@@ -206,6 +283,11 @@ public class PersonaController {
 		return new ResponseEntity<>("Persona no encontrada", HttpStatus.NOT_FOUND);
 	}
 
+	/**
+	 * Retorna el total de personas registradas en el sistema.
+	 *
+	 * @return {@link ResponseEntity} con el conteo y código 202, o 204 si no hay registros
+	 */
 	@Operation(summary = "Contar personas", description = "Cuenta el total de personas.")
 	@GetMapping("/count")
 	public ResponseEntity<Long> contar() {
@@ -218,6 +300,13 @@ public class PersonaController {
 		return new ResponseEntity<>(total, HttpStatus.ACCEPTED);
 	}
 
+	/**
+	 * Verifica si existe una persona registrada con el ID indicado.
+	 *
+	 * @param id identificador de la persona a verificar
+	 * @return {@link ResponseEntity} con {@code true} y código 202 si existe,
+	 *         o {@code false} y código 404 si no existe
+	 */
 	@Operation(summary = "Verificar existencia", description = "Verifica si existe una persona.")
 	@GetMapping("/exists/{id}")
 	public ResponseEntity<Boolean> existe(@PathVariable Long id) {
@@ -230,6 +319,12 @@ public class PersonaController {
 		return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
 	}
 
+	/**
+	 * Busca y retorna una persona según su correo electrónico.
+	 *
+	 * @param correo correo electrónico de la persona a buscar
+	 * @return {@link ResponseEntity} con la persona y código 202, o 404 si no existe
+	 */
 	@GetMapping("/getbycorreo")
 	public ResponseEntity<?> obtenerPorCorreo(@RequestParam String correo) {
 		PersonaDTO found = personaService.getByCorreo(correo);

@@ -13,6 +13,10 @@ import co.edu.unbosque.travelx.service.TerrestrialTransportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+/**
+ * Controlador REST para la consulta de rutas de transporte terrestre,
+ * delegando la lógica al servicio {@link TerrestrialTransportService}.
+ */
 @RestController
 @RequestMapping("/terrestrial")
 @CrossOrigin(origins = { "http://localhost:8081", "*" })
@@ -25,6 +29,14 @@ public class TerrestrialTransportController {
 	public TerrestrialTransportController() {
 	}
 
+	/**
+	 * Consulta una ruta terrestre disponible según los datos de origen y destino
+	 * recibidos en formato JSON.
+	 *
+	 * @param request objeto con la ciudad y país de origen y destino
+	 * @return {@link ResponseEntity} con la ruta encontrada y código 202 si está disponible,
+	 *         o 400 si la respuesta es nula o no hay disponibilidad
+	 */
 	@Operation(summary = "Buscar ruta terrestre", description = "Consulta una ruta terrestre por ciudad y pais de origen y destino.")
 	@PostMapping(path = "/searchjson", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TravelOptionDTO> buscarRutaTerrestre(@RequestBody TravelSearchRequestDTO request) {

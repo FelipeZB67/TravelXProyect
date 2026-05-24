@@ -10,6 +10,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
+/**
+ * Entidad que representa una reserva de viaje realizada por un usuario en TravelX,
+ * almacenando información del proveedor, origen, destino, fechas, precio,
+ * configuración de pasajeros y la respuesta del proveedor externo.
+ */
 @Entity
 @Table(name = "reservatravelx")
 public class Reserva {
@@ -55,6 +60,10 @@ public class Reserva {
 
 	private LocalDateTime fechaCreacion;
 
+	/**
+	 * Constructor por defecto que inicializa la reserva registrando
+	 * automáticamente la fecha y hora de creación.
+	 */
 	public Reserva() {
 		this.fechaCreacion = LocalDateTime.now();
 	}

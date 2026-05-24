@@ -1,5 +1,10 @@
 package co.edu.unbosque.travelx.dto;
 
+/**
+ * Objeto de transferencia de datos que representa un alojamiento tipo Airbnb
+ * proveniente de la MockAPI, con información de ubicación, capacidad,
+ * precios, amenidades y calificación.
+ */
 public class MockAirbnbDTO {
 
 	private String id;

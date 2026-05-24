@@ -9,6 +9,11 @@ import java.time.Duration;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Cliente HTTP para realizar peticiones GET a la API de RapidAPI,
+ * gestionando la autenticación mediante cabeceras y el manejo de errores
+ * de conexión y respuestas no exitosas.
+ */
 @Service
 public class RapidApiClient {
 
@@ -16,6 +21,16 @@ public class RapidApiClient {
 			.connectTimeout(Duration.ofSeconds(15))
 			.build();
 
+	/**
+	 * Realiza una petición GET a la URL indicada usando las credenciales de RapidAPI,
+	 * retornando la respuesta como cadena JSON.
+	 *
+	 * @param url          URL completa del endpoint a consultar
+	 * @param rapidApiHost host de RapidAPI requerido en las cabeceras de autenticación
+	 * @param rapidApiKey  clave de autenticación de RapidAPI
+	 * @return cuerpo de la respuesta en formato JSON, o un JSON de error si
+	 *         la clave es inválida, la respuesta no es exitosa o hay un fallo de conexión
+	 */
 	public String doGet(String url, String rapidApiHost, String rapidApiKey) {
 		if (rapidApiKey == null || rapidApiKey.isBlank()) {
 			return "{ \"error\": \"No existe API key para el host: " + rapidApiHost + "\" }";

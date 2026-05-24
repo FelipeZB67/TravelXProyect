@@ -13,6 +13,11 @@ import co.edu.unbosque.travelx.dto.TerrestrialRouteDTO;
 import co.edu.unbosque.travelx.dto.TravelOptionDTO;
 import co.edu.unbosque.travelx.dto.TravelSearchRequestDTO;
 
+/**
+ * Servicio que consulta rutas de transporte terrestre desde una MockAPI,
+ * filtrando por origen y destino para retornar la ruta más adecuada
+ * según el request.
+ */
 @Service
 public class TerrestrialTransportService {
 
@@ -24,6 +29,13 @@ public class TerrestrialTransportService {
 		this.simpleHttpClientService = simpleHttpClientService;
 	}
 
+	/**
+	 * Busca una ruta terrestre disponible en la MockAPI según los parámetros
+	 * del request y mapea el resultado a un {@link TravelOptionDTO}.
+	 *
+	 * @param request objeto con la ciudad y país de origen y destino
+	 * @return {@link TravelOptionDTO} con la ruta encontrada y el estado de la consulta
+	 */
 	public TravelOptionDTO searchRoute(TravelSearchRequestDTO request) {
 		TravelOptionDTO option = new TravelOptionDTO();
 		option.setProvider("MOCKAPI_TERRESTRIAL");
@@ -79,6 +91,14 @@ public class TerrestrialTransportService {
 		}
 	}
 
+	/**
+	 * Busca la primera ruta de la lista que coincida con el origen y destino
+	 * del request, normalizando los valores para la comparación.
+	 *
+	 * @param routes  lista de rutas obtenida desde la MockAPI
+	 * @param request objeto con los parámetros de búsqueda
+	 * @return primer {@link TerrestrialRouteDTO} que coincida, o {@code null} si no hay coincidencias
+	 */
 	private TerrestrialRouteDTO findRoute(List<TerrestrialRouteDTO> routes, TravelSearchRequestDTO request) {
 		if (routes == null) {
 			return null;
@@ -103,6 +123,13 @@ public class TerrestrialTransportService {
 		return null;
 	}
 
+	/**
+	 * Normaliza un texto eliminando tildes y diacríticos, convirtiéndolo
+	 * a minúsculas y eliminando espacios extremos.
+	 *
+	 * @param value texto a normalizar
+	 * @return texto normalizado, o cadena vacía si es nulo
+	 */
 	private String normalize(String value) {
 		if (value == null) {
 			return "";

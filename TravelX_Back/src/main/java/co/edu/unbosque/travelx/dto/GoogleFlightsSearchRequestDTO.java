@@ -1,5 +1,10 @@
 package co.edu.unbosque.travelx.dto;
 
+/**
+ * Objeto de transferencia de datos que encapsula los parámetros necesarios
+ * para realizar una búsqueda de vuelos en Google Flights, incluyendo
+ * origen, destino, fechas, clase de viaje y configuración de pasajeros.
+ */
 public class GoogleFlightsSearchRequestDTO {
 
 	private String departureId;

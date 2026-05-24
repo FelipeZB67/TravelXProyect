@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 import co.edu.unbosque.travelx.dto.GoogleFlightsSearchDTO;
 import co.edu.unbosque.travelx.dto.GoogleFlightsSearchRequestDTO;
 
+/**
+ * Servicio que gestiona la consulta de vuelos mediante la API de Google Flights
+ * en RapidAPI, construyendo la URL de consulta, procesando la respuesta
+ * y mapeando el resultado al DTO correspondiente.
+ */
 @Service
 public class GoogleFlightsService {
 
@@ -24,6 +29,14 @@ public class GoogleFlightsService {
 		this.rapidApiClient = rapidApiClient;
 	}
 
+	/**
+	 * Realiza una búsqueda de vuelos usando los parámetros del request,
+	 * consultando la API externa y mapeando la respuesta al DTO.
+	 *
+	 * @param request objeto con los parámetros de búsqueda, incluyendo códigos IATA,
+	 *                fechas, clase de viaje y configuración de pasajeros
+	 * @return {@link GoogleFlightsSearchDTO} con los resultados y el estado de la consulta
+	 */
 	public GoogleFlightsSearchDTO searchFlights(GoogleFlightsSearchRequestDTO request) {
 		String departureId = request.getDepartureId();
 		String arrivalId = request.getArrivalId();
@@ -81,6 +94,13 @@ public class GoogleFlightsService {
 		return dto;
 	}
 
+	/**
+	 * Interpreta la respuesta JSON del proveedor y establece el estado,
+	 * mensaje y respuesta en el DTO según el resultado obtenido.
+	 *
+	 * @param dto  objeto donde se almacena el estado de la consulta
+	 * @param json respuesta en formato JSON recibida del proveedor
+	 */
 	private void fillProviderStatus(GoogleFlightsSearchDTO dto, String json) {
 		if (json == null || json.isBlank()) {
 			dto.setSuccess(false);
@@ -114,6 +134,13 @@ public class GoogleFlightsService {
 		}
 	}
 
+	/**
+	 * Extrae el mensaje de error desde una cadena JSON de error del proveedor.
+	 * Si no puede interpretarse como JSON, retorna la cadena original.
+	 *
+	 * @param error cadena con el error retornado por el proveedor
+	 * @return mensaje de error legible extraído del JSON, o la cadena original
+	 */
 	private String extractProviderMessage(String error) {
 		if (error == null || error.isBlank()) {
 			return "Error desconocido del proveedor Google Flights.";
@@ -132,6 +159,14 @@ public class GoogleFlightsService {
 		return error;
 	}
 
+	/**
+	 * Lee un campo de texto de un objeto JSON de forma segura,
+	 * retornando null si el campo no existe o es nulo.
+	 *
+	 * @param object    objeto JSON del que se desea leer el campo
+	 * @param fieldName nombre del campo a leer
+	 * @return valor del campo como texto, o null si no existe
+	 */
 	private String readString(com.google.gson.JsonObject object, String fieldName) {
 		if (object.has(fieldName) && !object.get(fieldName).isJsonNull()) {
 			return object.get(fieldName).getAsString();
@@ -140,12 +175,26 @@ public class GoogleFlightsService {
 		return null;
 	}
 
+	/**
+	 * Añade un parámetro a la URL solo si su valor no es nulo ni vacío.
+	 *
+	 * @param url   constructor de la URL donde se añade el parámetro
+	 * @param name  nombre del parámetro en la URL
+	 * @param value valor del parámetro a añadir
+	 */
 	private void appendIfPresent(StringBuilder url, String name, String value) {
 		if (value != null && !value.isBlank()) {
 			url.append("&").append(name).append("=").append(encode(value));
 		}
 	}
 
+	/**
+	 * Retorna el valor dado si no es nulo ni vacío, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo o vacío
+	 * @return valor original o valor por defecto
+	 */
 	private String defaultString(String value, String defaultValue) {
 		if (value == null || value.isBlank()) {
 			return defaultValue;
@@ -154,6 +203,12 @@ public class GoogleFlightsService {
 		return value;
 	}
 
+	/**
+	 * Codifica un valor de texto en formato URL usando UTF-8.
+	 *
+	 * @param value texto a codificar
+	 * @return texto codificado para uso en URL
+	 */
 	private String encode(String value) {
 		return URLEncoder.encode(value, StandardCharsets.UTF_8);
 	}

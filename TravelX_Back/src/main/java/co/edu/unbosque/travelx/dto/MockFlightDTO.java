@@ -1,5 +1,9 @@
 package co.edu.unbosque.travelx.dto;
 
+/**
+ * Objeto de transferencia de datos que representa un vuelo proveniente de la MockAPI,
+ * con información de proveedor, origen, destino, fechas, precio y configuración de pasajeros.
+ */
 public class MockFlightDTO {
 
 	private String id;

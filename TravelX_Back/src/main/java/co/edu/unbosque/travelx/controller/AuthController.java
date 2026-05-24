@@ -21,6 +21,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controlador REST para la autenticación de personas en TravelX.
+ * Gestiona el inicio de sesión, el registro de nuevas cuentas y la
+ * verificación de correo electrónico mediante código.
+ */
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = { "http://localhost:8081", "*" })
@@ -37,6 +42,14 @@ public class AuthController {
 		this.personaService = personaService;
 	}
 
+	 /**
+     * Autentica una persona con su correo y contraseña. Si las credenciales son
+     * válidas, genera y retorna un token JWT junto con la información básica del usuario.
+     *
+     * @param loginRequest objeto con el correo y contraseña de la persona
+     * @return {@link ResponseEntity} con el token JWT y datos del usuario en código 200,
+     *         o 401 si las credenciales son inválidas
+     */
 	@Operation(summary = "Iniciar sesión", description = """
 			    Autentica una persona usando correo y contraseña.
 			    Si las credenciales son válidas, retorna un token JWT y el tipo de usuario.
@@ -82,6 +95,16 @@ public class AuthController {
 		}
 	}
 
+	 /**
+     * Registra una nueva persona en TravelX. El endpoint es público y no requiere
+     * autenticación. Retorna códigos de conflicto si el nombre, correo o documento
+     * ya se encuentran registrados.
+     *
+     * @param registerRequest objeto con los datos de la nueva persona a registrar
+     * @return {@link ResponseEntity} con código 201 si el registro es exitoso,
+     *         409 si hay datos duplicados, 400 si ocurre un error de validación,
+     *         o 502 si falla el envío del correo de verificación
+     */
 	@Operation(summary = "Registrar nueva persona", description = """
 			    Crea una nueva cuenta en TravelX.
 
@@ -120,6 +143,14 @@ public class AuthController {
 		}
 	}
 
+	 /**
+     * Verifica el correo electrónico de una persona usando el código enviado
+     * al momento del registro.
+     *
+     * @param request objeto con el correo y el código de verificación
+     * @return {@link ResponseEntity} con código 200 si la verificación es exitosa o el correo
+     *         ya estaba verificado, 404 si no existe la cuenta, o 400 si el código es inválido
+     */
 	@PostMapping("/verify")
 	public ResponseEntity<?> verifyEmail(@RequestBody VerifyEmailRequest request) {
 
@@ -139,6 +170,10 @@ public class AuthController {
 		}
 	}
 
+	/**
+     * Clase interna que representa la respuesta devuelta tras un login exitoso,
+     * conteniendo el token JWT y la información básica del usuario autenticado.
+     */
 	private static class AuthResponse {
 
 		private final String token;
@@ -170,6 +205,10 @@ public class AuthController {
 		}
 	}
 
+	 /**
+     * Clase estática que representa el cuerpo de la petición para verificar
+     * el correo electrónico de una persona.
+     */
 	public static class VerifyEmailRequest {
 		private String correo;
 		private String codigo;

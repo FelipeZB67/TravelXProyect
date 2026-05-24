@@ -14,6 +14,10 @@ import co.edu.unbosque.travelx.dto.MockFlightDTO;
 import co.edu.unbosque.travelx.dto.TravelOptionDTO;
 import co.edu.unbosque.travelx.dto.TravelSearchRequestDTO;
 
+/**
+ * Servicio que consulta vuelos desde una MockAPI, filtrando por origen y destino
+ * para retornar la opción de vuelo más adecuada según el request.
+ */
 @Service
 public class MockFlightService {
 
@@ -27,6 +31,14 @@ public class MockFlightService {
 		this.simpleHttpClientService = simpleHttpClientService;
 	}
 
+	/**
+	 * Busca un vuelo disponible en la MockAPI según los parámetros del request
+	 * y mapea el resultado a un {@link TravelOptionDTO}.
+	 *
+	 * @param request objeto con los parámetros de búsqueda, incluyendo origen,
+	 *                destino, fechas y configuración de pasajeros
+	 * @return {@link TravelOptionDTO} con el vuelo encontrado y el estado de la consulta
+	 */
 	public TravelOptionDTO searchFlight(TravelSearchRequestDTO request) {
 		String json = simpleHttpClientService.doGet(mockFlightsUrl);
 
@@ -86,6 +98,13 @@ public class MockFlightService {
 		}
 	}
 
+	/**
+	 * Construye un {@link TravelOptionDTO} base con los datos comunes del request
+	 * antes de aplicar los resultados de la búsqueda.
+	 *
+	 * @param request objeto con los parámetros de búsqueda
+	 * @return {@link TravelOptionDTO} inicializado con los datos del request
+	 */
 	private TravelOptionDTO buildBaseOption(TravelSearchRequestDTO request) {
 		TravelOptionDTO option = new TravelOptionDTO();
 		option.setProvider("MOCKAPI_FLIGHTS");
@@ -105,6 +124,14 @@ public class MockFlightService {
 		return option;
 	}
 
+	/**
+	 * Busca el primer vuelo de la lista que coincida con el origen y destino
+	 * del request, normalizando los valores para la comparación.
+	 *
+	 * @param flights lista de vuelos obtenida desde la MockAPI
+	 * @param request objeto con los parámetros de búsqueda
+	 * @return primer {@link MockFlightDTO} que coincida, o {@code null} si no hay coincidencias
+	 */
 	private MockFlightDTO findFlight(List<MockFlightDTO> flights, TravelSearchRequestDTO request) {
 		if (flights == null) {
 			return null;
@@ -124,6 +151,13 @@ public class MockFlightService {
 				.orElse(null);
 	}
 
+	/**
+	 * Normaliza un texto eliminando tildes y diacríticos, convirtiéndolo
+	 * a minúsculas y eliminando espacios extremos.
+	 *
+	 * @param value texto a normalizar
+	 * @return texto normalizado, o cadena vacía si es nulo
+	 */
 	private String normalize(String value) {
 		if (value == null) {
 			return "";
@@ -135,6 +169,13 @@ public class MockFlightService {
 				.toLowerCase();
 	}
 
+	/**
+	 * Retorna el valor dado si no es nulo ni vacío, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo o vacío
+	 * @return valor original o valor por defecto
+	 */
 	private String defaultString(String value, String defaultValue) {
 		if (value == null || value.isBlank()) {
 			return defaultValue;
@@ -143,6 +184,13 @@ public class MockFlightService {
 		return value;
 	}
 
+	/**
+	 * Retorna el valor dado si no es nulo, o el valor por defecto en caso contrario.
+	 *
+	 * @param value        valor a evaluar
+	 * @param defaultValue valor por defecto a usar si el valor es nulo
+	 * @return valor original o valor por defecto
+	 */
 	private Integer defaultInteger(Integer value, Integer defaultValue) {
 		if (value == null) {
 			return defaultValue;
