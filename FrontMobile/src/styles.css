@@ -1,0 +1,83 @@
+:root {
+  --primary: #3aa0e6;
+  --primary-dark: #0055bb;
+  --primary-light: #e1f4ff;
+  --surface: #ffffff;
+  --surface-soft: #f4f8ff;
+  --accent-green: #00b366;
+  --accent-orange: #ff9500;
+  --accent-red: #ff4d4d;
+  --text-dark: #1a1a1a;
+  --text-muted: #6b7a8d;
+  --border: #ddeeff;
+  --shadow-soft: 0 2px 12px rgba(58, 160, 230, 0.1);
+  --shadow-md: 0 6px 24px rgba(58, 160, 230, 0.18);
+  --shadow-strong: 0 18px 45px rgba(15, 23, 42, 0.18);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #ffffff;
+  color: var(--text-dark);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+input,
+select,
+textarea {
+  font-family: 'Poppins', sans-serif;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f9ff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+app-root {
+  display: block;
+  width: 100%;
+}
