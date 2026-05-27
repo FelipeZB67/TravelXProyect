@@ -19,7 +19,6 @@ import co.edu.unbosque.travelx.service.ReservaService;
  */
 @RestController
 @RequestMapping("/reservas")
-@CrossOrigin(origins = "*")
 public class ReservaController {
 
 	private final ReservaService reservaService;

@@ -27,7 +27,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 @RestController
 @RequestMapping("/persona")
-@CrossOrigin(origins = { "http://localhost:8081", "*" })
 @Tag(name = "Gestión de Personas", description = "Endpoints para administrar personas")
 @SecurityRequirement(name = "bearerAuth")
 public class PersonaController {

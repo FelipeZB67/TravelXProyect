@@ -21,7 +21,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 @RestController
 @RequestMapping("/travel-search")
-@CrossOrigin(origins = { "http://localhost:8081", "*" })
 @Tag(name = "Busqueda de Viajes", description = "Endpoint unificado para el front")
 public class TravelSearchController {
 

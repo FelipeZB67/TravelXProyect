@@ -19,7 +19,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 @RestController
 @RequestMapping("/terrestrial")
-@CrossOrigin(origins = { "http://localhost:8081", "*" })
 @Tag(name = "Transporte Terrestre", description = "Endpoints para consultar rutas terrestres desde MockAPI")
 public class TerrestrialTransportController {
 

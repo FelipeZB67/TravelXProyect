@@ -17,7 +17,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 @RestController
 @RequestMapping("/google-flights-airport")
-@CrossOrigin(origins = { "http://localhost:8081", "*" })
 @Tag(name = "Google Flights Airport", description = "Endpoints para buscar codigos IATA dinamicamente")
 public class GoogleFlightsAirportController {
 

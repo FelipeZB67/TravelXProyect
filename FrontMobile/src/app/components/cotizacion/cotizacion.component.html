@@ -149,12 +149,16 @@
               </div>
 
               <div class="card-footer">
-                <button class="btn-pdf" (click)="imprimir(reserva)" [disabled]="esDescargaActiva(reserva)">
+                <button class="btn-pdf" (click)="imprimir(reserva)" [disabled]="esDescargaActiva(reserva) || eliminando">
                   @if (esDescargaActiva(reserva)) {
                     <i class="fas fa-spinner fa-spin"></i> Generando
                   } @else {
                     <i class="fas fa-print"></i> Imprimir comprobante
                   }
+                </button>
+
+                <button class="btn-delete-reserva" (click)="abrirEliminar(reserva)" [disabled]="esDescargaActiva(reserva) || eliminando">
+                  <i class="fas fa-trash"></i> Eliminar
                 </button>
               </div>
 
@@ -166,3 +170,38 @@
 
   </div>
 </div>
+
+@if (modalEliminarAbierto) {
+  <div class="delete-overlay" (click)="cancelarEliminar()">
+    <div class="delete-modal" (click)="$event.stopPropagation()">
+      <div class="delete-icon">
+        <i class="fas fa-trash"></i>
+      </div>
+
+      <h2>Eliminar cotización</h2>
+
+      <p>
+        ¿Seguro que deseas eliminar
+        <strong>{{ reservaEliminando?.title || 'esta reserva' }}</strong>?
+      </p>
+
+      <span class="delete-warning">
+        Esta acción no se puede deshacer.
+      </span>
+
+      <div class="delete-actions">
+        <button class="btn-delete-cancel" (click)="cancelarEliminar()" [disabled]="eliminando">
+          Cancelar
+        </button>
+
+        <button class="btn-delete-confirm" (click)="confirmarEliminar()" [disabled]="eliminando">
+          @if (eliminando) {
+            <i class="fas fa-spinner fa-spin"></i> Eliminando
+          } @else {
+            <i class="fas fa-trash"></i> Eliminar
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+}
