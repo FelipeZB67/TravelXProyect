@@ -6,25 +6,13 @@ import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Clase de configuración para la documentación OpenAPI (Swagger).
- * Define la información general de la API, el esquema de seguridad JWT
- * y las respuestas de error reutilizables para la interfaz de Swagger UI.
- */
 @Configuration
 public class OpenApiConfig {
 
-	/**
-	 * Construye y registra el bean de configuración personalizada de OpenAPI.
-	 * Incluye la descripción general de la API, el esquema de autenticación
-	 * Bearer JWT y las respuestas estándar de error como no autenticado,
-	 * acceso prohibido y recurso no encontrado.
-	 *
-	 * @return una instancia de OpenAPI con toda la configuración de documentación
-	 */
 	@Bean
 	public OpenAPI customOpenAPI() {
 		String mainDescription =
@@ -59,21 +47,21 @@ public class OpenApiConfig {
 						+ "    <li>Obtén un token JWT usando el endpoint <code>/auth/login</code></li>"
 						+ "    <li>Copia el token recibido en la respuesta</li>"
 						+ "    <li>Haz clic en el botón \"Authorize\" en la parte superior de esta página</li>"
-						+ "    <li>En el campo \"Value\", escribe: <code>Bearer tu_token_jwt</code></li>"
+						+ "    <li>En el campo \"Value\", escribe el token sin la palabra Bearer</li>"
 						+ "    <li>Haz clic en \"Authorize\" y luego en \"Close\"</li>"
 						+ "</ol>"
 						+ "<p>Ahora podrás acceder a los endpoints protegidos.</p>";
 
 		io.swagger.v3.oas.models.info.Info info =
 				new io.swagger.v3.oas.models.info.Info()
-						.title("API de Primera Aplicación Spring")
+						.title("TravelX API")
 						.version("1.0")
 						.description(mainDescription)
 						.contact(
 								new io.swagger.v3.oas.models.info.Contact()
 										.name("Equipo de Desarrollo")
 										.email("soporte@ejemplo.com")
-										.url("https://github.com/tu-usuario/SpringFirstAppJWT"))
+										.url("https://github.com/tu-usuario/TravelX"))
 						.license(
 								new io.swagger.v3.oas.models.info.License()
 										.name("Licencia MIT")
@@ -88,6 +76,7 @@ public class OpenApiConfig {
 
 		return new OpenAPI()
 				.info(info)
+				.addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
 				.components(
 						new Components()
 								.addSecuritySchemes("bearerAuth", securityScheme)

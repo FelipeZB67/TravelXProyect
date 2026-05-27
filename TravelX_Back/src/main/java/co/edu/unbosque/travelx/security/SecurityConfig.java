@@ -52,20 +52,23 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-						.requestMatchers("/auth/login").permitAll()
 						.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
-						.requestMatchers(HttpMethod.PUT, "/persona/mi-cuenta").hasAnyRole("USUARIO", "ADMINISTRADOR")
+						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+						.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+						.requestMatchers(HttpMethod.POST, "/auth/verify").permitAll()
+						.requestMatchers("/persona/mi-cuenta").hasAnyRole("USUARIO", "ADMINISTRADOR")
 						.requestMatchers("/persona/**").hasRole("ADMINISTRADOR").requestMatchers("/reservas/admin/**")
 						.hasRole("ADMINISTRADOR").requestMatchers(HttpMethod.GET, "/reservas/todas")
 						.hasRole("ADMINISTRADOR").requestMatchers("/reservas/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
 						.requestMatchers("/travel-search/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
-						.requestMatchers("/visa/**").hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/hotel/**")
-						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/airbnb/**")
-						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/google-flights/**")
-						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/terrestrial/**")
-						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/nominatim/**")
-						.hasAnyRole("USUARIO", "ADMINISTRADOR").requestMatchers("/google-flights-airport/**")
-						.hasAnyRole("USUARIO", "ADMINISTRADOR").anyRequest().authenticated())
+						.requestMatchers("/visa/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
+						.requestMatchers("/terrestrial/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
+						.requestMatchers("/nominatim/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
+						.requestMatchers("/airbnb/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
+						.requestMatchers("/hotel/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
+						.requestMatchers("/google-flights/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
+						.requestMatchers("/google-flights-airport/**").hasAnyRole("USUARIO", "ADMINISTRADOR")
+						.anyRequest().authenticated())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider())
 				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -83,7 +86,8 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 
-		config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:4201", "https://gpcueb.org"));
+		config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:4201", "https://gpcueb.org",
+				"https://travelxoficial.netlify.app"));
 
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
