@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,23 +19,6 @@ import co.edu.unbosque.travelx.repository.PersonaRepository;
 @Configuration
 public class LoadDataBase {
 
-	@Value("${travelx.seed.admin.correo}")
-	private String adminCorreo;
-
-	@Value("${travelx.seed.admin.contrasena}")
-	private String adminContrasena;
-
-	@Value("${travelx.seed.usuario.correo}")
-	private String usuarioCorreo;
-
-	@Value("${travelx.seed.usuario.contrasena}")
-	private String usuarioContrasena;
-
-	@Value("${travelx.seed.ninguno.correo}")
-	private String ningunoCorreo;
-
-	@Value("${travelx.seed.ninguno.contrasena}")
-	private String ningunoContrasena;
 	private static final Logger Log = LoggerFactory.getLogger(LoadDataBase.class);
 
 	@Bean
@@ -48,8 +30,9 @@ public class LoadDataBase {
 			if (foundAdmin.isPresent()) {
 				Log.info("El admin ya existe, omitiendo creación...");
 			} else {
-				Persona admin = crearPersonaPrecargada("FelipeAdmin", "1012976249", adminCorreo,
-						encoder.encode(adminContrasena), Persona.TipoUsuario.ADMINISTRADOR);
+				Persona admin = crearPersonaPrecargada("FelipeAdmin", "1012976249", "fazambrano@unbosque.edu.co",
+						encoder.encode("1234567890"), Persona.TipoUsuario.ADMINISTRADOR);
+
 				personaRepo.save(admin);
 				Log.info("Precargado admin con éxito");
 			}
@@ -59,8 +42,9 @@ public class LoadDataBase {
 			if (foundUser.isPresent()) {
 				Log.info("El usuario normal ya existe, omitiendo creación...");
 			} else {
-				Persona user = crearPersonaPrecargada("FelipeUsuario", "1012976240", usuarioCorreo,
-						encoder.encode(usuarioContrasena), Persona.TipoUsuario.USUARIO);
+				Persona user = crearPersonaPrecargada("FelipeUsuario", "1012976240", "pipezam200521@gmail.com",
+						encoder.encode("1234567890"), Persona.TipoUsuario.USUARIO);
+
 				personaRepo.save(user);
 				Log.info("Precargado usuario normal con éxito");
 			}
@@ -70,8 +54,9 @@ public class LoadDataBase {
 			if (foundNinguno.isPresent()) {
 				Log.info("El usuario sin rol ya existe, omitiendo creación...");
 			} else {
-				Persona ninguno = crearPersonaPrecargada("ninguno", "1000000003", ningunoCorreo,
-						encoder.encode(ningunoContrasena), Persona.TipoUsuario.NINGUNO);
+				Persona ninguno = crearPersonaPrecargada("ninguno", "1000000003", "ninguno@travelx.com",
+						encoder.encode("1234567890"), Persona.TipoUsuario.NINGUNO);
+
 				personaRepo.save(ninguno);
 				Log.info("Precargado usuario sin rol con éxito");
 			}
